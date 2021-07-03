@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.biock.cms</groupId>
+    <artifactId>comand-cms-backend</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>comand-cms-backend</name>
+    <description>comand-cms-backend</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <!-- Plugins -->
+        <spring-boot-plugin.version>2.5.2</spring-boot-plugin.version>
+
+        <!-- Dependencies -->
+        <spring-boot.version>2.5.2</spring-boot.version>
+        <jackrabbit-oak.version>1.38.0</jackrabbit-oak.version>
+        <codahale-metrics.version>3.0.2</codahale-metrics.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>in-project</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>in-project</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <!-- Spring-Boot Plugin -->
+            <!-- Creates executable and fully executable JARs -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-plugin.version}</version>
+                <configuration>
+                    <!-- Like normal JAR layout, but uses PropertiesLauncher instead of -->
+                    <!-- JarLauncher to launch the main application class. -->
+                    <!-- PropertiesLauncher can be configured using System properties, -->
+                    <!-- environment variables, ... to set, for example, additional classpath -->
+                    <!-- entries -->
+                    <!-- See: -->
+                    <!-- https://docs.spring.io/spring-boot/docs/current/maven-plugin/usage.html -->
+                    <!-- https://docs.spring.io/spring-boot/docs/current/reference/html/executable-jar.html#executable-jar-property-launcher-features -->
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <!-- Creates META-INF/build-info.properties containing some build infos
+                        (e.g. project name and version) -->
+                    <!-- which are published by the actuator /info endpoint. -->
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                    <!-- Same as "spring-boot-repackage-app" but additionally adds a bash -->
+                    <!-- script at the beginning of the JAR -->
+                    <!-- file to make it fully executable on Linux systems. -->
+                    <!-- The application can be started by "./<application>.jar" instead -->
+                    <!-- of "java -jar <application>.jar". -->
+                    <execution>
+                        <id>spring-boot-repackage-bin</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>bin</classifier>
+                            <executable>true</executable>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.flywaydb</groupId>-->
+<!--            <artifactId>flyway-core</artifactId>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.apache.jackrabbit</groupId>
+            <artifactId>oak-jcr</artifactId>
+            <version>${jackrabbit-oak.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jackrabbit</groupId>
+            <artifactId>oak-segment-tar</artifactId>
+            <version>${jackrabbit-oak.version}</version>
+        </dependency>
+        <!-- Required by org.apache.jackrabbit:oak-segment-tar -->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${codahale-metrics.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+</project>

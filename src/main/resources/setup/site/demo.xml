@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    xmlns:sv="http://www.jcp.org/jcr/sv/1.0"
+    sv:name="demo">
+
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>cms:site</sv:value>
+    </sv:property>
+
+    <!--
+      ** Site properties
+      -->
+    <sv:property sv:name="jcr:name" sv:type="String">
+        <sv:value>demo</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:title" sv:type="String">
+        <sv:value>CoManD-CMS Demo-Site</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:description" sv:type="String">
+        <sv:value>This is a demonstration site for the CoManD-CMS</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:created" sv:type="Date">
+        <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:createdBy" sv:type="String">
+        <sv:value>system</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:lastModified" sv:type="Date">
+        <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+        <sv:value>system</sv:value>
+    </sv:property>
+    <sv:property sv:name="active" sv:type="Boolean">
+        <sv:value>true</sv:value>
+    </sv:property>
+
+    <!--
+      ** Site configuration
+      -->
+    <sv:property sv:name="layout" sv:type="String">
+        <sv:value>Default</sv:value>
+    </sv:property>
+    <sv:property sv:name="theme" sv:type="String">
+        <sv:value>default</sv:value>
+    </sv:property>
+    <sv:property sv:name="homePage" sv:type="String">
+        <sv:value>index.html</sv:value>
+    </sv:property>
+    <sv:property sv:name="language" sv:type="String">
+        <sv:value>de</sv:value>
+    </sv:property>
+    <sv:property sv:name="supportedLanguages" sv:type="String" sv:multiple="true">
+        <sv:value>de</sv:value>
+        <sv:value>en</sv:value>
+    </sv:property>
+
+    <sv:node sv:name="supportedLanguagesX">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>nt:unstructured</sv:value>
+        </sv:property>
+
+        <sv:node sv:name="de">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:language</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="de" sv:type="String">
+                <sv:value>Deutsch</sv:value>
+            </sv:property>
+            <sv:property sv:name="en" sv:type="String">
+                <sv:value>Englisch</sv:value>
+            </sv:property>
+        </sv:node>
+        <sv:node sv:name="en">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:language</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="de" sv:type="String">
+                <sv:value>German</sv:value>
+            </sv:property>
+            <sv:property sv:name="en" sv:type="String">
+                <sv:value>English</sv:value>
+            </sv:property>
+        </sv:node>
+    </sv:node>
+
+    <!--
+      ***************************************************************************************************************
+      ** Site pages
+      ***************************************************************************************************************
+      -->
+
+    <!--
+      ** Index page
+      -->
+    <sv:node sv:name="index">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>cms:page</sv:value>
+        </sv:property>
+
+        <!--
+          ** Index page properties
+          -->
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>demo.index</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>index</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:title" sv:type="String">
+            <sv:value>Home Page</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:description" sv:type="String">
+            <sv:value>Demo Home Page</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:created" sv:type="Date">
+            <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:createdBy" sv:type="String">
+            <sv:value>system</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:lastModified" sv:type="Date">
+            <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+            <sv:value>system</sv:value>
+        </sv:property>
+        <sv:property sv:name="active" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="headline" sv:type="String">
+            <sv:value>Home</sv:value>
+        </sv:property>
+
+        <!--
+          ** Index page configuration
+          -->
+        <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInTopNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="external" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="href" sv:type="String">
+            <sv:value />
+        </sv:property>
+        <sv:property sv:name="target" sv:type="String">
+            <sv:value />
+        </sv:property>
+
+        <!--
+          ** Index page meta data
+          -->
+        <sv:node sv:name="metaData">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>nt:unstructured</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="author" sv:type="String">
+                <sv:value>CoManD-CMS</sv:value>
+            </sv:property>
+            <sv:property sv:name="keywords" sv:type="String">
+                <sv:value>CMS, VueJS, SPA</sv:value>
+            </sv:property>
+        </sv:node>
+
+        <!--
+          ***********************************************************************************************************
+          ** Index page components
+          ***********************************************************************************************************
+          -->
+
+        <!--
+          ** Header component
+          -->
+        <sv:node sv:name="headerWrapper">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:component</sv:value>
+            </sv:property>
+
+            <!--
+              ** Header properties
+              -->
+            <sv:property sv:name="jcr:name" sv:type="String">
+                <sv:value>widthLimitationWrapper</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="componentName" sv:type="String">
+                <sv:value>CmdWidthLimitationWrapper</sv:value>
+            </sv:property>
+
+            <sv:node sv:name="component1">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:component</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="jcr:name" sv:type="String">
+                    <sv:value>header</sv:value>
+                </sv:property>
+                <sv:property sv:name="active" sv:type="Boolean">
+                    <sv:value>true</sv:value>
+                </sv:property>
+                <sv:property sv:name="componentName" sv:type="String">
+                    <sv:value>h1</sv:value>
+                </sv:property>
+
+                <sv:node sv:name="de">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>cms:language</sv:value>
+                    </sv:property>
+
+                    <sv:property sv:name="text" sv:type="String">
+                        <sv:value>Die Kopflinie</sv:value>
+                    </sv:property>
+                </sv:node>
+                <sv:node sv:name="en">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>cms:language</sv:value>
+                    </sv:property>
+
+                    <sv:property sv:name="text" sv:type="String">
+                        <sv:value>The headline</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+        </sv:node>
+
+        <!--
+          ** Slideshow component
+          -->
+        <sv:node sv:name="slideshow">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:component</sv:value>
+            </sv:property>
+
+            <!--
+              ** Slideshow properties
+              -->
+            <sv:property sv:name="jcr:name" sv:type="String">
+                <sv:value>slideshow</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="componentName" sv:type="String">
+                <sv:value>CmdSlideshow</sv:value>
+            </sv:property>
+
+            <sv:node sv:name="slideshowItem1">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>nt:unstructured</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="alt" sv:type="String">
+                    <sv:value>Slide #1 Alt</sv:value>
+                </sv:property>
+                <sv:property sv:name="title" sv:type="String">
+                    <sv:value>Slide #1 Title</sv:value>
+                </sv:property>
+                <sv:property sv:name="figCaption" sv:type="String">
+                    <sv:value>Slide #1 FigCaption</sv:value>
+                </sv:property>
+                <sv:property sv:name="href" sv:type="String">
+                    <sv:value>team.html</sv:value>
+                </sv:property>
+                <sv:property sv:name="target" sv:type="String">
+                    <sv:value />
+                </sv:property>
+
+                <sv:node sv:name="slideshowImage1">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>nt:unstructured</sv:value>
+                    </sv:property>
+
+                    <sv:property sv:name="relativeImagePath" sv:type="String">
+                        <sv:value>demo/index/slideshow/small/slide1.jpg</sv:value>
+                    </sv:property>
+                    <sv:property sv:name="maxWidth" sv:type="Long">
+                        <sv:value>600</sv:value>
+                    </sv:property>
+                </sv:node>
+                <sv:node sv:name="slideshowImage2">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>nt:unstructured</sv:value>
+                    </sv:property>
+
+                    <sv:property sv:name="relativeImagePath" sv:type="String">
+                        <sv:value>demo/index/slideshow/large/slide1.jpg</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+
+            <sv:node sv:name="slideshowItem2">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>nt:unstructured</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="alt" sv:type="String">
+                    <sv:value>Slide #2 Alt</sv:value>
+                </sv:property>
+                <sv:property sv:name="title" sv:type="String">
+                    <sv:value>Slide #2 Title</sv:value>
+                </sv:property>
+                <sv:property sv:name="figCaption" sv:type="String">
+                    <sv:value>Slide #2 FigCaption</sv:value>
+                </sv:property>
+                <sv:property sv:name="href" sv:type="String">
+                    <sv:value>https://www.cominto.de</sv:value>
+                </sv:property>
+                <sv:property sv:name="target" sv:type="String">
+                    <sv:value>_blank</sv:value>
+                </sv:property>
+
+                <sv:node sv:name="slideshowImage1">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>nt:unstructured</sv:value>
+                    </sv:property>
+
+                    <sv:property sv:name="relativeImagePath" sv:type="String">
+                        <sv:value>demo/index/slideshow/large/slide2.jpg</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+
+            <sv:node sv:name="slideshowItem3">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>nt:unstructured</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="alt" sv:type="String">
+                    <sv:value>Slide #3 Alt</sv:value>
+                </sv:property>
+                <sv:property sv:name="title" sv:type="String">
+                    <sv:value>Slide #3 Title</sv:value>
+                </sv:property>
+                <sv:property sv:name="figCaption" sv:type="String">
+                    <sv:value>Slide #3 FigCaption</sv:value>
+                </sv:property>
+                <sv:property sv:name="href" sv:type="String">
+                    <sv:value />
+                </sv:property>
+                <sv:property sv:name="target" sv:type="String">
+                    <sv:value />
+                </sv:property>
+
+                <sv:node sv:name="slideshowImage1">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>nt:unstructured</sv:value>
+                    </sv:property>
+
+                    <sv:property sv:name="relativeImagePath" sv:type="String">
+                        <sv:value>demo/index/slideshow/large/slide3.jpg</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+
+            <sv:node sv:name="slideshowItem4">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>nt:unstructured</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="alt" sv:type="String">
+                    <sv:value>Slide #4 Alt</sv:value>
+                </sv:property>
+                <sv:property sv:name="title" sv:type="String">
+                    <sv:value>Slide #4 Title</sv:value>
+                </sv:property>
+                <sv:property sv:name="figCaption" sv:type="String">
+                    <sv:value>Slide #4 FigCaption</sv:value>
+                </sv:property>
+                <sv:property sv:name="href" sv:type="String">
+                    <sv:value />
+                </sv:property>
+                <sv:property sv:name="target" sv:type="String">
+                    <sv:value />
+                </sv:property>
+
+                <sv:node sv:name="slideshowImage1">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>nt:unstructured</sv:value>
+                    </sv:property>
+
+                    <sv:property sv:name="relativeImagePath" sv:type="String">
+                        <sv:value>demo/index/slideshow/large/slide4.jpg</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+        </sv:node>
+    </sv:node>
+
+    <!--
+      ** Team page
+      -->
+    <sv:node sv:name="team">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>cms:page</sv:value>
+        </sv:property>
+
+        <!--
+          ** Team page properties
+          -->
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>demo.team</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>team</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:title" sv:type="String">
+            <sv:value>Team Page</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:description" sv:type="String">
+            <sv:value>Demo Team Page</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:created" sv:type="Date">
+            <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:createdBy" sv:type="String">
+            <sv:value>system</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:lastModified" sv:type="Date">
+            <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+            <sv:value>system</sv:value>
+        </sv:property>
+        <sv:property sv:name="active" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="headline" sv:type="String">
+            <sv:value>Team</sv:value>
+        </sv:property>
+
+        <!--
+          ** Team page configuration
+          -->
+        <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInTopNavigation" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="iconClass" sv:type="String">
+            <sv:value>icon-check</sv:value>
+        </sv:property>
+
+        <!--
+          ** Team page meta data
+          -->
+        <sv:node sv:name="metaData">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>nt:unstructured</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="author" sv:type="String">
+                <sv:value>CoManD-CMS</sv:value>
+            </sv:property>
+            <sv:property sv:name="keywords" sv:type="String">
+                <sv:value>CMS, VueJS, SPA</sv:value>
+            </sv:property>
+        </sv:node>
+    </sv:node>
+
+    <!--
+      ** About page
+      -->
+    <sv:node sv:name="about">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>cms:page</sv:value>
+        </sv:property>
+
+        <!--
+          ** About page properties
+          -->
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>demo.about</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>about</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:title" sv:type="String">
+            <sv:value>About Page</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:description" sv:type="String">
+            <sv:value>Demo About Page</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:created" sv:type="Date">
+            <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:createdBy" sv:type="String">
+            <sv:value>system</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:lastModified" sv:type="Date">
+            <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+            <sv:value>system</sv:value>
+        </sv:property>
+        <sv:property sv:name="active" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="headline" sv:type="String">
+            <sv:value>About</sv:value>
+        </sv:property>
+
+        <!--
+          ** About page configuration
+          -->
+        <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInTopNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+
+        <!--
+          ***********************************************************************************************************
+          ** About page child pages
+          ***********************************************************************************************************
+          -->
+
+        <!--
+          ** About us page
+          -->
+        <sv:node sv:name="aboutus">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:page</sv:value>
+            </sv:property>
+
+            <!--
+              ** About us page properties
+              -->
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>demo.about.aboutus</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:name" sv:type="String">
+                <sv:value>aboutus</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:title" sv:type="String">
+                <sv:value>About Us Page</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:description" sv:type="String">
+                <sv:value>Demo About Us Page</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:created" sv:type="Date">
+                <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:createdBy" sv:type="String">
+                <sv:value>system</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:lastModified" sv:type="Date">
+                <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+                <sv:value>system</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="headline" sv:type="String">
+                <sv:value>About us</sv:value>
+            </sv:property>
+
+            <!--
+              ** About us page configuration
+              -->
+            <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="showInTopNavigation" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="iconClass" sv:type="String">
+                <sv:value>icon-cancel</sv:value>
+            </sv:property>
+
+            <!--
+              ** About us page meta data
+              -->
+            <sv:node sv:name="metaData">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>nt:unstructured</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="author" sv:type="String">
+                    <sv:value>CoManD-CMS</sv:value>
+                </sv:property>
+                <sv:property sv:name="keywords" sv:type="String">
+                    <sv:value>CMS, VueJS, SPA</sv:value>
+                </sv:property>
+            </sv:node>
+        </sv:node>
+
+        <!--
+          ** Classic page
+          -->
+        <sv:node sv:name="classic">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:page</sv:value>
+            </sv:property>
+
+            <!--
+              ** Classic page properties
+              -->
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>demo.about.classic</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:name" sv:type="String">
+                <sv:value>classic</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:title" sv:type="String">
+                <sv:value>Classic CMS</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:description" sv:type="String">
+                <sv:value>Link to classic CMS</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:created" sv:type="Date">
+                <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:createdBy" sv:type="String">
+                <sv:value>system</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:lastModified" sv:type="Date">
+                <sv:value>2021-04-18T00:00:00.000+02:00</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:lastModifiedBy" sv:type="String">
+                <sv:value>system</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+
+            <!--
+              ** Classic page configuration
+              -->
+            <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="showInTopNavigation" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
+                <sv:value>false</sv:value>
+            </sv:property>
+            <sv:property sv:name="external" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:name="href" sv:type="String">
+                <sv:value>http://development.comand-cms.com/</sv:value>
+            </sv:property>
+            <sv:property sv:name="target" sv:type="String">
+                <sv:value>_blank</sv:value>
+            </sv:property>
+            <sv:property sv:name="iconClass" sv:type="String">
+                <sv:value>icon-trash</sv:value>
+            </sv:property>
+        </sv:node>
+    </sv:node>
+</sv:node>

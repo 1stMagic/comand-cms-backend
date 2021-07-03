@@ -1,0 +1,8 @@
+server:
+    error:
+        include-message: on_param
+
+logging:
+    level:
+        com.biock: debug
+        org.springframework.web: info

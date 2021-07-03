@@ -1,0 +1,23 @@
+spring:
+    main:
+        banner-mode: off
+    mvc:
+        static-path-pattern: /assets/**
+        pathmatch:
+            matching-strategy: path_pattern_parser
+    web:
+        resources:
+            static-locations:
+                - ${cms.assets-path}
+                - classpath:/static
+
+server:
+    port: 55578
+
+cms:
+    repository-path: file:${user.dir}/cms-repository
+    assets-path: file:${user.dir}/cms-assets
+    time-zone: Europe/Berlin
+    api-allowed-client-origin-patterns:
+        - http://localhost:[*]
+        - http://127.0.0.1:[*]

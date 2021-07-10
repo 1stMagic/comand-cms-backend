@@ -1,0 +1,9 @@
+GET http://localhost:55578/api/v1/pages/of-site/demo?relativePagePath=index
+Accept-Language: de
+
+###
+
+GET http://localhost:55578/api/v1/pages/of-site/demo?relativePagePath=index
+Accept-Language: en
+
+###

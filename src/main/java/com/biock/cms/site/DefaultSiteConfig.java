@@ -1,5 +1,9 @@
 package com.biock.cms.site;
 
+import com.biock.cms.shared.Label;
+
+import static java.util.Collections.singletonList;
+
 public class DefaultSiteConfig extends SiteConfig {
 
     public DefaultSiteConfig() {
@@ -9,6 +13,13 @@ public class DefaultSiteConfig extends SiteConfig {
                 "default",
                 "de",
                 "index.html",
-                new String[] {"de"});
+                singletonList(
+                        SupportedLanguage.builder()
+                                .language("de")
+                                .title(Label.builder().text("de", "Deutsch").build())
+                                .tooltip(Label.empty())
+                                .build()
+                )
+        );
     }
 }

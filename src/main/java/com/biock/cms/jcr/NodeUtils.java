@@ -2,6 +2,8 @@ package com.biock.cms.jcr;
 
 import com.biock.cms.CmsNode;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -11,6 +13,8 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 
 public final class NodeUtils {
+
+    private static final Logger LOG = LoggerFactory.getLogger(NodeUtils.class);
 
     private NodeUtils() {
 
@@ -38,7 +42,7 @@ public final class NodeUtils {
     public static Node getSiteNode(final Session session, final String siteName) {
 
         try {
-            final Node rootNode = session.getRootNode();
+            final var rootNode = session.getRootNode();
             final String sitePath = JcrPaths.relative(CmsNode.CMS, CmsNode.SITES, siteName);
             if (rootNode.hasNode(sitePath)) {
                 return rootNode.getNode(sitePath);
@@ -52,7 +56,9 @@ public final class NodeUtils {
     public static Node getNodeById(final Session session, final String id) {
 
         try {
-            final Query query = session.getWorkspace().getQueryManager().createQuery("select * from [nt:unstructured] as n where isdescendantnode(n, '/cms/site') and [jcr:id] = '" + id + "'", Query.JCR_SQL2);
+            final var query = session.getWorkspace().getQueryManager().createQuery(
+                    "select * from [cms:page] as p where isdescendantnode(p, '/cms/sites') and [jcr:id] = '" + id + "'",
+                    Query.JCR_SQL2);
             final QueryResult result = query.execute();
             final NodeIterator nodes = result.getNodes();
             if (nodes.hasNext()) {

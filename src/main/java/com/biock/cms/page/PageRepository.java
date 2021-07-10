@@ -3,8 +3,10 @@ package com.biock.cms.page;
 import com.biock.cms.CmsProperty;
 import com.biock.cms.CmsType;
 import com.biock.cms.jcr.CloseableJcrSession;
+import com.biock.cms.jcr.NodeUtils;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.site.Site;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,12 +41,12 @@ public class PageRepository {
 
         LOG.info("{}.getPage(siteName = {}, relativePagePath = {}, onlyActive = {})", getClass().getSimpleName(), siteName, relativePagePath, onlyActive);
 
-        try (final CloseableJcrSession session = CloseableJcrSession.adminSession(this.repository)) {
-            final Node siteNode = getSiteNode(session, siteName);
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
+            final var siteNode = getSiteNode(session, siteName);
             if (siteNode != null
                     && (!onlyActive || getBooleanProperty(siteNode, CmsProperty.ACTIVE))
                     && siteNode.hasNode(relativePagePath)) {
-                final Node pageNode = siteNode.getNode(relativePagePath);
+                final var pageNode = siteNode.getNode(relativePagePath);
                 if (!onlyActive || getBooleanProperty(pageNode, CmsProperty.ACTIVE)) {
                     return Optional.of(this.pageMapper.toEntity(pageNode));
                 }
@@ -55,10 +57,25 @@ public class PageRepository {
         }
     }
 
+    public Optional<Page> getParentPage(@NotNull final Page page, final boolean onlyActive) {
+
+        if (StringUtils.isBlank(page.getParentId())) {
+            return Optional.empty();
+        }
+
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
+            final var parentNode = NodeUtils.getNodeById(session, page.getParentId());
+            if (parentNode != null && (!onlyActive || getBooleanProperty(parentNode, CmsProperty.ACTIVE))) {
+                return Optional.of(this.pageMapper.toEntity(parentNode));
+            }
+            return Optional.empty();
+        }
+    }
+
     public List<Page> getPages(@NotNull final Site site, final boolean onlyActive) {
 
-        try (final CloseableJcrSession session = CloseableJcrSession.adminSession(this.repository)) {
-            return getPages(getSitesNode(session).getNode(site.getName()).getNodes(), onlyActive);
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
+            return getPages(getSitesNode(session).getNode(site.getDescriptor().getName()).getNodes(), onlyActive);
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }
@@ -66,7 +83,7 @@ public class PageRepository {
 
     public List<Page> getPages(@NotNull final Page page, final boolean onlyActive) {
 
-        try (final CloseableJcrSession session = CloseableJcrSession.adminSession(this.repository)) {
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
             return getPages(session.getNode(page.getPath()).getNodes(), onlyActive);
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
@@ -78,7 +95,7 @@ public class PageRepository {
         try {
             final List<Page> result = new ArrayList<>();
             while (pageNodeIterator.hasNext()) {
-                final Node pageNode = pageNodeIterator.nextNode();
+                final var pageNode = pageNodeIterator.nextNode();
                 if (pageNode.getPrimaryNodeType().isNodeType(CmsType.PAGE)
                         && (getBooleanProperty(pageNode, CmsProperty.ACTIVE) || !onlyActive)) {
                     result.add(this.pageMapper.toEntity(pageNode));

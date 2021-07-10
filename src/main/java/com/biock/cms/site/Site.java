@@ -2,30 +2,21 @@ package com.biock.cms.site;
 
 import com.biock.cms.page.Page;
 import com.biock.cms.page.PageRepository;
+import com.biock.cms.shared.Descriptor;
+import com.biock.cms.shared.Modification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
+import java.util.List;
+import java.util.Optional;
 
 public class Site {
 
     private static final Logger LOG = LoggerFactory.getLogger(Site.class);
 
-    @NotEmpty(message = "Please provide a name")
-    private final String name;
-    @NotEmpty(message = "Please provide a title")
-    private final String title;
-    private final String description;
-    @NotEmpty(message = "Please provide a createdBy")
-    private final OffsetDateTime created;
-    private final String createdBy;
-    private final OffsetDateTime lastModified;
-    private final String lastModifiedBy;
+    private final Descriptor descriptor;
+    private final Modification modification;
     private final boolean active;
     private final SiteConfig config;
     private final SiteNavigation mainNavigation;
@@ -33,23 +24,13 @@ public class Site {
     private final SiteNavigation footerNavigation;
 
     public Site(
-            @NotNull final String name,
-            @NotNull final String title,
-            @NotNull final String description,
-            @NotNull final OffsetDateTime created,
-            @NotNull final String createdBy,
-            @NotNull final OffsetDateTime lastModified,
-            @NotNull final String lastModifiedBy,
+            @NotNull final Descriptor descriptor,
+            @NotNull final Modification modification,
             final boolean active,
             @NotNull final SiteConfig config) {
 
-        this.name = name;
-        this.title = title;
-        this.description = description;
-        this.created = created;
-        this.createdBy = createdBy;
-        this.lastModified = lastModified;
-        this.lastModifiedBy = lastModifiedBy;
+        this.descriptor = descriptor;
+        this.modification = modification;
         this.active = active;
         this.config = config;
         this.mainNavigation = new SiteNavigation();
@@ -62,39 +43,14 @@ public class Site {
         return new Builder();
     }
 
-    public String getName() {
+    public Descriptor getDescriptor() {
 
-        return this.name;
+        return this.descriptor;
     }
 
-    public String getTitle() {
+    public Modification getModification() {
 
-        return this.title;
-    }
-
-    public String getDescription() {
-
-        return this.description;
-    }
-
-    public OffsetDateTime getCreated() {
-
-        return this.created;
-    }
-
-    public String getCreatedBy() {
-
-        return this.createdBy;
-    }
-
-    public OffsetDateTime getLastModified() {
-
-        return this.lastModified;
-    }
-
-    public String getLastModifiedBy() {
-
-        return this.lastModifiedBy;
+        return this.modification;
     }
 
     public boolean isActive() {
@@ -122,7 +78,7 @@ public class Site {
         return this.footerNavigation;
     }
 
-    public void buildNavigation(@NotNull final PageRepository pageRepository) {
+    public void buildNavigation(@NotNull final String language, @NotNull final PageRepository pageRepository) {
 
         LOG.info("{}.buildNavigation()", getClass().getSimpleName());
 
@@ -131,11 +87,11 @@ public class Site {
         LOG.info("Pages: {}", pages.size());
 
         if (LOG.isTraceEnabled()) {
-            pages.forEach(p -> LOG.trace("Page: {}", p.getName()));
+            pages.forEach(p -> LOG.trace("Page: {}", p.getDescriptor().getName()));
         }
 
         for (final Page page : pages) {
-            final SiteNavigationItem item = SiteNavigation.createItem(page);
+            final SiteNavigationItem item = SiteNavigation.createItem(language, page);
             if (page.getConfig().isShowInMainNavigation()) {
                 this.mainNavigation.getItems().add(item);
             }
@@ -145,29 +101,36 @@ public class Site {
             if (page.getConfig().isShowInFooterNavigation()) {
                 this.footerNavigation.getItems().add(item);
             }
-            buildNavigation(pageRepository, page, item, this.topNavigation.getItems(), this.footerNavigation.getItems());
+            buildNavigation(
+                    language,
+                    pageRepository,
+                    page,
+                    item,
+                    this.topNavigation.getItems(),
+                    this.footerNavigation.getItems());
         }
     }
 
     private void buildNavigation(
+            @NotNull final String language,
             @NotNull final PageRepository pageRepository,
             @NotNull final Page page,
             @NotNull final SiteNavigationItem item,
             @NotNull final List<SiteNavigationItem> topNavigationItems,
             @NotNull final List<SiteNavigationItem> footerNavigationItems) {
 
-        LOG.debug("{}.buildNavigation(page = {})", getClass().getSimpleName(), page.getName());
+        LOG.debug("{}.buildNavigation(page = {})", getClass().getSimpleName(), page.getDescriptor().getName());
 
         final List<Page> pages = pageRepository.getPages(page, true);
 
         LOG.debug("Pages: {}", pages.size());
 
         if (LOG.isTraceEnabled()) {
-            pages.forEach(p -> LOG.trace("Page: {}", p.getName()));
+            pages.forEach(p -> LOG.trace("Page: {}", p.getDescriptor().getName()));
         }
 
         for (final Page childPage : pages) {
-            final SiteNavigationItem childItem = SiteNavigation.createItem(childPage);
+            final SiteNavigationItem childItem = SiteNavigation.createItem(language, childPage);
             if (childPage.getConfig().isShowInMainNavigation()) {
                 item.getChildren().add(childItem);
             }
@@ -177,61 +140,26 @@ public class Site {
             if (childPage.getConfig().isShowInFooterNavigation()) {
                 footerNavigationItems.add(childItem);
             }
-            buildNavigation(pageRepository, childPage, childItem, topNavigationItems, footerNavigationItems);
+            buildNavigation(language, pageRepository, childPage, childItem, topNavigationItems, footerNavigationItems);
         }
     }
 
     public static final class Builder {
 
-        private String name;
-        private String title;
-        private String description;
-        private OffsetDateTime created;
-        private String createdBy;
-        private OffsetDateTime lastModified;
-        private String lastModifiedBy;
+        private Descriptor descriptor;
+        private Modification modification;
         private boolean active;
         private SiteConfig config;
 
-        public Builder name(@NotNull final String name) {
+        public Builder descriptor(@NotNull final Descriptor descriptor) {
 
-            this.name = name;
+            this.descriptor = descriptor;
             return this;
         }
 
-        public Builder title(@NotNull final String title) {
+        public Builder modification(@NotNull final Modification modification) {
 
-            this.title = title;
-            return this;
-        }
-
-        public Builder description(@NotNull final String description) {
-
-            this.description = description;
-            return this;
-        }
-
-        public Builder created(@NotNull final OffsetDateTime created) {
-
-            this.created = created;
-            return this;
-        }
-
-        public Builder createdBy(@NotNull final String createdBy) {
-
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public Builder lastModified(@NotNull final OffsetDateTime lastModified) {
-
-            this.lastModified = lastModified;
-            return this;
-        }
-
-        public Builder lastModifiedBy(@NotNull final String lastModifiedBy) {
-
-            this.lastModifiedBy = lastModifiedBy;
+            this.modification = modification;
             return this;
         }
 
@@ -250,13 +178,8 @@ public class Site {
         public Site build() {
 
             return new Site(
-                    this.name,
-                    this.title,
-                    this.description,
-                    this.created,
-                    this.createdBy,
-                    this.lastModified,
-                    this.lastModifiedBy,
+                    this.descriptor,
+                    this.modification,
                     this.active,
                     Optional.ofNullable(this.config).orElse(new DefaultSiteConfig()));
         }

@@ -22,10 +22,10 @@ public class SiteService {
         this.pageRepository = pageRepository;
     }
 
-    public Optional<Site> getSite(@NotNull final String name) {
+    public Optional<Site> getSite(@NotNull final String language, @NotNull final String name, final boolean onlyActive) {
 
-        final Optional<Site> site = this.siteRepository.getSite(name, true);
-        site.ifPresent(s -> s.buildNavigation(this.pageRepository));
+        final Optional<Site> site = this.siteRepository.getSite(name, onlyActive);
+        site.ifPresent(s -> s.buildNavigation(language, this.pageRepository));
         return site;
     }
 
@@ -36,12 +36,12 @@ public class SiteService {
 
     public CreateSiteResultDTO createSite(@NotNull final Site site) {
 
-        if (this.siteRepository.hasSite(site.getName())) {
-            throw new SiteException(MessageFormat.format("Site with name ''{0}'' already exists", site.getName()));
+        if (this.siteRepository.hasSite(site.getDescriptor().getName())) {
+            throw new SiteException(MessageFormat.format("Site with name ''{0}'' already exists", site.getDescriptor().getName()));
         }
         final Site savedSite = this.siteRepository.save(site);
         return new CreateSiteResultDTO()
                 .setSuccess(true)
-                .setSiteId(savedSite.getName());
+                .setSiteId(savedSite.getDescriptor().getName());
     }
 }

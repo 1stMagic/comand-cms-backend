@@ -3,11 +3,11 @@ package com.biock.cms.page;
 import com.biock.cms.CmsNode;
 import com.biock.cms.CmsProperty;
 import com.biock.cms.CmsType;
+import com.biock.cms.component.ComponentMapper;
 import com.biock.cms.config.CmsConfig;
 import com.biock.cms.jcr.JcrPaths;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
-import com.biock.cms.shared.AbstractMapper;
-import com.biock.cms.shared.Mapper;
+import com.biock.cms.shared.*;
 import org.springframework.stereotype.Component;
 
 import javax.jcr.*;
@@ -17,19 +17,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.biock.cms.jcr.NodeUtils.createIfAbsent;
-import static com.biock.cms.jcr.PropertyUtils.*;
-import static com.biock.cms.utils.DateUtils.toCalendar;
-import static com.biock.cms.utils.DateUtils.toOffsetDateTime;
+import static com.biock.cms.jcr.PropertyUtils.getBooleanProperty;
+import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 
 @Component
 public class PageMapper extends AbstractMapper<Page> {
 
     private final CmsConfig config;
+    private final ComponentMapper defaultMapper;
     private final Map<String, Mapper<? extends com.biock.cms.component.Component>> mappers;
 
-    public PageMapper(final CmsConfig config, final Map<String, Mapper<? extends com.biock.cms.component.Component>> mappers) {
+    public PageMapper(
+            final CmsConfig config,
+            final ComponentMapper defaultMapper,
+            final Map<String, Mapper<? extends com.biock.cms.component.Component>> mappers) {
 
         this.config = config;
+        this.defaultMapper = defaultMapper;
         this.mappers = mappers;
     }
 
@@ -39,19 +43,14 @@ public class PageMapper extends AbstractMapper<Page> {
         return Page.builder()
                 .parentId(getParentId(node))
                 .id(getStringProperty(node, Property.JCR_ID))
-                .name(getStringProperty(node, Property.JCR_NAME))
-                .title(getStringProperty(node, Property.JCR_TITLE))
-                .description(getStringProperty(node, Property.JCR_DESCRIPTION))
-                .created(toOffsetDateTime(getDateProperty(node, Property.JCR_CREATED), this.config.getTimeZoneOffset()))
-                .createdBy(getStringProperty(node, Property.JCR_CREATED_BY))
-                .lastModified(toOffsetDateTime(getDateProperty(node, Property.JCR_LAST_MODIFIED), this.config.getTimeZoneOffset()))
-                .lastModifiedBy(getStringProperty(node, Property.JCR_LAST_MODIFIED_BY))
+                .descriptor(new DescriptorMapper().toEntity(node))
+                .modification(new ModificationMapper(this.config.getTimeZoneOffset()).toEntity(node))
                 .active(getBooleanProperty(node, CmsProperty.ACTIVE))
-                .headline(getStringProperty(node, CmsProperty.HEADLINE, ""))
+                .title(new LabelMapper(CmsProperty.TITLE).toEntity(node))
                 .path(getPath(node))
                 .metaData(getPageMetaData(node))
                 .config(new PageConfigMapper().toEntity(node))
-                .components(getComponents(this.mappers, node))
+                .components(getComponents(this.defaultMapper, this.mappers, node))
                 .build();
     }
 
@@ -60,15 +59,10 @@ public class PageMapper extends AbstractMapper<Page> {
 
         try {
             node.setProperty(Property.JCR_ID, page.getId());
-            node.setProperty(Property.JCR_NAME, page.getName());
-            node.setProperty(Property.JCR_TITLE, page.getTitle());
-            node.setProperty(Property.JCR_DESCRIPTION, page.getDescription());
-            node.setProperty(Property.JCR_CREATED, toCalendar(page.getCreated()));
-            node.setProperty(Property.JCR_CREATED_BY, page.getCreatedBy());
-            node.setProperty(Property.JCR_LAST_MODIFIED, toCalendar(page.getLastModified()));
-            node.setProperty(Property.JCR_LAST_MODIFIED_BY, page.getLastModifiedBy());
             node.setProperty(CmsProperty.ACTIVE, page.isActive());
-            node.setProperty(CmsProperty.HEADLINE, page.getHeadline());
+            new DescriptorMapper().toNode(page.getDescriptor(), node);
+            new ModificationMapper(this.config.getTimeZoneOffset()).toNode(page.getModification(), node);
+            new LabelMapper(CmsProperty.TITLE).toNode(page.getTitle(), node);
             new PageMetaDataMapper().toNode(
                     page.getMetaData(),
                     createIfAbsent(node, JcrPaths.relative(CmsNode.META_DATA), NodeType.NT_UNSTRUCTURED));

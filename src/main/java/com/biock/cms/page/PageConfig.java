@@ -1,6 +1,6 @@
 package com.biock.cms.page;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.biock.cms.shared.Label;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
@@ -11,13 +11,12 @@ public class PageConfig {
     private final boolean showInTopNavigation;
     private final boolean showInFooterNavigation;
     private final boolean external;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String href;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String target;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String iconClass;
-    private final boolean showSlideshow;
+    private final Label mainNavigationTitle;
+    private final Label topNavigationTitle;
+    private final Label footerNavigationTitle;
 
     public PageConfig(
             final boolean showInMainNavigation,
@@ -27,7 +26,9 @@ public class PageConfig {
             @NotNull final String href,
             @NotNull final String target,
             @NotNull final String iconClass,
-            final boolean showSlideshow) {
+            @NotNull final Label mainNavigationTitle,
+            @NotNull final Label topNavigationTitle,
+            @NotNull final Label footerNavigationTitle) {
 
         this.showInMainNavigation = showInMainNavigation;
         this.showInTopNavigation = showInTopNavigation;
@@ -36,7 +37,9 @@ public class PageConfig {
         this.href = href;
         this.target = target;
         this.iconClass = iconClass;
-        this.showSlideshow = showSlideshow;
+        this.mainNavigationTitle = mainNavigationTitle;
+        this.topNavigationTitle = topNavigationTitle;
+        this.footerNavigationTitle = footerNavigationTitle;
     }
 
     public static Builder builder() {
@@ -79,9 +82,34 @@ public class PageConfig {
         return this.iconClass;
     }
 
-    public boolean isShowSlideshow() {
+    public boolean hasMainNavigationTitle() {
 
-        return this.showSlideshow;
+        return !this.mainNavigationTitle.isEmpty();
+    }
+
+    public Label getMainNavigationTitle() {
+
+        return this.mainNavigationTitle;
+    }
+
+    public boolean hasTopNavigationTitle() {
+
+        return !this.topNavigationTitle.isEmpty();
+    }
+
+    public Label getTopNavigationTitle() {
+
+        return this.topNavigationTitle;
+    }
+
+    public boolean hasFooterNavigationTitle() {
+
+        return !this.footerNavigationTitle.isEmpty();
+    }
+
+    public Label getFooterNavigationTitle() {
+
+        return this.footerNavigationTitle;
     }
 
     public static final class Builder {
@@ -93,7 +121,9 @@ public class PageConfig {
         private String href;
         private String target;
         private String iconClass;
-        private boolean showSlideshow;
+        private Label mainNavigationTitle;
+        private Label topNavigationTitle;
+        private Label footerNavigationTitle;
 
         public Builder showInMainNavigation(final boolean showInMainNavigation) {
 
@@ -137,9 +167,21 @@ public class PageConfig {
             return this;
         }
 
-        public Builder showSlideshow(final boolean showSlideshow) {
+        public Builder mainNavigationTitle(@NotNull final Label mainNavigationTitle) {
 
-            this.showSlideshow = showSlideshow;
+            this.mainNavigationTitle = mainNavigationTitle;
+            return this;
+        }
+
+        public Builder topNavigationTitle(@NotNull final Label topNavigationTitle) {
+
+            this.topNavigationTitle = topNavigationTitle;
+            return this;
+        }
+
+        public Builder footerNavigationTitle(@NotNull final Label footerNavigationTitle) {
+
+            this.footerNavigationTitle = footerNavigationTitle;
             return this;
         }
 
@@ -153,7 +195,9 @@ public class PageConfig {
                     StringUtils.defaultString(this.href),
                     StringUtils.defaultString(this.target),
                     StringUtils.defaultString(this.iconClass),
-                    this.showSlideshow);
+                    this.mainNavigationTitle,
+                    this.topNavigationTitle,
+                    this.footerNavigationTitle);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.biock.cms.page;
 
 import com.biock.cms.CmsProperty;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
+import com.biock.cms.shared.LabelMapper;
 import com.biock.cms.shared.Mapper;
 
 import javax.jcr.Node;
@@ -23,6 +24,9 @@ public class PageConfigMapper implements Mapper<PageConfig> {
                 .href(getStringProperty(node, CmsProperty.HREF, ""))
                 .target(getStringProperty(node, CmsProperty.TARGET, ""))
                 .iconClass(getStringProperty(node, CmsProperty.ICON_CLASS, ""))
+                .mainNavigationTitle(new LabelMapper("mainNavigationTitle").toEntity(node))
+                .topNavigationTitle(new LabelMapper("topNavigationTitle").toEntity(node))
+                .footerNavigationTitle(new LabelMapper("footerNavigationTitle").toEntity(node))
                 .build();
     }
 
@@ -36,6 +40,15 @@ public class PageConfigMapper implements Mapper<PageConfig> {
             node.setProperty(CmsProperty.HREF, config.getHref());
             node.setProperty(CmsProperty.TARGET, config.getTarget());
             node.setProperty(CmsProperty.ICON_CLASS, config.getIconClass());
+            if (config.hasMainNavigationTitle()) {
+                new LabelMapper("mainNavigationTitle").toNode(config.getMainNavigationTitle(), node);
+            }
+            if (config.hasTopNavigationTitle()) {
+                new LabelMapper("topNavigationTitle").toNode(config.getTopNavigationTitle(), node);
+            }
+            if (config.hasFooterNavigationTitle()) {
+                new LabelMapper("footerNavigationTitle").toNode(config.getFooterNavigationTitle(), node);
+            }
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

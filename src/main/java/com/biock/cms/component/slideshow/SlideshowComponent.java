@@ -2,9 +2,14 @@ package com.biock.cms.component.slideshow;
 
 import com.biock.cms.component.Component;
 import com.biock.cms.component.ComponentBuilder;
+import com.biock.cms.component.ComponentProperty;
 
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 
 public class SlideshowComponent extends Component {
 
@@ -16,11 +21,11 @@ public class SlideshowComponent extends Component {
             @NotNull final String componentName,
             @NotNull final List<SlideshowItem> items) {
 
-        super(name, active, componentName);
+        super(name, active, componentName, Collections.singletonMap("items", ComponentProperty.builder().name("items").value(items).build()), emptyList());
         this.items = items;
     }
 
-    public static Builder builder() {
+    public static Builder builderx() {
 
         return new Builder();
     }

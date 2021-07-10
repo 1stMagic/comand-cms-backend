@@ -3,6 +3,8 @@ package com.biock.cms.site;
 import com.biock.cms.CmsApi;
 import com.biock.cms.page.PageService;
 import com.biock.cms.site.dto.CreateSiteResultDTO;
+import com.biock.cms.site.dto.SiteDTO;
+import com.biock.cms.utils.LanguageUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +26,15 @@ public class SiteController {
     }
 
     @GetMapping("/{name}")
-    public Site getSite(@PathVariable final String name) {
+    public SiteDTO getSite(@PathVariable final String name) {
 
-        return this.siteService
-                .getSite(name)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        MessageFormat.format("Site not found ''{0}''", name)));
+        return SiteDTO.of(
+                LanguageUtils.getLanguage(),
+                this.siteService
+                    .getSite(LanguageUtils.getLanguage(), name, true)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            MessageFormat.format("Site not found ''{0}''", name))));
     }
 
     @GetMapping

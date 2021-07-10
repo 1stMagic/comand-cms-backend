@@ -39,7 +39,7 @@ public final class JcrQueryManager {
     public static QueryResult executeQuery(final Session session, final String sql, final Map<String, String> bindValues) {
 
         try {
-            final Query query = createQuery(session, bindValues(sql, bindValues));
+            final var query = createQuery(session, bindValues(sql, bindValues));
             if (bindValues != null && !bindValues.isEmpty()) {
                 bindValues.entrySet()
                         .stream()

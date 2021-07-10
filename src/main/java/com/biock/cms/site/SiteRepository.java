@@ -34,7 +34,7 @@ public class SiteRepository {
 
     public boolean hasSite(@NotNull final String name) {
 
-        try (final CloseableJcrSession session = CloseableJcrSession.adminSession(this.repository)) {
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
             return getSitesNode(session).hasNode(JcrPaths.relative(name));
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
@@ -43,8 +43,8 @@ public class SiteRepository {
 
     public Optional<Site> getSite(@NotNull final String name, final boolean onlyActive) {
 
-        try (final CloseableJcrSession session = CloseableJcrSession.adminSession(this.repository)) {
-            final Node sites = getSitesNode(session);
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
+            final var sites = getSitesNode(session);
             final String relPath = JcrPaths.relative(name);
             if (sites.hasNode(relPath)) {
                 final Site site = createSiteMapper().toEntity(sites.getNode(relPath));
@@ -61,12 +61,12 @@ public class SiteRepository {
 
     public List<Site> getAllSites(final boolean onlyActive) {
 
-        try (final CloseableJcrSession session = CloseableJcrSession.adminSession(this.repository)) {
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
             final List<Site> sites = new ArrayList<>();
             final SiteMapper siteMapper = createSiteMapper();
-            final NodeIterator nodeIterator = getSitesNode(session).getNodes();
+            final var nodeIterator = getSitesNode(session).getNodes();
             while (nodeIterator.hasNext()) {
-                final Node node = nodeIterator.nextNode();
+                final var node = nodeIterator.nextNode();
                 if (!onlyActive || getBooleanProperty(node, CmsProperty.ACTIVE)) {
                     sites.add(siteMapper.toEntity(node));
                 }
@@ -79,12 +79,12 @@ public class SiteRepository {
 
     public Site save(@NotNull final Site site) {
 
-        try (final CloseableJcrSession session = CloseableJcrSession.adminSession(this.repository)) {
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
             createSiteMapper().toNode(
                     site,
                     createIfAbsent(
                             getSitesNode(session),
-                            JcrPaths.relative(site.getName()),
+                            JcrPaths.relative(site.getDescriptor().getName()),
                             CmsType.SITE));
             session.save();
         }

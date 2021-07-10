@@ -1,6 +1,7 @@
 package com.biock.cms.site;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class SiteConfig {
 
@@ -8,14 +9,14 @@ public class SiteConfig {
     private final String theme;
     private final String language;
     private final String homePage;
-    private final String[] supportedLanguages;
+    private final List<SupportedLanguage> supportedLanguages;
 
     public SiteConfig(
             @NotNull final String layout,
             @NotNull final String theme,
             @NotNull final String language,
             @NotNull final String homePage,
-            @NotNull final String[] supportedLanguages) {
+            @NotNull final List<SupportedLanguage> supportedLanguages) {
 
         this.layout = layout;
         this.theme = theme;
@@ -49,7 +50,7 @@ public class SiteConfig {
         return this.homePage;
     }
 
-    public String[] getSupportedLanguages() {
+    public List<SupportedLanguage> getSupportedLanguages() {
 
         return this.supportedLanguages;
     }
@@ -60,7 +61,7 @@ public class SiteConfig {
         private String theme;
         private String language;
         private String homePage;
-        private String[] supportedLanguages;
+        private List<SupportedLanguage> supportedLanguages;
 
         public Builder layout(@NotNull final String layout) {
 
@@ -86,7 +87,7 @@ public class SiteConfig {
             return this;
         }
 
-        public Builder supportedLanguage(@NotNull final String... supportedLanguages) {
+        public Builder supportedLanguages(@NotNull final List<SupportedLanguage> supportedLanguages) {
 
             this.supportedLanguages = supportedLanguages;
             return this;

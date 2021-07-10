@@ -20,10 +20,10 @@ public class SiteNavigation {
         this.items = items;
     }
 
-    public static SiteNavigationItem createItem(@NotNull final Page page) {
+    public static SiteNavigationItem createItem(@NotNull final String language, @NotNull final Page page) {
 
         return new SiteNavigationItem(
-                page.getTitle(),
+                page.getTitle().getText(language),
                 page.getHref(),
                 page.getConfig().getTarget(),
                 page.getConfig().getIconClass(),

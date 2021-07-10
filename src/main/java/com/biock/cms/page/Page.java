@@ -1,12 +1,16 @@
 package com.biock.cms.page;
 
 import com.biock.cms.component.Component;
+import com.biock.cms.jcr.NodeUtils;
+import com.biock.cms.shared.Descriptor;
+import com.biock.cms.shared.Label;
+import com.biock.cms.shared.Modification;
+import com.biock.cms.utils.ComponentUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.apache.commons.lang3.StringUtils;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,38 +22,24 @@ import static java.util.Collections.emptyMap;
 public class Page {
 
     private final String parentId;
-    @NotEmpty(message = "Please provide an id")
     private final String id;
-    @NotEmpty(message = "Please provide a name")
-    private final String name;
-    @NotEmpty(message = "Please provide a title")
-    private final String title;
-    private final String description;
-    @NotEmpty(message = "Please provide a createdBy")
-    private final OffsetDateTime created;
-    private final String createdBy;
-    private final OffsetDateTime lastModified;
-    private final String lastModifiedBy;
+    private final Descriptor descriptor;
+    private final Modification modification;
     private final boolean active;
-    private final String headline;
+    private final Label title;
     private final String path;
-    @JsonUnwrapped
     private final PageMetaData metaData;
     private final PageConfig config;
     private final List<Component> components;
+    private final List<BreadcrumbItem> breadcrumbs;
 
     public Page(
             final String parentId,
             @NotNull final String id,
-            @NotNull final String name,
-            @NotNull final String title,
-            @NotNull final String description,
-            @NotNull final OffsetDateTime created,
-            @NotNull final String createdBy,
-            @NotNull final OffsetDateTime lastModified,
-            @NotNull final String lastModifiedBy,
+            @NotNull final Descriptor descriptor,
+            @NotNull final Modification modification,
             final boolean active,
-            @NotNull final String headline,
+            @NotNull final Label title,
             @NotNull final String path,
             @NotNull final PageMetaData metaData,
             @NotNull final PageConfig config,
@@ -57,19 +47,15 @@ public class Page {
 
         this.parentId = parentId;
         this.id = id;
-        this.name = name;
-        this.title = title;
-        this.description = description;
-        this.created = created;
-        this.createdBy = createdBy;
-        this.lastModified = lastModified;
-        this.lastModifiedBy = lastModifiedBy;
+        this.descriptor = descriptor;
+        this.modification = modification;
         this.active = active;
-        this.headline = headline;
+        this.title = title;
         this.path = path;
         this.metaData = metaData;
         this.config = config;
         this.components = components;
+        this.breadcrumbs = new ArrayList<>();
     }
 
     public static Builder builder() {
@@ -87,39 +73,14 @@ public class Page {
         return this.id;
     }
 
-    public String getName() {
+    public Descriptor getDescriptor() {
 
-        return this.name;
+        return this.descriptor;
     }
 
-    public String getTitle() {
+    public Modification getModification() {
 
-        return this.title;
-    }
-
-    public String getDescription() {
-
-        return this.description;
-    }
-
-    public OffsetDateTime getCreated() {
-
-        return this.created;
-    }
-
-    public String getCreatedBy() {
-
-        return this.createdBy;
-    }
-
-    public OffsetDateTime getLastModified() {
-
-        return this.lastModified;
-    }
-
-    public String getLastModifiedBy() {
-
-        return this.lastModifiedBy;
+        return this.modification;
     }
 
     public boolean isActive() {
@@ -127,9 +88,9 @@ public class Page {
         return this.active;
     }
 
-    public String getHeadline() {
+    public Label getTitle() {
 
-        return this.headline;
+        return this.title;
     }
 
     public String getPath() {
@@ -152,6 +113,11 @@ public class Page {
         return this.components;
     }
 
+    public List<BreadcrumbItem> getBreadcrumbs() {
+
+        return this.breadcrumbs;
+    }
+
     @JsonIgnore
     public String getHref() {
 
@@ -163,19 +129,54 @@ public class Page {
             .collect(Collectors.joining("/")) + ".html";
     }
 
+    @JsonIgnore
+    public Label getMainNavigationTitle() {
+
+        if (!this.getConfig().getMainNavigationTitle().isEmpty()) {
+            return this.getConfig().getMainNavigationTitle();
+        }
+        return ComponentUtils.getHeadline(getComponents()).orElse(getTitle());
+    }
+
+    @JsonIgnore
+    public Label getTopNavigationTitle() {
+
+        if (!this.getConfig().getTopNavigationTitle().isEmpty()) {
+            return this.getConfig().getTopNavigationTitle();
+        }
+        return ComponentUtils.getHeadline(getComponents()).orElse(getTitle());
+    }
+
+    @JsonIgnore
+    public Label getFooterNavigationTitle() {
+
+        if (!this.getConfig().getFooterNavigationTitle().isEmpty()) {
+            return this.getConfig().getFooterNavigationTitle();
+        }
+        return ComponentUtils.getHeadline(getComponents()).orElse(getTitle());
+    }
+
+    public void buildBreadcrumbs(final String language, final PageRepository pageRepository) {
+
+        this.breadcrumbs.clear();
+
+        final Optional<Page> parentPage = pageRepository.getParentPage(this, true);
+        if (parentPage.isPresent()) {
+            parentPage.get().buildBreadcrumbs(language, pageRepository);
+            this.breadcrumbs.addAll(parentPage.get().getBreadcrumbs());
+        }
+
+        this.breadcrumbs.add(new BreadcrumbItem(getMainNavigationTitle().getText(language), getHref()));
+    }
+
     public static final class Builder {
 
         private String parentId;
         private String id;
-        private String name;
-        private String title;
-        private String description;
-        private OffsetDateTime created;
-        private String createdBy;
-        private OffsetDateTime lastModified;
-        private String lastModifiedBy;
+        private Descriptor descriptor;
+        private Modification modification;
         private boolean active;
-        private String headline;
+        private Label title;
         private String path;
         private PageMetaData metaData;
         private PageConfig config;
@@ -193,45 +194,15 @@ public class Page {
             return this;
         }
 
-        public Builder name(@NotNull final String name) {
+        public Builder descriptor(@NotNull final Descriptor descriptor) {
 
-            this.name = name;
+            this.descriptor = descriptor;
             return this;
         }
 
-        public Builder title(@NotNull final String title) {
+        public Builder modification(@NotNull final Modification modification) {
 
-            this.title = title;
-            return this;
-        }
-
-        public Builder description(@NotNull final String description) {
-
-            this.description = description;
-            return this;
-        }
-
-        public Builder created(@NotNull final OffsetDateTime created) {
-
-            this.created = created;
-            return this;
-        }
-
-        public Builder createdBy(@NotNull final String createdBy) {
-
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public Builder lastModified(@NotNull final OffsetDateTime lastModified) {
-
-            this.lastModified = lastModified;
-            return this;
-        }
-
-        public Builder lastModifiedBy(@NotNull final String lastModifiedBy) {
-
-            this.lastModifiedBy = lastModifiedBy;
+            this.modification = modification;
             return this;
         }
 
@@ -241,9 +212,9 @@ public class Page {
             return this;
         }
 
-        public Builder headline(final String headline) {
+        public Builder title(final Label title) {
 
-            this.headline = headline;
+            this.title = title;
             return this;
         }
 
@@ -276,15 +247,10 @@ public class Page {
             return new Page(
                     this.parentId,
                     this.id,
-                    this.name,
-                    this.title,
-                    this.description,
-                    this.created,
-                    this.createdBy,
-                    this.lastModified,
-                    this.lastModifiedBy,
+                    this.descriptor,
+                    this.modification,
                     this.active,
-                    this.headline,
+                    this.title,
                     this.path,
                     Optional.ofNullable(this.metaData).orElse(new PageMetaData(emptyMap())),
                     this.config,

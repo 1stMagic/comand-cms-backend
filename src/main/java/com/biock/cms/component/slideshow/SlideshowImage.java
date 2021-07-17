@@ -33,7 +33,7 @@ public class SlideshowImage {
         return this.maxWidth;
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<SlideshowImage> {
 
         private String relativeImagePath;
         private int maxWidth;
@@ -50,6 +50,7 @@ public class SlideshowImage {
             return this;
         }
 
+        @Override
         public SlideshowImage build() {
 
             return new SlideshowImage(this.relativeImagePath, this.maxWidth);

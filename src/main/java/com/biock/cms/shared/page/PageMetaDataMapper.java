@@ -1,27 +1,26 @@
-package com.biock.cms.page;
+package com.biock.cms.shared.page;
 
 import com.biock.cms.CmsProperty;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.shared.Mapper;
 
 import javax.jcr.Node;
-import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 import javax.validation.constraints.NotNull;
 
 public class PageMetaDataMapper implements Mapper<PageMetaData> {
 
-    public PageMetaData toEntity(@NotNull final Node node) {
+    public PageMetaData.Builder toEntityBuilder(@NotNull final Node node) {
 
         try {
-            final PageMetaData.Builder builder = PageMetaData.builder();
+            final var builder = PageMetaData.builder();
             final PropertyIterator propertiesIterator = node.getProperties(CmsProperty.META_DATA_PREFIX);
             while (propertiesIterator.hasNext()) {
-                final Property property = propertiesIterator.nextProperty();
+                final var property = propertiesIterator.nextProperty();
                 builder.put(property.getName().substring(CmsProperty.META_DATA_PREFIX.length()), property.getString());
             }
-            return builder.build();
+            return builder;
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

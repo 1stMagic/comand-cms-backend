@@ -69,7 +69,7 @@ public class SlideshowItem {
         return this.target;
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<SlideshowItem> {
 
         private List<SlideshowImage> images;
         private String alt;
@@ -114,6 +114,7 @@ public class SlideshowItem {
             return this;
         }
 
+        @Override
         public SlideshowItem build() {
 
             return new SlideshowItem(this.images, this.alt, this.title, this.figCaption, this.href, this.target);

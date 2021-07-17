@@ -1,6 +1,7 @@
-package com.biock.cms.page;
+package com.biock.cms.shared.page;
 
 import com.biock.cms.shared.Label;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
@@ -11,8 +12,11 @@ public class PageConfig {
     private final boolean showInTopNavigation;
     private final boolean showInFooterNavigation;
     private final boolean external;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String href;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String target;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String iconClass;
     private final Label mainNavigationTitle;
     private final Label topNavigationTitle;
@@ -112,7 +116,7 @@ public class PageConfig {
         return this.footerNavigationTitle;
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<PageConfig> {
 
         private boolean showInMainNavigation;
         private boolean showInTopNavigation;
@@ -185,6 +189,7 @@ public class PageConfig {
             return this;
         }
 
+        @Override
         public PageConfig build() {
 
             return new PageConfig(

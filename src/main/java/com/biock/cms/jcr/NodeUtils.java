@@ -1,9 +1,8 @@
 package com.biock.cms.jcr;
 
 import com.biock.cms.CmsNode;
+import com.biock.cms.CmsType;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -13,8 +12,6 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 
 public final class NodeUtils {
-
-    private static final Logger LOG = LoggerFactory.getLogger(NodeUtils.class);
 
     private NodeUtils() {
 
@@ -68,6 +65,11 @@ public final class NodeUtils {
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }
+    }
+
+    public static Node createIfAbsent(final Node parent, final String relPath, final CmsType nodeType) {
+
+        return createIfAbsent(parent, relPath, nodeType.getName());
     }
 
     public static Node createIfAbsent(final Node parent, final String relPath, final String nodeType) {

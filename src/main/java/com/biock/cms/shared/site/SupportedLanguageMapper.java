@@ -1,4 +1,4 @@
-package com.biock.cms.site;
+package com.biock.cms.shared.site;
 
 import com.biock.cms.CmsProperty;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
@@ -11,14 +11,13 @@ import javax.jcr.RepositoryException;
 public class SupportedLanguageMapper implements Mapper<SupportedLanguage> {
 
     @Override
-    public SupportedLanguage toEntity(final Node node) {
+    public SupportedLanguage.Builder toEntityBuilder(final Node node) {
 
         try {
             return SupportedLanguage.builder()
                     .language(node.getName())
                     .title(new LabelMapper(CmsProperty.TITLE).toEntity(node))
-                    .tooltip(new LabelMapper(CmsProperty.TOOLTIP).toEntity(node))
-                    .build();
+                    .tooltip(new LabelMapper(CmsProperty.TOOLTIP).toEntity(node));
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

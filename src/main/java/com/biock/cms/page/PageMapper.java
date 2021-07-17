@@ -8,6 +8,9 @@ import com.biock.cms.config.CmsConfig;
 import com.biock.cms.jcr.JcrPaths;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.shared.*;
+import com.biock.cms.shared.page.PageConfigMapper;
+import com.biock.cms.shared.page.PageMetaData;
+import com.biock.cms.shared.page.PageMetaDataMapper;
 import org.springframework.stereotype.Component;
 
 import javax.jcr.*;
@@ -38,7 +41,7 @@ public class PageMapper extends AbstractMapper<Page> {
     }
 
     @Override
-    public Page toEntity(@NotNull final Node node) {
+    public Page.Builder toEntityBuilder(@NotNull final Node node) {
 
         return Page.builder()
                 .parentId(getParentId(node))
@@ -50,8 +53,7 @@ public class PageMapper extends AbstractMapper<Page> {
                 .path(getPath(node))
                 .metaData(getPageMetaData(node))
                 .config(new PageConfigMapper().toEntity(node))
-                .components(getComponents(this.defaultMapper, this.mappers, node))
-                .build();
+                .components(getComponents(this.defaultMapper, this.mappers, node));
     }
 
     @Override
@@ -76,7 +78,7 @@ public class PageMapper extends AbstractMapper<Page> {
 
         try {
             final var parent = pageNode.getParent();
-            if (parent.getPrimaryNodeType().isNodeType(CmsType.PAGE)) {
+            if (CmsType.PAGE.isNodeType(parent)) {
                 return getStringProperty(parent, Property.JCR_ID);
             }
             return null;

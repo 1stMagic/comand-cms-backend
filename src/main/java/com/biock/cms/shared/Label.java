@@ -1,5 +1,7 @@
 package com.biock.cms.shared;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
@@ -14,6 +16,7 @@ public class Label implements ValueObject<Label> {
 
     public static final String FALLBACK_LANGUAGE = "_";
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final Map<String, String> texts;
 
     public Label(@NotNull final Map<String, String> texts) {
@@ -49,6 +52,7 @@ public class Label implements ValueObject<Label> {
         return this.texts.get(FALLBACK_LANGUAGE);
     }
 
+    @JsonIgnore
     public List<String> getLanguages() {
 
         return new ArrayList<>(this.texts.keySet());
@@ -60,7 +64,7 @@ public class Label implements ValueObject<Label> {
         return Integer.compare(this.getTexts().size(), label.getTexts().size());
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<Label> {
 
         private final Map<String, String> texts;
 
@@ -75,6 +79,7 @@ public class Label implements ValueObject<Label> {
             return this;
         }
 
+        @Override
         public Label build() {
 
             return new Label(this.texts);

@@ -4,6 +4,7 @@ import com.biock.cms.page.Page;
 import com.biock.cms.page.PageRepository;
 import com.biock.cms.shared.Descriptor;
 import com.biock.cms.shared.Modification;
+import com.biock.cms.shared.site.SiteConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -144,7 +145,7 @@ public class Site {
         }
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<Site> {
 
         private Descriptor descriptor;
         private Modification modification;
@@ -175,6 +176,7 @@ public class Site {
             return this;
         }
 
+        @Override
         public Site build() {
 
             return new Site(

@@ -49,7 +49,7 @@ public class Descriptor implements ValueObject<Descriptor> {
         return this.getDescription().compareTo(descriptor.getDescription());
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<Descriptor> {
 
         private String name;
         private String title;
@@ -73,6 +73,7 @@ public class Descriptor implements ValueObject<Descriptor> {
             return this;
         }
 
+        @Override
         public Descriptor build() {
 
             return new Descriptor(this.name, this.title, this.description);

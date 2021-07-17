@@ -31,14 +31,13 @@ public class SlideshowMapper implements Mapper<SlideshowComponent> {
     private static final String NODE_ITEMS = "items";
 
     @Override
-    public SlideshowComponent toEntity(final Node node) {
+    public SlideshowComponent.Builder toEntityBuilder(final Node node) {
 
         return SlideshowComponent.builderx()
                 .name(getStringProperty(node, Property.JCR_NAME))
                 .active(getBooleanProperty(node, CmsProperty.ACTIVE))
                 .componentName(getStringProperty(node, CmsProperty.COMPONENT_NAME))
-                .items(getItems(node))
-                .build();
+                .items(getItems(node));
     }
 
     @Override

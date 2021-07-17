@@ -1,9 +1,11 @@
 package com.biock.cms.component;
 
+import com.biock.cms.shared.Builder;
+
 import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("ALL")
-public abstract class ComponentBuilder<T extends ComponentBuilder> {
+public abstract class ComponentBuilder<E, T extends ComponentBuilder> implements Builder<E> {
 
     protected String name;
     protected boolean active;

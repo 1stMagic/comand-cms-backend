@@ -1,4 +1,4 @@
-package com.biock.cms.site;
+package com.biock.cms.shared.site;
 
 import com.biock.cms.shared.Label;
 import com.biock.cms.shared.ValueObject;
@@ -55,7 +55,7 @@ public class SupportedLanguage implements ValueObject<SupportedLanguage> {
         return this.getTooltip().compareTo(supportedLanguage.getTooltip());
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<SupportedLanguage> {
 
         private String language;
         private Label title;
@@ -79,6 +79,7 @@ public class SupportedLanguage implements ValueObject<SupportedLanguage> {
             return this;
         }
 
+        @Override
         public SupportedLanguage build() {
 
             return new SupportedLanguage(this.language, this.title, this.tooltip);

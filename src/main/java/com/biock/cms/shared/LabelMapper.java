@@ -17,7 +17,7 @@ public class LabelMapper implements Mapper<Label> {
     }
 
     @Override
-    public Label toEntity(final Node node) {
+    public Label.Builder toEntityBuilder(final Node node) {
 
         try {
             final var pattern = Pattern.compile("^\\Q" + this.prefix + "\\E(?:_([a-z]{2}))?$");
@@ -30,7 +30,7 @@ public class LabelMapper implements Mapper<Label> {
                     builder.text(StringUtils.defaultIfBlank(matcher.group(1), Label.FALLBACK_LANGUAGE), property.getString());
                 }
             }
-            return builder.build();
+            return builder;
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

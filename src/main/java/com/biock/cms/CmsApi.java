@@ -9,6 +9,9 @@ public final class CmsApi {
 
     public static final String REPOSITORY = V1 + "/repository";
 
+    public static final String ADMIN_SITES = V1 + "/admin/sites";
+    public static final String ADMIN_PAGES = V1 + "/admin/pages";
+
     private CmsApi() {
 
         // Empty

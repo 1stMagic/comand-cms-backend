@@ -96,7 +96,7 @@ public class PageRepository {
             final List<Page> result = new ArrayList<>();
             while (pageNodeIterator.hasNext()) {
                 final var pageNode = pageNodeIterator.nextNode();
-                if (pageNode.getPrimaryNodeType().isNodeType(CmsType.PAGE)
+                if (CmsType.PAGE.isNodeType(pageNode.getPrimaryNodeType())
                         && (getBooleanProperty(pageNode, CmsProperty.ACTIVE) || !onlyActive)) {
                     result.add(this.pageMapper.toEntity(pageNode));
                 }

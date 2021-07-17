@@ -12,13 +12,12 @@ import java.math.BigDecimal;
 public class ComponentPropertyMapper implements Mapper<ComponentProperty> {
 
     @Override
-    public ComponentProperty toEntity(final Node node) {
+    public ComponentProperty.Builder toEntityBuilder(final Node node) {
 
         try {
             return ComponentProperty.builder()
                     .name(node.getName())
-                    .value(new ComponentPropertiesMapper().toEntity(node))
-                    .build();
+                    .value(new ComponentPropertiesMapper().toEntity(node));
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

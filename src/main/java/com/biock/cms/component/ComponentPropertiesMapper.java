@@ -1,6 +1,7 @@
 package com.biock.cms.component;
 
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
+import com.biock.cms.shared.Builder;
 import com.biock.cms.shared.LabelMapper;
 import com.biock.cms.shared.Mapper;
 
@@ -15,13 +16,13 @@ import java.util.regex.Pattern;
 public class ComponentPropertiesMapper implements Mapper<Map<String, ComponentProperty>> {
 
     @Override
-    public Map<String, ComponentProperty> toEntity(final Node node) {
+    public Builder<Map<String, ComponentProperty>> toEntityBuilder(final Node node) {
 
         final Map<String, ComponentProperty> properties = new HashMap<>();
         final var propertyMapper = new ComponentPropertyMapper();
         processProperties(node, propertyMapper, properties);
         processNodes(node, propertyMapper, properties);
-        return properties;
+        return () -> properties;
     }
 
     @Override

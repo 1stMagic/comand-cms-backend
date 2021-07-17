@@ -2,6 +2,10 @@ package com.biock.cms.page;
 
 public class BreadcrumbItem {
 
+//    private final String type;
+//    private final String text;
+//    private final String to;
+
     private final String name;
     private final String path;
 

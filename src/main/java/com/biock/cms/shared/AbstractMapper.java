@@ -28,7 +28,7 @@ public abstract class AbstractMapper<T> implements Mapper<T> {
             final NodeIterator nodes = pageNode.getNodes();
             while (nodes.hasNext()) {
                 final var node = nodes.nextNode();
-                if (node.getPrimaryNodeType().isNodeType(CmsType.COMPONENT)) {
+                if (CmsType.COMPONENT.isNodeType(node.getPrimaryNodeType())) {
                     final var componentName = getStringProperty(node, Property.JCR_NAME);
                     final String mapperBeanName = componentName + "_mapper";
                     components.add(mappers.getOrDefault(mapperBeanName, defaultMapper).toEntity(node));

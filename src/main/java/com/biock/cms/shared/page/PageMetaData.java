@@ -1,6 +1,7 @@
-package com.biock.cms.page;
+package com.biock.cms.shared.page;
 
 import com.biock.cms.shared.ValueObject;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 
 public class PageMetaData implements ValueObject<PageMetaData>, Iterable<Entry<String, String>> {
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final Map<String, String> metaData;
 
     public PageMetaData(final Map<String, String> metaData) {
@@ -43,7 +45,7 @@ public class PageMetaData implements ValueObject<PageMetaData>, Iterable<Entry<S
         return 0;
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<PageMetaData> {
 
         private final Map<String, String> metaData;
 
@@ -58,6 +60,7 @@ public class PageMetaData implements ValueObject<PageMetaData>, Iterable<Entry<S
             return this;
         }
 
+        @Override
         public PageMetaData build() {
 
             return new PageMetaData(this.metaData);

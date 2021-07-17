@@ -5,6 +5,7 @@ import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.shared.DescriptorMapper;
 import com.biock.cms.shared.Mapper;
 import com.biock.cms.shared.ModificationMapper;
+import com.biock.cms.shared.site.SiteConfigMapper;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -23,14 +24,13 @@ public class SiteMapper implements Mapper<Site> {
     }
 
     @Override
-    public Site toEntity(@NotNull final Node node) {
+    public Site.Builder toEntityBuilder(@NotNull final Node node) {
 
         return Site.builder()
                 .descriptor(new DescriptorMapper().toEntity(node))
                 .modification(new ModificationMapper(this.timeZoneOffset).toEntity(node))
                 .active(getBooleanProperty(node, CmsProperty.ACTIVE))
-                .config(new SiteConfigMapper().toEntity(node))
-                .build();
+                .config(new SiteConfigMapper().toEntity(node));
     }
 
     @Override

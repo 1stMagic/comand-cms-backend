@@ -1,6 +1,7 @@
-package com.biock.cms.site;
+package com.biock.cms.shared.site;
 
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
+import com.biock.cms.shared.Builder;
 import com.biock.cms.shared.Mapper;
 
 import javax.jcr.Node;
@@ -12,7 +13,7 @@ import java.util.List;
 public class SupportedLanguagesMapper implements Mapper<List<SupportedLanguage>> {
 
     @Override
-    public List<SupportedLanguage> toEntity(final Node node) {
+    public Builder<List<SupportedLanguage>> toEntityBuilder(final Node node) {
 
         try {
             final List<SupportedLanguage> supportedLanguages = new ArrayList<>();
@@ -21,7 +22,7 @@ public class SupportedLanguagesMapper implements Mapper<List<SupportedLanguage>>
             while (supportedLanguageNodes.hasNext()) {
                 supportedLanguages.add(supportedLanguageMapper.toEntity(supportedLanguageNodes.nextNode()));
             }
-            return supportedLanguages;
+            return () -> supportedLanguages;
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

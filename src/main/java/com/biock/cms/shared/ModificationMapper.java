@@ -22,14 +22,13 @@ public class ModificationMapper implements Mapper<Modification> {
     }
 
     @Override
-    public Modification toEntity(final Node node) {
+    public Modification.Builder toEntityBuilder(final Node node) {
 
         return Modification.builder()
                 .created(toOffsetDateTime(getDateProperty(node, Property.JCR_CREATED), this.timeZoneOffset))
                 .createdBy(getStringProperty(node, Property.JCR_CREATED_BY))
                 .lastModified(toOffsetDateTime(getDateProperty(node, Property.JCR_LAST_MODIFIED), this.timeZoneOffset))
-                .lastModifiedBy(getStringProperty(node, Property.JCR_LAST_MODIFIED_BY))
-                .build();
+                .lastModifiedBy(getStringProperty(node, Property.JCR_LAST_MODIFIED_BY));
     }
 
     @Override

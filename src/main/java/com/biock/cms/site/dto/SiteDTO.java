@@ -1,6 +1,7 @@
 package com.biock.cms.site.dto;
 
 import com.biock.cms.site.Site;
+import com.biock.cms.site.SiteContactData;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,6 +15,7 @@ public class SiteDTO {
     private String language;
     private String homePage;
     private List<SupportedLanguageDTO> supportedLanguages;
+    private SiteContactData contactData;
     private List<NavigationItemDTO> mainNavigation;
     private List<NavigationItemDTO> topNavigation;
     private List<NavigationItemDTO> footerNavigation;
@@ -29,6 +31,7 @@ public class SiteDTO {
                 .stream()
                 .map(supportedLanguage -> SupportedLanguageDTO.of(language, supportedLanguage))
                 .collect(toList());
+        dto.contactData = site.getConfig().getContactData();
         dto.mainNavigation = site.getMainNavigation().getItems()
                 .stream()
                 .map(item -> NavigationItemDTO.of(language, item))
@@ -67,6 +70,11 @@ public class SiteDTO {
     public List<SupportedLanguageDTO> getSupportedLanguages() {
 
         return this.supportedLanguages;
+    }
+
+    public SiteContactData getContactData() {
+
+        return this.contactData;
     }
 
     public List<NavigationItemDTO> getMainNavigation() {

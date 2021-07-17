@@ -1,15 +1,49 @@
 package com.biock.cms;
 
-public final class CmsType {
+import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 
-    public static final String ROOT = "cms:root";
-    public static final String SITE = "cms:site";
-    public static final String PAGE = "cms:page";
-    public static final String COMPONENT = "cms:component";
-    public static final String LANGUAGE = "cms:language";
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.nodetype.NodeType;
+import javax.validation.constraints.NotNull;
+import java.util.function.Predicate;
 
-    private CmsType() {
+public enum CmsType {
 
-        // Empty
+    ROOT("cms:root"),
+    SITE("cms:site"),
+    PAGE("cms:page"),
+    COMPONENT("cms:component"),
+    LANGUAGE("cms:language");
+
+    private final String name;
+
+    CmsType(@NotNull final String name) {
+
+        this.name = name;
+    }
+
+    public String getName() {
+
+        return this.name;
+    }
+
+    public boolean isNodeType(@NotNull final Node node) {
+
+        try {
+            return isNodeType(node.getPrimaryNodeType());
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public boolean isNodeType(@NotNull final NodeType nodeType) {
+
+        return nodeType.isNodeType(getName());
+    }
+
+    public Predicate<Node> typeFilter() {
+
+        return this::isNodeType;
     }
 }

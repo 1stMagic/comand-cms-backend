@@ -144,14 +144,14 @@ public final class RepositoryInitializer {
         }
     }
 
-    private static void createType(final NodeTypeManager nodeTypeManager, final String name) {
+    private static void createType(final NodeTypeManager nodeTypeManager, final CmsType type) {
 
-        LOG.info("{}.createType(name = {})", RepositoryInitializer.class.getSimpleName(), name);
+        LOG.info("{}.createType(name = {})", RepositoryInitializer.class.getSimpleName(), type.getName());
 
         try {
-            if (!nodeTypeManager.hasNodeType(name)) {
+            if (!nodeTypeManager.hasNodeType(type.getName())) {
                 final var nodeTypeTemplate = nodeTypeManager.createNodeTypeTemplate();
-                nodeTypeTemplate.setName(name);
+                nodeTypeTemplate.setName(type.getName());
                 nodeTypeTemplate.setDeclaredSuperTypeNames(new String[]{NodeType.NT_UNSTRUCTURED});
                 nodeTypeTemplate.setOrderableChildNodes(true);
                 nodeTypeTemplate.setQueryable(true);

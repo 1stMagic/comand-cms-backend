@@ -11,13 +11,12 @@ import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 public class DescriptorMapper implements Mapper<Descriptor> {
 
     @Override
-    public Descriptor toEntity(final Node node) {
+    public Descriptor.Builder toEntityBuilder(final Node node) {
 
         return Descriptor.builder()
                 .name(getStringProperty(node, Property.JCR_NAME))
                 .title(getStringProperty(node, Property.JCR_TITLE))
-                .description(getStringProperty(node, Property.JCR_DESCRIPTION))
-                .build();
+                .description(getStringProperty(node, Property.JCR_DESCRIPTION));
     }
 
     @Override

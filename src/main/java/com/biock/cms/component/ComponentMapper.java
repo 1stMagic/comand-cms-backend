@@ -27,15 +27,14 @@ public class ComponentMapper extends AbstractMapper<Component> {
     }
 
     @Override
-    public Component toEntity(@NotNull final Node node) {
+    public Component.Builder toEntityBuilder(@NotNull final Node node) {
 
         return Component.builder()
                 .name(getStringProperty(node, Property.JCR_NAME))
                 .active(getBooleanProperty(node, CmsProperty.ACTIVE))
                 .componentName(getStringProperty(node, CmsProperty.COMPONENT_NAME))
                 .properties(getProperties(node))
-                .components(getComponents(this, this.mappers, node))
-                .build();
+                .components(getComponents(this, this.mappers, node));
     }
 
     @Override

@@ -1,13 +1,14 @@
 package com.biock.cms.page;
 
 import com.biock.cms.component.Component;
-import com.biock.cms.jcr.NodeUtils;
+import com.biock.cms.shared.Builder;
 import com.biock.cms.shared.Descriptor;
 import com.biock.cms.shared.Label;
 import com.biock.cms.shared.Modification;
+import com.biock.cms.shared.page.PageConfig;
+import com.biock.cms.shared.page.PageMetaData;
 import com.biock.cms.utils.ComponentUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -169,7 +170,7 @@ public class Page {
         this.breadcrumbs.add(new BreadcrumbItem(getMainNavigationTitle().getText(language), getHref()));
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<Page> {
 
         private String parentId;
         private String id;
@@ -242,6 +243,7 @@ public class Page {
             return this;
         }
 
+        @Override
         public Page build() {
 
             return new Page(

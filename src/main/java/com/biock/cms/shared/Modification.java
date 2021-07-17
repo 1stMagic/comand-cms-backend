@@ -65,7 +65,7 @@ public class Modification implements ValueObject<Modification> {
         return this.getLastModifiedBy().compareTo(modification.getLastModifiedBy());
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<Modification> {
 
         private OffsetDateTime created;
         private String createdBy;
@@ -96,6 +96,7 @@ public class Modification implements ValueObject<Modification> {
             return this;
         }
 
+        @Override
         public Modification build() {
 
             return new Modification(this.created, this.createdBy, this.lastModified, this.lastModifiedBy);

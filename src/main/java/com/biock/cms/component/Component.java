@@ -1,5 +1,6 @@
 package com.biock.cms.component;
 
+import com.biock.cms.shared.Builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.validation.constraints.NotNull;
@@ -86,7 +87,7 @@ public class Component {
         return Optional.ofNullable(this.properties.get(name));
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<Component> {
 
         private String name;
         private boolean active;
@@ -124,6 +125,7 @@ public class Component {
             return this;
         }
 
+        @Override
         public Component build() {
 
             return new Component(this.name, this.active, this.componentName, this.properties, this.components);

@@ -43,7 +43,7 @@ public class ComponentProperty {
                 c.getName()));
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<ComponentProperty> {
 
         private String name;
         private Object value;
@@ -60,6 +60,7 @@ public class ComponentProperty {
             return this;
         }
 
+        @Override
         public ComponentProperty build() {
 
             return new ComponentProperty(this.name, this.value);

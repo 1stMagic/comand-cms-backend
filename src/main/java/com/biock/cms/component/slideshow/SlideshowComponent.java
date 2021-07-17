@@ -35,7 +35,7 @@ public class SlideshowComponent extends Component {
         return this.items;
     }
 
-    public static final class Builder extends ComponentBuilder<Builder> {
+    public static final class Builder extends ComponentBuilder<SlideshowComponent, Builder> {
 
         private List<SlideshowItem> items;
 
@@ -45,6 +45,7 @@ public class SlideshowComponent extends Component {
             return this;
         }
 
+        @Override
         public SlideshowComponent build() {
 
             return new SlideshowComponent(this.name, this.active, this.componentName, this.items);

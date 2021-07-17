@@ -79,7 +79,7 @@ public class BaseData {
         return this.active;
     }
 
-    public static final class Builder {
+    public static final class Builder implements com.biock.cms.shared.Builder<BaseData> {
 
         private String name;
         private String title;
@@ -138,6 +138,7 @@ public class BaseData {
             return this;
         }
 
+        @Override
         public BaseData build() {
 
             return new BaseData(

@@ -1,6 +1,6 @@
 package com.biock.cms.site.dto;
 
-import com.biock.cms.site.SupportedLanguage;
+import com.biock.cms.shared.site.SupportedLanguage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;

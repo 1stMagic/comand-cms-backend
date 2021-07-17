@@ -1,4 +1,4 @@
-package com.biock.cms.page;
+package com.biock.cms.shared.page;
 
 import com.biock.cms.CmsProperty;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
@@ -14,7 +14,7 @@ import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 
 public class PageConfigMapper implements Mapper<PageConfig> {
 
-    public PageConfig toEntity(@NotNull final Node node) {
+    public PageConfig.Builder toEntityBuilder(@NotNull final Node node) {
 
         return PageConfig.builder()
                 .showInMainNavigation(getBooleanProperty(node, CmsProperty.SHOW_IN_MAIN_NAVIGATION))
@@ -26,8 +26,7 @@ public class PageConfigMapper implements Mapper<PageConfig> {
                 .iconClass(getStringProperty(node, CmsProperty.ICON_CLASS, ""))
                 .mainNavigationTitle(new LabelMapper("mainNavigationTitle").toEntity(node))
                 .topNavigationTitle(new LabelMapper("topNavigationTitle").toEntity(node))
-                .footerNavigationTitle(new LabelMapper("footerNavigationTitle").toEntity(node))
-                .build();
+                .footerNavigationTitle(new LabelMapper("footerNavigationTitle").toEntity(node));
     }
 
     public void toNode(@NotNull final PageConfig config, @NotNull final Node node) {

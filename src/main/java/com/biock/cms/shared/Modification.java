@@ -27,6 +27,16 @@ public class Modification implements ValueObject<Modification> {
         return new Builder();
     }
 
+    public static Modification of(@NotNull String user, @NotNull OffsetDateTime created) {
+
+        return Modification.builder()
+                .created(created)
+                .createdBy(user)
+                .lastModified(created)
+                .lastModifiedBy(user)
+                .build();
+    }
+
     public OffsetDateTime getCreated() {
 
         return this.created;

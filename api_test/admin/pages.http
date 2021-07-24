@@ -1,0 +1,15 @@
+POST http://localhost:55578/api/v1/admin/pages/demo
+Content-Type: application/json
+
+{
+    "descriptor": {
+        "name": "new_page3"
+    },
+    "title": {
+        "de": "Neue Seite 3",
+        "en": "New page 3"
+    },
+    "active": true
+}
+
+###

@@ -1,5 +1,6 @@
 package com.biock.cms.admin.page;
 
+import com.biock.cms.admin.page.dto.AdminPageDTO;
 import com.biock.cms.shared.Descriptor;
 import com.biock.cms.shared.Label;
 import com.biock.cms.shared.Modification;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +36,12 @@ public class AdminPage {
 
     public AdminPage(
             final String parentId,
-            @NotNull final String id,
+            final String id,
             @NotNull final Descriptor descriptor,
             @NotNull final Modification modification,
             final boolean active,
             @NotNull final Label title,
-            @NotNull final String path,
+            final String path,
             @NotNull final PageMetaData metaData,
             @NotNull final PageConfig config,
             @NotNull final List<AdminPage> children) {
@@ -59,6 +61,34 @@ public class AdminPage {
     public static Builder builder() {
         
         return new Builder();
+    }
+
+    public static Builder builder(@NotNull final AdminPage page) {
+
+        return new Builder()
+                .parentId(page.getParentId())
+                .id(page.getId())
+                .descriptor(page.getDescriptor())
+                .modification(page.getModification())
+                .active(page.isActive())
+                .title(page.getTitle())
+                .path(page.getPath())
+                .metaData(page.getMetaData())
+                .config(page.getConfig())
+                .children(page.getChildren());
+    }
+
+    public static AdminPage of(@NotNull final AdminPageDTO dto) {
+
+        return AdminPage.builder()
+                .parentId(dto.getParentId())
+                .descriptor(Descriptor.of(dto.getDescriptor()))
+                .modification(Modification.of("api", OffsetDateTime.now()))
+                .active(dto.isActive())
+                .title(new Label(dto.getTitle()))
+                .metaData(new PageMetaData(Optional.ofNullable(dto.getMetaData()).orElse(emptyMap())))
+                .config(PageConfig.of(dto))
+                .build();
     }
 
     public String getParentId() {
@@ -154,6 +184,11 @@ public class AdminPage {
         private PageConfig config;
         private List<AdminPage> children;
 
+        public Descriptor descriptor() {
+
+            return this.descriptor;
+        }
+
         public String path() {
 
             return this.path;
@@ -165,7 +200,7 @@ public class AdminPage {
             return this;
         }
 
-        public Builder id(@NotNull final String id) {
+        public Builder id(final String id) {
 
             this.id = id;
             return this;
@@ -195,7 +230,7 @@ public class AdminPage {
             return this;
         }
 
-        public Builder path(@NotNull final String path) {
+        public Builder path(final String path) {
 
             this.path = path;
             return this;

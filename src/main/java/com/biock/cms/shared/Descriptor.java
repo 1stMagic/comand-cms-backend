@@ -1,5 +1,8 @@
 package com.biock.cms.shared;
 
+import com.biock.cms.shared.dto.DescriptorDTO;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.constraints.NotNull;
 
 public class Descriptor implements ValueObject<Descriptor> {
@@ -18,6 +21,15 @@ public class Descriptor implements ValueObject<Descriptor> {
     public static Builder builder() {
 
         return new Builder();
+    }
+
+    public static Descriptor of(@NotNull final DescriptorDTO dto) {
+
+        return Descriptor.builder()
+                .name(dto.getName())
+                .title(StringUtils.defaultIfBlank(dto.getTitle(), dto.getName()))
+                .description(StringUtils.defaultString(dto.getDescription()))
+                .build();
     }
 
     public String getName() {

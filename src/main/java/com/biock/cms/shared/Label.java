@@ -16,6 +16,7 @@ public class Label implements ValueObject<Label> {
 
     public static final String FALLBACK_LANGUAGE = "_";
 
+    @NotNull
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final Map<String, String> texts;
 

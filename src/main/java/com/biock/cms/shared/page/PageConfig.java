@@ -1,10 +1,14 @@
 package com.biock.cms.shared.page;
 
+import com.biock.cms.admin.page.dto.AdminPageDTO;
 import com.biock.cms.shared.Label;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
+
+import static java.util.Collections.emptyMap;
 
 public class PageConfig {
 
@@ -49,6 +53,22 @@ public class PageConfig {
     public static Builder builder() {
 
         return new Builder();
+    }
+
+    public static PageConfig of(@NotNull final AdminPageDTO dto) {
+
+        return PageConfig.builder()
+                .showInMainNavigation(dto.isShowInMainNavigation())
+                .showInTopNavigation(dto.isShowInTopNavigation())
+                .showInFooterNavigation(dto.isShowInFooterNavigation())
+                .external(dto.isExternal())
+                .href(StringUtils.defaultString(dto.getHref()))
+                .target(StringUtils.defaultString(dto.getTarget()))
+                .iconClass(StringUtils.defaultString(dto.getIconClass()))
+                .mainNavigationTitle(new Label(Optional.ofNullable(dto.getMainNavigationTitle()).orElse(emptyMap())))
+                .topNavigationTitle(new Label(Optional.ofNullable(dto.getTopNavigationTitle()).orElse(emptyMap())))
+                .footerNavigationTitle(new Label(Optional.ofNullable(dto.getFooterNavigationTitle()).orElse(emptyMap())))
+                .build();
     }
 
     public boolean isShowInMainNavigation() {

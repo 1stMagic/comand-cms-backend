@@ -21,16 +21,15 @@ public final class CmsProperty {
     public static final String TOOLTIP = "tooltip";
     public static final String INNER_HTML = "innerHTML";
 
-    public static final String CONTACT_DATA_SALUTATION = "salutation";
-    public static final String CONTACT_DATA_TITLE = "title";
-    public static final String CONTACT_DATA_FIRST_NAME = "firstName";
-    public static final String CONTACT_DATA_LAST_NAME = "lastName";
+    public static final String CONTACT_DATA_COMPANY = "company";
     public static final String CONTACT_DATA_STREET = "street";
     public static final String CONTACT_DATA_POSTAL_CODE = "postalCode";
     public static final String CONTACT_DATA_CITY = "city";
     public static final String CONTACT_DATA_PHONE = "phone";
+    public static final String CONTACT_DATA_MOBILE = "mobile";
     public static final String CONTACT_DATA_FAX = "fax";
     public static final String CONTACT_DATA_EMAIL = "email";
+    public static final String CONTACT_DATA_COUNTRY = "country";
 
     public static final String META_DATA_PREFIX = "cmsmeta:";
 

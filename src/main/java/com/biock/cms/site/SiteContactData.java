@@ -1,55 +1,53 @@
 package com.biock.cms.site;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.validation.constraints.NotNull;
 
 public class SiteContactData {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private final String salutation;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private final String title;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private final String firstName;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private final String lastName;
+    private final String company;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String street;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("zip")
     private final String postalCode;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String city;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("telephone")
     private final String phone;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("mobilephone")
+    private final String mobile;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String fax;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String email;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private final String country;
 
     public SiteContactData(
-            @NotNull final String salutation,
-            @NotNull final String title,
-            @NotNull final String firstName,
-            @NotNull final String lastName,
-            @NotNull final String street,
-            @NotNull final String postalCode,
-            @NotNull final String city,
-            @NotNull final String phone,
-            @NotNull final String fax,
-            @NotNull final String email) {
+            final String company,
+            final String street,
+            final String postalCode,
+            final String city,
+            final String phone,
+            final String mobile,
+            final String fax,
+            final String email,
+            final String country) {
 
-        this.salutation = salutation;
-        this.title = title;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.company = company;
         this.street = street;
         this.postalCode = postalCode;
         this.city = city;
         this.phone = phone;
+        this.mobile = mobile;
         this.fax = fax;
         this.email = email;
+        this.country = country;
     }
 
     public static Builder builder() {
@@ -62,24 +60,9 @@ public class SiteContactData {
         return builder().build();
     }
 
-    public String getSalutation() {
+    public String getCompany() {
 
-        return this.salutation;
-    }
-
-    public String getTitle() {
-
-        return this.title;
-    }
-
-    public String getFirstName() {
-
-        return this.firstName;
-    }
-
-    public String getLastName() {
-
-        return this.lastName;
+        return this.company;
     }
 
     public String getStreet() {
@@ -102,6 +85,11 @@ public class SiteContactData {
         return this.phone;
     }
 
+    public String getMobile() {
+
+        return this.mobile;
+    }
+
     public String getFax() {
 
         return this.fax;
@@ -112,40 +100,26 @@ public class SiteContactData {
         return this.email;
     }
 
+    public String getCountry() {
+
+        return this.country;
+    }
+
     public static final class Builder implements com.biock.cms.shared.Builder<SiteContactData> {
 
-        private String salutation;
-        private String title;
-        private String firstName;
-        private String lastName;
+        private String company;
         private String street;
         private String postalCode;
         private String city;
         private String phone;
+        private String mobile;
         private String fax;
         private String email;
+        private String country;
 
-        public Builder salutation(final String salutation) {
+        public Builder company(final String company) {
 
-            this.salutation = salutation;
-            return this;
-        }
-
-        public Builder title(final String title) {
-
-            this.title = title;
-            return this;
-        }
-
-        public Builder firstName(final String firstName) {
-
-            this.firstName = firstName;
-            return this;
-        }
-
-        public Builder lastName(final String lastName) {
-
-            this.lastName = lastName;
+            this.company = company;
             return this;
         }
 
@@ -173,6 +147,12 @@ public class SiteContactData {
             return this;
         }
 
+        public Builder mobile(final String mobile) {
+
+            this.mobile = mobile;
+            return this;
+        }
+
         public Builder fax(final String fax) {
 
             this.fax = fax;
@@ -185,20 +165,25 @@ public class SiteContactData {
             return this;
         }
 
+        public Builder country(final String country) {
+
+            this.country = country;
+            return this;
+        }
+
         @Override
         public SiteContactData build() {
 
             return new SiteContactData(
-                    StringUtils.defaultString(this.salutation),
-                    StringUtils.defaultString(this.title),
-                    StringUtils.defaultString(this.firstName),
-                    StringUtils.defaultString(this.lastName),
+                    StringUtils.defaultString(this.company),
                     StringUtils.defaultString(this.street),
                     StringUtils.defaultString(this.postalCode),
                     StringUtils.defaultString(this.city),
                     StringUtils.defaultString(this.phone),
+                    StringUtils.defaultString(this.mobile),
                     StringUtils.defaultString(this.fax),
-                    StringUtils.defaultString(this.email)
+                    StringUtils.defaultString(this.email),
+                    StringUtils.defaultString(this.country)
             );
         }
     }

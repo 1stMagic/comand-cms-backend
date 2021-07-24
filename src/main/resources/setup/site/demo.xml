@@ -90,17 +90,8 @@
             <sv:value>nt:unstructured</sv:value>
         </sv:property>
 
-        <sv:property sv:name="salutation" sv:type="String">
-            <sv:value>Herr</sv:value>
-        </sv:property>
-        <sv:property sv:name="title" sv:type="String">
-            <sv:value>Dr.</sv:value>
-        </sv:property>
-        <sv:property sv:name="firstName" sv:type="String">
-            <sv:value>Raphael</sv:value>
-        </sv:property>
-        <sv:property sv:name="lastName" sv:type="String">
-            <sv:value>Biock</sv:value>
+        <sv:property sv:name="company" sv:type="String">
+            <sv:value>CoManD Inc.</sv:value>
         </sv:property>
         <sv:property sv:name="street" sv:type="String">
             <sv:value>Steinmetzstraße 16</sv:value>
@@ -114,11 +105,17 @@
         <sv:property sv:name="phone" sv:type="String">
             <sv:value>555-123456</sv:value>
         </sv:property>
+        <sv:property sv:name="mobile" sv:type="String">
+            <sv:value>555-998877</sv:value>
+        </sv:property>
         <sv:property sv:name="fax" sv:type="String">
             <sv:value>555-987654</sv:value>
         </sv:property>
         <sv:property sv:name="email" sv:type="String">
             <sv:value>info@comand-cms.com</sv:value>
+        </sv:property>
+        <sv:property sv:name="country" sv:type="String">
+            <sv:value>Deutschland</sv:value>
         </sv:property>
     </sv:node>
 

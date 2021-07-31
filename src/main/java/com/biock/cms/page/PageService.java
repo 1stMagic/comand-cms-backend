@@ -17,8 +17,6 @@ public class PageService {
 
     public Optional<Page> getPage(@NotNull final String language, @NotNull final String siteName, @NotNull final String pagePath, final boolean onlyActive) {
 
-        final Optional<Page> page = this.pageRepository.getPage(siteName, pagePath, onlyActive);
-        page.ifPresent(p -> p.buildBreadcrumbs(language, this.pageRepository));
-        return page;
+        return this.pageRepository.getPage(siteName, pagePath, onlyActive);
     }
 }

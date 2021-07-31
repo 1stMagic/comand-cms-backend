@@ -7,8 +7,6 @@ import com.biock.cms.jcr.CloseableJcrSession;
 import com.biock.cms.jcr.JcrPaths;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.validation.constraints.NotNull;
@@ -55,7 +53,6 @@ public class SiteRepository {
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }
-
         return Optional.empty();
     }
 

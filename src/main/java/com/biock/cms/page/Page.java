@@ -1,23 +1,22 @@
 package com.biock.cms.page;
 
+import com.biock.cms.admin.page.dto.CreatePageDTO;
 import com.biock.cms.component.Component;
-import com.biock.cms.shared.Builder;
 import com.biock.cms.shared.Descriptor;
 import com.biock.cms.shared.Label;
 import com.biock.cms.shared.Modification;
 import com.biock.cms.shared.page.PageConfig;
 import com.biock.cms.shared.page.PageMetaData;
-import com.biock.cms.utils.ComponentUtils;
+import com.biock.cms.utils.CollectionUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 public class Page {
@@ -32,19 +31,20 @@ public class Page {
     private final PageMetaData metaData;
     private final PageConfig config;
     private final List<Component> components;
-    private final List<BreadcrumbItem> breadcrumbs;
+    private final List<Page> children;
 
     public Page(
             final String parentId,
-            @NotNull final String id,
-            @NotNull final Descriptor descriptor,
-            @NotNull final Modification modification,
+            final String id,
+            final Descriptor descriptor,
+            final Modification modification,
             final boolean active,
-            @NotNull final Label title,
-            @NotNull final String path,
-            @NotNull final PageMetaData metaData,
-            @NotNull final PageConfig config,
-            @NotNull final List<Component> components) {
+            final Label title,
+            final String path,
+            final PageMetaData metaData,
+            final PageConfig config,
+            final List<Component> components,
+            final List<Page> children) {
 
         this.parentId = parentId;
         this.id = id;
@@ -55,13 +55,25 @@ public class Page {
         this.path = path;
         this.metaData = metaData;
         this.config = config;
-        this.components = components;
-        this.breadcrumbs = new ArrayList<>();
+        this.components = CollectionUtils.copy(components);
+        this.children = CollectionUtils.copy(children);
     }
 
     public static Builder builder() {
         
         return new Builder();
+    }
+
+    public static Page of(@NotNull final CreatePageDTO dto) {
+
+        return Page.builder()
+                .parentId(dto.getParentId())
+                .descriptor(Descriptor.of(dto.getDescriptor()))
+                .active(dto.isActive())
+                .title(new Label(dto.getTitle()))
+                .metaData(new PageMetaData(Optional.ofNullable(dto.getMetaData()).orElse(emptyMap())))
+                .config(PageConfig.of(dto))
+                .build();
     }
 
     public String getParentId() {
@@ -111,12 +123,12 @@ public class Page {
 
     public List<Component> getComponents() {
 
-        return this.components;
+        return CollectionUtils.copy(this.components);
     }
 
-    public List<BreadcrumbItem> getBreadcrumbs() {
+    public List<Page> getChildren() {
 
-        return this.breadcrumbs;
+        return CollectionUtils.copy(this.children);
     }
 
     @JsonIgnore
@@ -131,43 +143,33 @@ public class Page {
     }
 
     @JsonIgnore
-    public Label getMainNavigationTitle() {
+    public String getTopNavigationTitle(@NotNull final String language) {
 
-        if (!this.getConfig().getMainNavigationTitle().isEmpty()) {
-            return this.getConfig().getMainNavigationTitle();
-        }
-        return ComponentUtils.getHeadline(getComponents()).orElse(getTitle());
+        return StringUtils.defaultIfBlank(
+                StringUtils.defaultIfBlank(
+                        getConfig().getTopNavigationTitle().getText(language),
+                        getTitle().getText(language)),
+                getDescriptor().getTitle());
     }
 
     @JsonIgnore
-    public Label getTopNavigationTitle() {
+    public String getMainNavigationTitle(@NotNull final String language) {
 
-        if (!this.getConfig().getTopNavigationTitle().isEmpty()) {
-            return this.getConfig().getTopNavigationTitle();
-        }
-        return ComponentUtils.getHeadline(getComponents()).orElse(getTitle());
+        return StringUtils.defaultIfBlank(
+                StringUtils.defaultIfBlank(
+                        getConfig().getMainNavigationTitle().getText(language),
+                        getTitle().getText(language)),
+                getDescriptor().getTitle());
     }
 
     @JsonIgnore
-    public Label getFooterNavigationTitle() {
+    public String getFooterNavigationTitle(@NotNull final String language) {
 
-        if (!this.getConfig().getFooterNavigationTitle().isEmpty()) {
-            return this.getConfig().getFooterNavigationTitle();
-        }
-        return ComponentUtils.getHeadline(getComponents()).orElse(getTitle());
-    }
-
-    public void buildBreadcrumbs(final String language, final PageRepository pageRepository) {
-
-        this.breadcrumbs.clear();
-
-        final Optional<Page> parentPage = pageRepository.getParentPage(this, true);
-        if (parentPage.isPresent()) {
-            parentPage.get().buildBreadcrumbs(language, pageRepository);
-            this.breadcrumbs.addAll(parentPage.get().getBreadcrumbs());
-        }
-
-        this.breadcrumbs.add(new BreadcrumbItem(getMainNavigationTitle().getText(language), getHref()));
+        return StringUtils.defaultIfBlank(
+                StringUtils.defaultIfBlank(
+                        getConfig().getFooterNavigationTitle().getText(language),
+                        getTitle().getText(language)),
+                getDescriptor().getTitle());
     }
 
     public static final class Builder implements com.biock.cms.shared.Builder<Page> {
@@ -182,6 +184,27 @@ public class Page {
         private PageMetaData metaData;
         private PageConfig config;
         private List<Component> components;
+        private List<Page> children;
+
+        public Builder apply(final Page page) {
+
+            return parentId(page.getParentId())
+                    .id(page.getId())
+                    .descriptor(page.getDescriptor())
+                    .modification(page.getModification())
+                    .active(page.isActive())
+                    .title(page.getTitle())
+                    .path(page.getPath())
+                    .metaData(page.getMetaData())
+                    .config(page.getConfig())
+                    .components(page.getComponents())
+                    .children(page.getChildren());
+        }
+
+        public String path() {
+
+            return this.path;
+        }
 
         public Builder parentId(final String parentId) {
 
@@ -189,19 +212,19 @@ public class Page {
             return this;
         }
 
-        public Builder id(@NotNull final String id) {
+        public Builder id(final String id) {
 
             this.id = id;
             return this;
         }
 
-        public Builder descriptor(@NotNull final Descriptor descriptor) {
+        public Builder descriptor(final Descriptor descriptor) {
 
             this.descriptor = descriptor;
             return this;
         }
 
-        public Builder modification(@NotNull final Modification modification) {
+        public Builder modification(final Modification modification) {
 
             this.modification = modification;
             return this;
@@ -219,27 +242,33 @@ public class Page {
             return this;
         }
 
-        public Builder path(@NotNull final String path) {
+        public Builder path(final String path) {
 
             this.path = path;
             return this;
         }
 
-        public Builder metaData(@NotNull final PageMetaData metaData) {
+        public Builder metaData(final PageMetaData metaData) {
 
             this.metaData = metaData;
             return this;
         }
 
-        public Builder config(@NotNull final PageConfig config) {
+        public Builder config(final PageConfig config) {
 
             this.config = config;
             return this;
         }
 
-        public Builder components(@NotNull final List<Component> components) {
+        public Builder components(final List<Component> components) {
 
             this.components = components;
+            return this;
+        }
+
+        public Builder children(final List<Page> children) {
+
+            this.children = children;
             return this;
         }
 
@@ -256,7 +285,8 @@ public class Page {
                     this.path,
                     Optional.ofNullable(this.metaData).orElse(new PageMetaData(emptyMap())),
                     this.config,
-                    Optional.ofNullable(this.components).orElse(emptyList()));
+                    this.components,
+                    this.children);
         }
     }
 }

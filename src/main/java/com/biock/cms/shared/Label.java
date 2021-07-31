@@ -1,5 +1,6 @@
 package com.biock.cms.shared;
 
+import com.biock.cms.utils.CollectionUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 import static java.util.Collections.emptyMap;
 
@@ -22,7 +24,7 @@ public class Label implements ValueObject<Label> {
 
     public Label(@NotNull final Map<String, String> texts) {
 
-        this.texts = texts;
+        this.texts = CollectionUtils.copy(texts);
     }
 
     public static Builder builder() {
@@ -42,7 +44,7 @@ public class Label implements ValueObject<Label> {
 
     public Map<String, String> getTexts() {
 
-        return this.texts;
+        return CollectionUtils.copy(this.texts);
     }
 
     public String getText(final String language) {
@@ -57,6 +59,14 @@ public class Label implements ValueObject<Label> {
     public List<String> getLanguages() {
 
         return new ArrayList<>(this.texts.keySet());
+    }
+
+    public Label copy(final String format) {
+
+        final Map<String, String> mappedTexts = new HashMap<>();
+        final UnaryOperator<String> textMapper = text -> String.format(format, text);
+        getTexts().forEach((key, value) -> mappedTexts.put(key, textMapper.apply(value)));
+        return new Label(mappedTexts);
     }
 
     @Override

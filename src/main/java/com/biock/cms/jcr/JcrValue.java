@@ -1,6 +1,7 @@
 package com.biock.cms.jcr;
 
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -20,5 +21,10 @@ public final class JcrValue {
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }
+    }
+
+    public static String escapeQueryParam(final String value) {
+
+        return StringUtils.defaultString(value).replace("'", "''");
     }
 }

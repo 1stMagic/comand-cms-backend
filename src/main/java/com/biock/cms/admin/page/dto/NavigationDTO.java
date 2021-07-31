@@ -1,6 +1,6 @@
 package com.biock.cms.admin.page.dto;
 
-import com.biock.cms.admin.page.AdminPage;
+import com.biock.cms.page.Page;
 import com.biock.cms.shared.Descriptor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -23,8 +23,8 @@ public class NavigationDTO {
     private List<NavigationDTO> children;
 
     public static NavigationDTO of(
-            @NotNull final AdminPage page,
-            @NotNull final Function<AdminPage, String> titleSupplier) {
+            @NotNull final Page page,
+            @NotNull final Function<Page, String> titleSupplier) {
 
         final var dto = new NavigationDTO();
         dto.id = page.getId();

@@ -2,7 +2,7 @@ package com.biock.cms.admin.page.dto;
 
 import com.biock.cms.site.dto.ResultDTO;
 
-public class CreatePageResultDTO extends ResultDTO<CreatePageResultDTO> {
+public class DeletePageResultDTO extends ResultDTO<DeletePageResultDTO> {
 
     private String id;
 
@@ -11,7 +11,7 @@ public class CreatePageResultDTO extends ResultDTO<CreatePageResultDTO> {
         return this.id;
     }
 
-    public CreatePageResultDTO setId(final String id) {
+    public DeletePageResultDTO setId(final String id) {
 
         this.id = id;
         return this;

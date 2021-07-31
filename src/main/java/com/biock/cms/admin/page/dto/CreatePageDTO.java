@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-public class AdminPageDTO {
+public class CreatePageDTO {
 
     private String parentId;
     private boolean active;
@@ -34,7 +34,7 @@ public class AdminPageDTO {
         return this.parentId;
     }
 
-    public AdminPageDTO setParentId(final String parentId) {
+    public CreatePageDTO setParentId(final String parentId) {
 
         this.parentId = parentId;
         return this;
@@ -45,7 +45,7 @@ public class AdminPageDTO {
         return this.active;
     }
 
-    public AdminPageDTO setActive(final boolean active) {
+    public CreatePageDTO setActive(final boolean active) {
 
         this.active = active;
         return this;
@@ -56,7 +56,7 @@ public class AdminPageDTO {
         return this.title;
     }
 
-    public AdminPageDTO setTitle(final Map<String, String> title) {
+    public CreatePageDTO setTitle(final Map<String, String> title) {
 
         this.title = title;
         return this;
@@ -67,7 +67,7 @@ public class AdminPageDTO {
         return this.mainNavigationTitle;
     }
 
-    public AdminPageDTO setMainNavigationTitle(final Map<String, String> mainNavigationTitle) {
+    public CreatePageDTO setMainNavigationTitle(final Map<String, String> mainNavigationTitle) {
 
         this.mainNavigationTitle = mainNavigationTitle;
         return this;
@@ -78,7 +78,7 @@ public class AdminPageDTO {
         return this.topNavigationTitle;
     }
 
-    public AdminPageDTO setTopNavigationTitle(final Map<String, String> topNavigationTitle) {
+    public CreatePageDTO setTopNavigationTitle(final Map<String, String> topNavigationTitle) {
 
         this.topNavigationTitle = topNavigationTitle;
         return this;
@@ -89,7 +89,7 @@ public class AdminPageDTO {
         return this.footerNavigationTitle;
     }
 
-    public AdminPageDTO setFooterNavigationTitle(final Map<String, String> footerNavigationTitle) {
+    public CreatePageDTO setFooterNavigationTitle(final Map<String, String> footerNavigationTitle) {
 
         this.footerNavigationTitle = footerNavigationTitle;
         return this;
@@ -100,7 +100,7 @@ public class AdminPageDTO {
         return this.descriptor;
     }
 
-    public AdminPageDTO setDescriptor(final DescriptorDTO descriptor) {
+    public CreatePageDTO setDescriptor(final DescriptorDTO descriptor) {
 
         this.descriptor = descriptor;
         return this;
@@ -111,7 +111,7 @@ public class AdminPageDTO {
         return this.metaData;
     }
 
-    public AdminPageDTO setMetaData(final Map<String, String> metaData) {
+    public CreatePageDTO setMetaData(final Map<String, String> metaData) {
 
         this.metaData = metaData;
         return this;
@@ -122,7 +122,7 @@ public class AdminPageDTO {
         return this.showInMainNavigation;
     }
 
-    public AdminPageDTO setShowInMainNavigation(final boolean showInMainNavigation) {
+    public CreatePageDTO setShowInMainNavigation(final boolean showInMainNavigation) {
 
         this.showInMainNavigation = showInMainNavigation;
         return this;
@@ -133,7 +133,7 @@ public class AdminPageDTO {
         return this.showInTopNavigation;
     }
 
-    public AdminPageDTO setShowInTopNavigation(final boolean showInTopNavigation) {
+    public CreatePageDTO setShowInTopNavigation(final boolean showInTopNavigation) {
 
         this.showInTopNavigation = showInTopNavigation;
         return this;
@@ -144,7 +144,7 @@ public class AdminPageDTO {
         return this.showInFooterNavigation;
     }
 
-    public AdminPageDTO setShowInFooterNavigation(final boolean showInFooterNavigation) {
+    public CreatePageDTO setShowInFooterNavigation(final boolean showInFooterNavigation) {
 
         this.showInFooterNavigation = showInFooterNavigation;
         return this;
@@ -155,7 +155,7 @@ public class AdminPageDTO {
         return this.external;
     }
 
-    public AdminPageDTO setExternal(final boolean external) {
+    public CreatePageDTO setExternal(final boolean external) {
 
         this.external = external;
         return this;
@@ -166,7 +166,7 @@ public class AdminPageDTO {
         return this.href;
     }
 
-    public AdminPageDTO setHref(final String href) {
+    public CreatePageDTO setHref(final String href) {
 
         this.href = href;
         return this;
@@ -177,7 +177,7 @@ public class AdminPageDTO {
         return this.target;
     }
 
-    public AdminPageDTO setTarget(final String target) {
+    public CreatePageDTO setTarget(final String target) {
 
         this.target = target;
         return this;
@@ -188,7 +188,7 @@ public class AdminPageDTO {
         return this.iconClass;
     }
 
-    public AdminPageDTO setIconClass(final String iconClass) {
+    public CreatePageDTO setIconClass(final String iconClass) {
 
         this.iconClass = iconClass;
         return this;
@@ -199,7 +199,7 @@ public class AdminPageDTO {
         return this.beforePageId;
     }
 
-    public AdminPageDTO setBeforePageId(final String beforePageId) {
+    public CreatePageDTO setBeforePageId(final String beforePageId) {
 
         this.beforePageId = beforePageId;
         return this;

@@ -1,6 +1,7 @@
 package com.biock.cms.admin.site;
 
 import com.biock.cms.CmsApi;
+import com.biock.cms.site.Site;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class AdminSiteController {
     }
 
     @GetMapping("/{name}")
-    public AdminSite getSite(@PathVariable final String name) {
+    public Site getSite(@PathVariable final String name) {
 
         return this.adminSiteService
                     .getSite(name)

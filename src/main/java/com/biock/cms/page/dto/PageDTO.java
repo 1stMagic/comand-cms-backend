@@ -25,7 +25,6 @@ public class PageDTO {
         dto.title = page.getTitle().getText(language);
         dto.metaData = page.getMetaData().getMetaData();
         dto.components = page.getComponents().stream().map(c -> ComponentDTO.of(language, c)).collect(toList());
-        dto.breadcrumbs = page.getBreadcrumbs();
         return dto;
     }
 

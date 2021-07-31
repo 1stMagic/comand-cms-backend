@@ -3,15 +3,13 @@ package com.biock.cms.shared;
 import com.biock.cms.shared.dto.DescriptorDTO;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.validation.constraints.NotNull;
-
 public class Descriptor implements ValueObject<Descriptor> {
 
     private final String name;
     private final String title;
     private final String description;
 
-    public Descriptor(@NotNull final String name, @NotNull final String title, @NotNull final String description) {
+    public Descriptor(final String name, final String title, final String description) {
 
         this.name = name;
         this.title = title;
@@ -23,7 +21,7 @@ public class Descriptor implements ValueObject<Descriptor> {
         return new Builder();
     }
 
-    public static Descriptor of(@NotNull final DescriptorDTO dto) {
+    public static Descriptor of(final DescriptorDTO dto) {
 
         return Descriptor.builder()
                 .name(dto.getName())
@@ -48,7 +46,7 @@ public class Descriptor implements ValueObject<Descriptor> {
     }
 
     @Override
-    public int compareTo(@NotNull final Descriptor descriptor) {
+    public int compareTo(final Descriptor descriptor) {
 
         int c = this.getName().compareTo(descriptor.getName());
         if (c != 0) {
@@ -67,19 +65,26 @@ public class Descriptor implements ValueObject<Descriptor> {
         private String title;
         private String description;
 
-        public Builder name(@NotNull final String name) {
+        public Builder apply(final Descriptor descriptor) {
+
+            return name(descriptor.getName())
+                    .title(descriptor.getTitle())
+                    .description(descriptor.getDescription());
+        }
+
+        public Builder name(final String name) {
 
             this.name = name;
             return this;
         }
 
-        public Builder title(@NotNull final String title) {
+        public Builder title(final String title) {
 
             this.title = title;
             return this;
         }
 
-        public Builder description(@NotNull final String description) {
+        public Builder description(final String description) {
 
             this.description = description;
             return this;

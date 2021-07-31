@@ -3,13 +3,21 @@ Content-Type: application/json
 
 {
     "descriptor": {
-        "name": "new_page3"
+        "name": "new_page"
     },
     "title": {
-        "de": "Neue Seite 3",
-        "en": "New page 3"
+        "de": "Neue Seite",
+        "en": "New page"
     },
-    "active": true
+    "active": false
 }
+
+###
+
+DELETE http://localhost:55578/api/v1/admin/pages/demo/a6bc02ae-9a89-44b5-b3c0-678541b1db54
+
+###
+
+POST http://localhost:55578/api/v1/admin/pages/demo/clone/7a1104f9-31d8-4dc2-9f1a-fb1328b3ef2f
 
 ###

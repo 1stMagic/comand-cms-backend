@@ -1,6 +1,6 @@
 package com.biock.cms.shared.page;
 
-import com.biock.cms.admin.page.dto.AdminPageDTO;
+import com.biock.cms.admin.page.dto.CreatePageDTO;
 import com.biock.cms.shared.Label;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +55,7 @@ public class PageConfig {
         return new Builder();
     }
 
-    public static PageConfig of(@NotNull final AdminPageDTO dto) {
+    public static PageConfig of(@NotNull final CreatePageDTO dto) {
 
         return PageConfig.builder()
                 .showInMainNavigation(dto.isShowInMainNavigation())

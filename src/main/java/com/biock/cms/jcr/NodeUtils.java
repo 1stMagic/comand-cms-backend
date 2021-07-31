@@ -11,6 +11,8 @@ import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 
+import static com.biock.cms.jcr.JcrValue.escapeQueryParam;
+
 public final class NodeUtils {
 
     private NodeUtils() {
@@ -54,7 +56,24 @@ public final class NodeUtils {
 
         try {
             final var query = session.getWorkspace().getQueryManager().createQuery(
-                    "select * from [cms:page] as p where isdescendantnode(p, '/cms/sites') and [jcr:id] = '" + id + "'",
+                    String.format("select * from [cms:page] as p where isdescendantnode(p, '/cms/sites') and [jcr:id] = '%s'", escapeQueryParam(id)),
+                    Query.JCR_SQL2);
+            final QueryResult result = query.execute();
+            final NodeIterator nodes = result.getNodes();
+            if (nodes.hasNext()) {
+                return nodes.nextNode();
+            }
+            return null;
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public static Node getNodeBySiteId(final Session session, final String site, final String id) {
+
+        try {
+            final var query = session.getWorkspace().getQueryManager().createQuery(
+                    String.format("select * from [cms:page] as p where isdescendantnode(p, '/cms/sites/%1$s') and [jcr:id] = '%2$s'", escapeQueryParam(site), escapeQueryParam(id)),
                     Query.JCR_SQL2);
             final QueryResult result = query.execute();
             final NodeIterator nodes = result.getNodes();

@@ -1,19 +1,22 @@
 package com.biock.cms.admin.page;
 
 import com.biock.cms.CmsApi;
-import com.biock.cms.admin.page.dto.AdminPageDTO;
+import com.biock.cms.admin.page.dto.CreatePageDTO;
 import com.biock.cms.admin.page.dto.CreatePageResultDTO;
+import com.biock.cms.admin.page.dto.DeletePageResultDTO;
 import com.biock.cms.admin.page.dto.NavigationDTO;
+import com.biock.cms.page.Page;
 import com.biock.cms.utils.LanguageUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -41,7 +44,7 @@ public class AdminPageController {
     }
 
     @GetMapping("/{site}/top-navigation/details")
-    public List<AdminPage> getTopNavigationDetails(@PathVariable final String site) {
+    public List<Page> getTopNavigationDetails(@PathVariable final String site) {
 
         return this.adminPageService.getTopNavigationPages(site);
     }
@@ -57,7 +60,7 @@ public class AdminPageController {
     }
 
     @GetMapping("/{site}/main-navigation/details")
-    public List<AdminPage> getMainNavigationDetails(@PathVariable final String site) {
+    public List<Page> getMainNavigationDetails(@PathVariable final String site) {
 
         return this.adminPageService.getMainNavigationPages(site);
     }
@@ -73,7 +76,7 @@ public class AdminPageController {
     }
 
     @GetMapping("/{site}/footer-navigation/details")
-    public List<AdminPage> getFooterNavigationDetails(@PathVariable final String site) {
+    public List<Page> getFooterNavigationDetails(@PathVariable final String site) {
 
         return this.adminPageService.getFooterNavigationPages(site);
     }
@@ -81,7 +84,7 @@ public class AdminPageController {
     @PostMapping(path = "/{site}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreatePageResultDTO createPage(
             @PathVariable final String site,
-            @Valid @RequestBody final AdminPageDTO page,
+            @Valid @RequestBody final CreatePageDTO page,
             final BindingResult bindingResult) {
 
         final CreatePageResultDTO result = new CreatePageResultDTO();
@@ -101,5 +104,26 @@ public class AdminPageController {
         }
 
         return result.addMessage(this.messageSourceAccessor.getMessage("admin.page.create_error"));
+    }
+
+    @PostMapping(path = "/{site}/clone/{id}")
+    public ResponseEntity<CreatePageResultDTO> clonePage(@PathVariable final String site, @PathVariable final String id) {
+
+        final var result = new CreatePageResultDTO();
+        return this.adminPageService.clonePage(site, id)
+                .map(page -> ResponseEntity.ok(result.setId(page.getId()).setSuccess(true)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(result.addMessage(this.messageSourceAccessor.getMessage("admin.page.clone_error"))));
+    }
+
+    @DeleteMapping("/{site}/{id}")
+    public ResponseEntity<DeletePageResultDTO> deletePage(@PathVariable final String site, @PathVariable final String id) {
+
+        final var result = new DeletePageResultDTO();
+        return this.adminPageService
+                .deletePage(site, id)
+                .map(pageId -> ResponseEntity.ok(result.setId(pageId).setSuccess(true)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(result.addMessage(this.messageSourceAccessor.getMessage("admin.page.delete_error"))));
     }
 }

@@ -82,6 +82,17 @@ public class Modification implements ValueObject<Modification> {
         private OffsetDateTime lastModified;
         private String lastModifiedBy;
 
+        public Builder apply(final Modification modification) {
+
+            if (modification == null) {
+                return this;
+            }
+            return created(modification.getCreated())
+                    .createdBy(modification.getCreatedBy())
+                    .lastModified(modification.getLastModified())
+                    .lastModifiedBy(modification.getLastModifiedBy());
+        }
+
         public Builder created(@NotNull final OffsetDateTime created) {
 
             this.created = created;

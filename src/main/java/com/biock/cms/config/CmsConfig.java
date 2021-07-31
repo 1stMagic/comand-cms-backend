@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,8 @@ public class CmsConfig {
     @NotNull
     private final String timeZone;
 
+    private final List<String> apiAllowedMethods;
+
     private final List<String> apiAllowedClientOrigins;
 
     private final List<String> apiAllowedClientOriginPatterns;
@@ -36,12 +39,14 @@ public class CmsConfig {
             final Path repositoryPath,
             final Path assetsPath,
             final String timeZone,
+            final List<String> apiAllowedMethods,
             final List<String> apiAllowedClientOrigins,
             final List<String> apiAllowedClientOriginPatterns) {
 
         this.repositoryPath = repositoryPath;
         this.assetsPath = assetsPath;
         this.timeZone = timeZone;
+        this.apiAllowedMethods = Optional.ofNullable(apiAllowedMethods).orElse(Arrays.asList("GET", "PUT", "POST", "DELETE"));
         this.apiAllowedClientOrigins = Optional.ofNullable(apiAllowedClientOrigins).orElse(emptyList());
         this.apiAllowedClientOriginPatterns = Optional.ofNullable(apiAllowedClientOriginPatterns).orElse(emptyList());
     }
@@ -69,6 +74,11 @@ public class CmsConfig {
     public ZoneOffset getTimeZoneOffset() {
 
         return getTimeZoneId().getRules().getOffset(Instant.now());
+    }
+
+    public List<String> getApiAllowedMethods() {
+
+        return this.apiAllowedMethods;
     }
 
     public List<String> getApiAllowedClientOrigins() {

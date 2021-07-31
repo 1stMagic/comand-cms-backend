@@ -25,6 +25,7 @@ public class CorsConfiguration {
 
                 registry
                         .addMapping(CmsApi.V1 + "/**")
+                        .allowedMethods(config.getApiAllowedMethods().toArray(String[]::new))
                         .allowedOrigins(config.getApiAllowedClientOrigins().toArray(String[]::new))
                         .allowedOriginPatterns(config.getApiAllowedClientOriginPatterns().toArray(String[]::new));
             }

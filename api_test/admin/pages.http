@@ -18,6 +18,15 @@ DELETE http://localhost:55578/api/v1/admin/pages/demo/a6bc02ae-9a89-44b5-b3c0-67
 
 ###
 
-POST http://localhost:55578/api/v1/admin/pages/demo/clone/7a1104f9-31d8-4dc2-9f1a-fb1328b3ef2f
+POST http://localhost:55578/api/v1/admin/pages/demo/clone/demo.index
+
+###
+
+PUT http://localhost:55578/api/v1/admin/pages/demo/85bb9417-5493-4ef4-9aad-610599e0488b
+Content-Type: application/json
+
+{
+    "active": true
+}
 
 ###

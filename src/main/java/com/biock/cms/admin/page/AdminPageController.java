@@ -1,10 +1,7 @@
 package com.biock.cms.admin.page;
 
 import com.biock.cms.CmsApi;
-import com.biock.cms.admin.page.dto.CreatePageDTO;
-import com.biock.cms.admin.page.dto.CreatePageResultDTO;
-import com.biock.cms.admin.page.dto.DeletePageResultDTO;
-import com.biock.cms.admin.page.dto.NavigationDTO;
+import com.biock.cms.admin.page.dto.*;
 import com.biock.cms.page.Page;
 import com.biock.cms.utils.LanguageUtils;
 import org.springframework.context.MessageSource;
@@ -82,7 +79,7 @@ public class AdminPageController {
     }
 
     @PostMapping(path = "/{site}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CreatePageResultDTO createPage(
+    public ResponseEntity<CreatePageResultDTO> createPage(
             @PathVariable final String site,
             @Valid @RequestBody final CreatePageDTO page,
             final BindingResult bindingResult) {
@@ -90,20 +87,43 @@ public class AdminPageController {
         final CreatePageResultDTO result = new CreatePageResultDTO();
 
         if (bindingResult.hasErrors()) {
-            return result.setMessages(
+            return ResponseEntity.badRequest().body(result.setMessages(
                     bindingResult.getAllErrors()
                             .stream()
                             .map(this.messageSourceAccessor::getMessage)
-                            .collect(toList()));
+                            .collect(toList())));
         }
 
         final var pageId = this.adminPageService.create(site, page, page.getBeforePageId());
 
-        if (pageId.isPresent()) {
-            return result.setId(pageId.get()).setSuccess(true);
+        return pageId.map(pid -> ResponseEntity.ok(result.setId(pid).setSuccess(true)))
+                .orElseGet(() -> ResponseEntity.internalServerError().body(
+                        result.addMessage(this.messageSourceAccessor.getMessage("admin.page.create_error"))));
+
+    }
+
+    @PutMapping(path = "/{site}/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UpdatePageResultDTO> updatePage(
+            @PathVariable final String site,
+            @PathVariable final String id,
+            @Valid @RequestBody final UpdatePageDTO page,
+            final BindingResult bindingResult) {
+
+        final UpdatePageResultDTO result = new UpdatePageResultDTO();
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.setMessages(
+                    bindingResult.getAllErrors()
+                            .stream()
+                            .map(this.messageSourceAccessor::getMessage)
+                            .collect(toList())));
         }
 
-        return result.addMessage(this.messageSourceAccessor.getMessage("admin.page.create_error"));
+        final var pageId = this.adminPageService.update(site, id, page);
+
+        return pageId.map(pid -> ResponseEntity.ok(result.setId(pid).setSuccess(true)))
+                .orElseGet(() -> ResponseEntity.internalServerError().body(
+                        result.addMessage(this.messageSourceAccessor.getMessage("admin.page.update_error"))));
     }
 
     @PostMapping(path = "/{site}/clone/{id}")
@@ -126,4 +146,5 @@ public class AdminPageController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(result.addMessage(this.messageSourceAccessor.getMessage("admin.page.delete_error"))));
     }
+
 }

@@ -1,6 +1,7 @@
 package com.biock.cms.page;
 
 import com.biock.cms.admin.page.dto.CreatePageDTO;
+import com.biock.cms.admin.page.dto.UpdatePageDTO;
 import com.biock.cms.component.Component;
 import com.biock.cms.shared.Descriptor;
 import com.biock.cms.shared.Label;
@@ -170,6 +171,11 @@ public class Page {
                         getConfig().getFooterNavigationTitle().getText(language),
                         getTitle().getText(language)),
                 getDescriptor().getTitle());
+    }
+
+    public Page apply(final UpdatePageDTO update) {
+
+        return builder().apply(this).active(update.isActive()).build();
     }
 
     public static final class Builder implements com.biock.cms.shared.Builder<Page> {

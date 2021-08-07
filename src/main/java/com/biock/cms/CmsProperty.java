@@ -31,8 +31,6 @@ public final class CmsProperty {
     public static final String CONTACT_DATA_EMAIL = "email";
     public static final String CONTACT_DATA_COUNTRY = "country";
 
-    public static final String META_DATA_PREFIX = "cmsmeta:";
-
     private CmsProperty() {
 
         // Empty

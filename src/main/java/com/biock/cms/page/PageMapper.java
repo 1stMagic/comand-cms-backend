@@ -13,10 +13,11 @@ import com.biock.cms.shared.page.PageMetaData;
 import com.biock.cms.shared.page.PageMetaDataMapper;
 import org.springframework.stereotype.Component;
 
-import javax.jcr.*;
+import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NodeType;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.biock.cms.jcr.NodeUtils.createIfAbsent;
@@ -96,20 +97,13 @@ public class PageMapper extends AbstractMapper<Page> {
         }
     }
 
-    private PageMetaData getPageMetaData(final Node pageNode) {
+    private PageMetaData getPageMetaData(final Node node) {
 
         try {
-            final Map<String, String> metaData = new HashMap<>();
-            if (pageNode.hasNode(JcrPaths.relative(CmsNode.META_DATA))) {
-                final PropertyIterator properties = pageNode.getNode(JcrPaths.relative(CmsNode.META_DATA)).getProperties();
-                while (properties.hasNext()) {
-                    final var property = properties.nextProperty();
-                    if (!property.isMultiple() && property.getType() == PropertyType.STRING) {
-                        metaData.put(property.getName(), property.getString());
-                    }
-                }
+            if (node.hasNode(CmsNode.META_DATA)) {
+                new PageMetaDataMapper().toEntity(node.getNode(CmsNode.META_DATA));
             }
-            return new PageMetaData(metaData);
+            return PageMetaData.empty();
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

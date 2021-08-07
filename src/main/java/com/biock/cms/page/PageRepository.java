@@ -48,6 +48,17 @@ public class PageRepository {
         this.pageMapper = pageMapper;
     }
 
+    public Optional<Page> getPage(final String siteName, final String pageId) {
+
+        try (final var session = CloseableJcrSession.adminSession(this.repository)) {
+            final Node pageNode = NodeUtils.getNodeBySiteId(session, siteName, pageId);
+            if (pageNode != null && CmsType.PAGE.isNodeType(pageNode)) {
+                return Optional.of(this.pageMapper.toEntity(pageNode));
+            }
+        }
+        return Optional.empty();
+    }
+
     public List<Page> getPages(@NotNull final String siteName, @NotNull final Predicate<Node> filter) {
 
         return getChildPages(JcrPaths.absolute(CmsNode.CMS, CmsNode.SITES, siteName), filter);
@@ -93,21 +104,25 @@ public class PageRepository {
                 return Optional.empty();
             }
             final var id = StringUtils.defaultIfBlank(page.getId(), UUID.randomUUID().toString());
-            if (parentNode.hasNode(id)) {
-                throw new UnsupportedOperationException("Update of nodes not implemented yet");
-            } else {
-                final var pageNode = parentNode.addNode(page.getDescriptor().getName(), CmsType.PAGE.getName());
-                final var modificationBuilder = Modification.builder()
-                        .apply(page.getModification())
-                        .lastModified(OffsetDateTime.now())
-                        .lastModifiedBy("api");
-                if (StringUtils.isBlank(page.getId())) {
-                    modificationBuilder.created(OffsetDateTime.now()).createdBy("api");
-                }
-                this.pageMapper.toNode(
-                        Page.builder().apply(page).id(id).modification(modificationBuilder.build()).build(), pageNode
-                );
+            final var newPage = !parentNode.hasNode(page.getDescriptor().getName());
+            final var modificationBuilder = Modification.builder()
+                    .apply(page.getModification())
+                    .lastModified(OffsetDateTime.now())
+                    .lastModifiedBy("api");
+            if (newPage) {
+                modificationBuilder.created(OffsetDateTime.now()).createdBy("api");
             }
+            final var pageNode = newPage
+                    ? parentNode.addNode(page.getDescriptor().getName(), CmsType.PAGE.getName())
+                    : parentNode.getNode(page.getDescriptor().getName());
+            this.pageMapper.toNode(
+                    Page.builder()
+                            .apply(page)
+                            .id(id)
+                            .modification(modificationBuilder.build())
+                            .build(),
+                    pageNode
+            );
             session.save();
             final Node savedPageNode = NodeUtils.getNodeById(session, id);
             if (savedPageNode == null) {

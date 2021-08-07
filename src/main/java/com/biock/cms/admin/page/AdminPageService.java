@@ -2,6 +2,7 @@ package com.biock.cms.admin.page;
 
 import com.biock.cms.CmsProperty;
 import com.biock.cms.admin.page.dto.CreatePageDTO;
+import com.biock.cms.admin.page.dto.UpdatePageDTO;
 import com.biock.cms.page.Page;
 import com.biock.cms.page.PageRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -46,12 +47,24 @@ public class AdminPageService {
 
     public Optional<String> create(@NotNull final String siteName, @NotNull final CreatePageDTO page, final String beforePageId) {
 
-        final var savedAdminPage = this.pageRepository.save(siteName, Page.of(page));
-        if (savedAdminPage.isPresent()) {
+        final var savedPage = this.pageRepository.save(siteName, Page.of(page));
+        if (savedPage.isPresent()) {
             if (StringUtils.isNotBlank(beforePageId)) {
                 throw new UnsupportedOperationException("Reordering of pages is not yet implemented");
             }
-            return Optional.of(savedAdminPage.get().getId());
+            return Optional.of(savedPage.get().getId());
+        }
+        return Optional.empty();
+    }
+
+    public Optional<String> update(final String siteName, final String pageId, final UpdatePageDTO update) {
+
+        final Optional<Page> page = this.pageRepository.getPage(siteName, pageId);
+        if (page.isPresent()) {
+            final var savedPage = this.pageRepository.save(siteName, page.get().apply(update));
+            if (savedPage.isPresent()) {
+                return Optional.of(savedPage.get().getId());
+            }
         }
         return Optional.empty();
     }

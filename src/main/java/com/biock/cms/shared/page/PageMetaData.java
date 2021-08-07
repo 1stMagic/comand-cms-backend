@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static java.util.Collections.emptyMap;
+
 public class PageMetaData implements ValueObject<PageMetaData>, Iterable<Entry<String, String>> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -26,6 +28,11 @@ public class PageMetaData implements ValueObject<PageMetaData>, Iterable<Entry<S
     public static Builder builder() {
 
         return new Builder();
+    }
+
+    public static PageMetaData empty() {
+
+        return new PageMetaData(emptyMap());
     }
 
     public Map<String, String> getMetaData() {

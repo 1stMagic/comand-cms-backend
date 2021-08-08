@@ -21,6 +21,11 @@ public final class CmsProperty {
     public static final String TOOLTIP = "tooltip";
     public static final String INNER_HTML = "innerHTML";
 
+    public static final String ISO_639_1_CODE = "iso6391Code";
+    public static final String ISO_639_2_CODE = "iso6392Code";
+    public static final String DEFAULT_LANGUAGE = "defaultLanguage";
+    public static final String NAME = "name";
+
     public static final String CONTACT_DATA_COMPANY = "company";
     public static final String CONTACT_DATA_STREET = "street";
     public static final String CONTACT_DATA_POSTAL_CODE = "postalCode";

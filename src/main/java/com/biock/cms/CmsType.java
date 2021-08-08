@@ -14,7 +14,12 @@ public enum CmsType {
     SITE("cms:site"),
     PAGE("cms:page"),
     COMPONENT("cms:component"),
-    LANGUAGE("cms:language");
+    LANGUAGE("cms:language"),
+    TRANSLATION("cms:translation"),
+    META_DATA("cms:metaData"),
+    USER("cms:user"),
+    USER_GROUP("cms:userGroup"),
+    CONTACT_DATA("cms:contactData");
 
     private final String name;
 

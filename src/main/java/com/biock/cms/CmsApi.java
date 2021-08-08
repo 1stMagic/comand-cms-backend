@@ -12,6 +12,8 @@ public final class CmsApi {
     public static final String ADMIN_SITES = V1 + "/admin/sites";
     public static final String ADMIN_PAGES = V1 + "/admin/pages";
 
+    public static final String DEFAULT_LANGUAGE = "de";
+
     private CmsApi() {
 
         // Empty

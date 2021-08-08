@@ -1,5 +1,7 @@
 package com.biock.cms.shared;
 
+import com.biock.cms.shared.builder.ModificationBuilder;
+
 import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
@@ -11,10 +13,10 @@ public class Modification implements ValueObject<Modification> {
     private final String lastModifiedBy;
 
     public Modification(
-            @NotNull final OffsetDateTime created,
-            @NotNull final String createdBy,
-            @NotNull final OffsetDateTime lastModified,
-            @NotNull final String lastModifiedBy) {
+            final OffsetDateTime created,
+            final String createdBy,
+            final OffsetDateTime lastModified,
+            final String lastModifiedBy) {
 
         this.created = created;
         this.createdBy = createdBy;
@@ -22,19 +24,9 @@ public class Modification implements ValueObject<Modification> {
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public static Builder builder() {
+    public static ModificationBuilder builder() {
 
-        return new Builder();
-    }
-
-    public static Modification of(@NotNull String user, @NotNull OffsetDateTime created) {
-
-        return Modification.builder()
-                .created(created)
-                .createdBy(user)
-                .lastModified(created)
-                .lastModifiedBy(user)
-                .build();
+        return new ModificationBuilder();
     }
 
     public OffsetDateTime getCreated() {
@@ -58,69 +50,20 @@ public class Modification implements ValueObject<Modification> {
     }
 
     @Override
-    public int compareTo(@NotNull final Modification modification) {
+    public int compareTo(@NotNull final Modification other) {
 
-        int c = this.getCreated().compareTo(modification.getCreated());
+        int c = this.created.compareTo(other.created);
         if (c != 0) {
             return c;
         }
-        c = this.getCreatedBy().compareTo(modification.getCreatedBy());
+        c = this.createdBy.compareTo(other.createdBy);
         if (c != 0) {
             return c;
         }
-        c = this.getLastModified().compareTo(modification.getLastModified());
+        c = this.lastModified.compareTo(other.lastModified);
         if (c != 0) {
             return c;
         }
-        return this.getLastModifiedBy().compareTo(modification.getLastModifiedBy());
-    }
-
-    public static final class Builder implements com.biock.cms.shared.Builder<Modification> {
-
-        private OffsetDateTime created;
-        private String createdBy;
-        private OffsetDateTime lastModified;
-        private String lastModifiedBy;
-
-        public Builder apply(final Modification modification) {
-
-            if (modification == null) {
-                return this;
-            }
-            return created(modification.getCreated())
-                    .createdBy(modification.getCreatedBy())
-                    .lastModified(modification.getLastModified())
-                    .lastModifiedBy(modification.getLastModifiedBy());
-        }
-
-        public Builder created(@NotNull final OffsetDateTime created) {
-
-            this.created = created;
-            return this;
-        }
-
-        public Builder createdBy(@NotNull final String createdBy) {
-
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public Builder lastModified(@NotNull final OffsetDateTime lastModified) {
-
-            this.lastModified = lastModified;
-            return this;
-        }
-
-        public Builder lastModifiedBy(@NotNull final String lastModifiedBy) {
-
-            this.lastModifiedBy = lastModifiedBy;
-            return this;
-        }
-
-        @Override
-        public Modification build() {
-
-            return new Modification(this.created, this.createdBy, this.lastModified, this.lastModifiedBy);
-        }
+        return this.lastModifiedBy.compareTo(other.lastModifiedBy);
     }
 }

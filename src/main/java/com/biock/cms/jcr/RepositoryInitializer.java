@@ -120,11 +120,7 @@ public final class RepositoryInitializer {
         try {
             final var workspace = session.getWorkspace();
             final var nodeTypeManager = workspace.getNodeTypeManager();
-            createType(nodeTypeManager, CmsType.ROOT);
-            createType(nodeTypeManager, CmsType.SITE);
-            createType(nodeTypeManager, CmsType.PAGE);
-            createType(nodeTypeManager, CmsType.COMPONENT);
-            createType(nodeTypeManager, CmsType.LANGUAGE);
+            Arrays.stream(CmsType.values()).forEach(type -> createType(nodeTypeManager, type));
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

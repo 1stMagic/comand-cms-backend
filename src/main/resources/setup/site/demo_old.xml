@@ -12,6 +12,12 @@
     <!--
       ** Site properties
       -->
+    <sv:property sv:name="jcr:name" sv:type="String">
+        <sv:value>demo</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:title" sv:type="String">
+        <sv:value>CoManD-CMS Demo-Site</sv:value>
+    </sv:property>
     <sv:property sv:name="jcr:description" sv:type="String">
         <sv:value>This is a demonstration site for the CoManD-CMS</sv:value>
     </sv:property>
@@ -43,112 +49,45 @@
     <sv:property sv:name="homePage" sv:type="String">
         <sv:value>index.html</sv:value>
     </sv:property>
+    <sv:property sv:name="language" sv:type="String">
+        <sv:value>de</sv:value>
+    </sv:property>
 
-    <sv:node sv:name="languages">
+    <sv:node sv:name="supportedLanguages">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>nt:unstructured</sv:value>
         </sv:property>
 
         <sv:node sv:name="de">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:language</sv:value>
+                <sv:value>nt:unstructured</sv:value>
             </sv:property>
 
-            <sv:property sv:name="iso6391Code" sv:type="String">
-                <sv:value>de</sv:value>
+            <sv:property sv:name="title_de" sv:type="String">
+                <sv:value>Deutsch</sv:value>
             </sv:property>
-            <sv:property sv:name="iso6392Code" sv:type="String">
-                <sv:value>deu</sv:value>
+            <sv:property sv:name="title_en" sv:type="String">
+                <sv:value>German</sv:value>
             </sv:property>
-            <sv:property sv:name="active" sv:type="Boolean">
-                <sv:value>true</sv:value>
-            </sv:property>
-            <sv:property sv:name="defaultLanguage" sv:type="Boolean">
-                <sv:value>true</sv:value>
-            </sv:property>
-
-            <sv:node sv:name="name">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:translation</sv:value>
-                </sv:property>
-
-                <sv:property sv:name="de" sv:type="String">
-                    <sv:value>Deutsch</sv:value>
-                </sv:property>
-                <sv:property sv:name="en" sv:type="String">
-                    <sv:value>German</sv:value>
-                </sv:property>
-            </sv:node>
         </sv:node>
 
         <sv:node sv:name="en">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:language</sv:value>
+                <sv:value>nt:unstructured</sv:value>
             </sv:property>
 
-            <sv:property sv:name="iso6391Code" sv:type="String">
-                <sv:value>en</sv:value>
+            <sv:property sv:name="title_de" sv:type="String">
+                <sv:value>Englisch</sv:value>
             </sv:property>
-            <sv:property sv:name="iso6392Code" sv:type="String">
-                <sv:value>eng</sv:value>
+            <sv:property sv:name="title_en" sv:type="String">
+                <sv:value>English</sv:value>
             </sv:property>
-            <sv:property sv:name="active" sv:type="Boolean">
-                <sv:value>true</sv:value>
-            </sv:property>
-            <sv:property sv:name="defaultLanguage" sv:type="Boolean">
-                <sv:value>false</sv:value>
-            </sv:property>
-
-            <sv:node sv:name="name">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:translation</sv:value>
-                </sv:property>
-
-                <sv:property sv:name="de" sv:type="String">
-                    <sv:value>Englisch</sv:value>
-                </sv:property>
-                <sv:property sv:name="en" sv:type="String">
-                    <sv:value>English</sv:value>
-                </sv:property>
-            </sv:node>
-        </sv:node>
-
-        <sv:node sv:name="fr">
-            <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:language</sv:value>
-            </sv:property>
-
-            <sv:property sv:name="iso6391Code" sv:type="String">
-                <sv:value>fr</sv:value>
-            </sv:property>
-            <sv:property sv:name="iso6392Code" sv:type="String">
-                <sv:value>fra</sv:value>
-            </sv:property>
-            <sv:property sv:name="active" sv:type="Boolean">
-                <sv:value>false</sv:value>
-            </sv:property>
-            <sv:property sv:name="defaultLanguage" sv:type="Boolean">
-                <sv:value>false</sv:value>
-            </sv:property>
-
-            <sv:node sv:name="name">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:translation</sv:value>
-                </sv:property>
-
-                <sv:property sv:name="de" sv:type="String">
-                    <sv:value>Französisch</sv:value>
-                </sv:property>
-                <sv:property sv:name="en" sv:type="String">
-                    <sv:value>French</sv:value>
-                </sv:property>
-            </sv:node>
         </sv:node>
     </sv:node>
 
     <sv:node sv:name="contactData">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>cms:contactData</sv:value>
+            <sv:value>nt:unstructured</sv:value>
         </sv:property>
 
         <sv:property sv:name="company" sv:type="String">
@@ -197,6 +136,15 @@
         <!--
           ** Index page properties
           -->
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>demo.index</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>index</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:title" sv:type="String">
+            <sv:value>Home Page</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:description" sv:type="String">
             <sv:value>Demo Home Page</sv:value>
         </sv:property>
@@ -215,49 +163,49 @@
         <sv:property sv:name="active" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
+        <sv:property sv:name="title_de" sv:type="String">
+            <sv:value>Home (DE)</sv:value>
+        </sv:property>
+        <sv:property sv:name="title_en" sv:type="String">
+            <sv:value>Home (EN)</sv:value>
+        </sv:property>
+
+        <!--
+          ** Index page configuration
+          -->
         <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
-
-        <sv:node sv:name="mainNavigationTitle">
-            <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:translation</sv:value>
-            </sv:property>
-
-            <sv:property sv:name="de" sv:type="String">
-                <sv:value>Home (DE)</sv:value>
-            </sv:property>
-            <sv:property sv:name="en" sv:type="String">
-                <sv:value>Home (EN)</sv:value>
-            </sv:property>
-        </sv:node>
+        <sv:property sv:name="showInTopNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="external" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="href" sv:type="String">
+            <sv:value />
+        </sv:property>
+        <sv:property sv:name="target" sv:type="String">
+            <sv:value />
+        </sv:property>
 
         <!--
           ** Index page meta data
           -->
         <sv:node sv:name="metaData">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:metaData</sv:value>
+                <sv:value>nt:unstructured</sv:value>
             </sv:property>
 
-            <sv:node sv:name="author">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:translation</sv:value>
-                </sv:property>
-
-                <sv:property sv:name="de" sv:type="String">
-                    <sv:value>CoManD-CMS</sv:value>
-                </sv:property>
-            </sv:node>
-            <sv:node sv:name="keywords">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:translation</sv:value>
-                </sv:property>
-
-                <sv:property sv:name="de" sv:type="String">
-                    <sv:value>CMS, VueJS, SPA</sv:value>
-                </sv:property>
-            </sv:node>
+            <sv:property sv:name="author" sv:type="String">
+                <sv:value>CoManD-CMS</sv:value>
+            </sv:property>
+            <sv:property sv:name="keywords" sv:type="String">
+                <sv:value>CMS, VueJS, SPA</sv:value>
+            </sv:property>
         </sv:node>
 
         <!--
@@ -513,6 +461,15 @@
         <!--
           ** Team page properties
           -->
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>demo.team</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>team</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:title" sv:type="String">
+            <sv:value>Team Page</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:description" sv:type="String">
             <sv:value>Demo Team Page</sv:value>
         </sv:property>
@@ -531,6 +488,16 @@
         <sv:property sv:name="active" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
+        <sv:property sv:name="title_de" sv:type="String">
+            <sv:value>Team Seite</sv:value>
+        </sv:property>
+        <sv:property sv:name="title_en" sv:type="String">
+            <sv:value>Team Page</sv:value>
+        </sv:property>
+
+        <!--
+          ** Team page configuration
+          -->
         <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
@@ -540,41 +507,23 @@
         <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
+<!--        <sv:property sv:name="iconClass" sv:type="String">-->
+<!--            <sv:value>icon-check</sv:value>-->
+<!--        </sv:property>-->
 
-        <sv:node sv:name="topNavigationTitle">
+        <!--
+          ** Team page meta data
+          -->
+        <sv:node sv:name="metaData">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:translation</sv:value>
+                <sv:value>nt:unstructured</sv:value>
             </sv:property>
 
-            <sv:property sv:name="de" sv:type="String">
-                <sv:value>Team</sv:value>
+            <sv:property sv:name="author" sv:type="String">
+                <sv:value>CoManD-CMS</sv:value>
             </sv:property>
-            <sv:property sv:name="en" sv:type="String">
-                <sv:value>Team</sv:value>
-            </sv:property>
-        </sv:node>
-        <sv:node sv:name="mainNavigationTitle">
-            <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:translation</sv:value>
-            </sv:property>
-
-            <sv:property sv:name="de" sv:type="String">
-                <sv:value>Team Seite</sv:value>
-            </sv:property>
-            <sv:property sv:name="en" sv:type="String">
-                <sv:value>Team page</sv:value>
-            </sv:property>
-        </sv:node>
-        <sv:node sv:name="footerNavigationTitle">
-            <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:translation</sv:value>
-            </sv:property>
-
-            <sv:property sv:name="de" sv:type="String">
-                <sv:value>Das Team</sv:value>
-            </sv:property>
-            <sv:property sv:name="en" sv:type="String">
-                <sv:value>The team</sv:value>
+            <sv:property sv:name="keywords" sv:type="String">
+                <sv:value>CMS, VueJS, SPA</sv:value>
             </sv:property>
         </sv:node>
 
@@ -651,6 +600,15 @@
         <!--
           ** About page properties
           -->
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>demo.about</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>about</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:title" sv:type="String">
+            <sv:value>About Page</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:description" sv:type="String">
             <sv:value>Demo About Page</sv:value>
         </sv:property>
@@ -669,26 +627,25 @@
         <sv:property sv:name="active" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
+        <sv:property sv:name="title_de" sv:type="String">
+            <sv:value>Über</sv:value>
+        </sv:property>
+        <sv:property sv:name="title_en" sv:type="String">
+            <sv:value>About</sv:value>
+        </sv:property>
 
+        <!--
+          ** About page configuration
+          -->
         <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
-
-        <sv:node sv:name="metaData">
-            <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>cms:metaData</sv:value>
-            </sv:property>
-
-            <sv:node sv:name="title">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:translation</sv:value>
-                </sv:property>
-
-                <sv:property sv:name="de" sv:type="String">
-                    <sv:value>Über</sv:value>
-                </sv:property>
-            </sv:node>
-        </sv:node>
+        <sv:property sv:name="showInTopNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
 
         <!--
           ** Header component
@@ -768,6 +725,15 @@
             <!--
               ** About us page properties
               -->
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>demo.about.aboutus</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:name" sv:type="String">
+                <sv:value>aboutus</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:title" sv:type="String">
+                <sv:value>About Us Page</sv:value>
+            </sv:property>
             <sv:property sv:name="jcr:description" sv:type="String">
                 <sv:value>Demo About Us Page</sv:value>
             </sv:property>
@@ -786,6 +752,12 @@
             <sv:property sv:name="active" sv:type="Boolean">
                 <sv:value>true</sv:value>
             </sv:property>
+            <sv:property sv:name="title_de" sv:type="String">
+                <sv:value>About us</sv:value>
+            </sv:property>
+            <sv:property sv:name="title_en" sv:type="String">
+                <sv:value>About us</sv:value>
+            </sv:property>
 
             <!--
               ** About us page configuration
@@ -803,16 +775,19 @@
                 <sv:value>icon-cancel</sv:value>
             </sv:property>
 
-            <sv:node sv:name="mainNavigationTitle">
+            <!--
+              ** About us page meta data
+              -->
+            <sv:node sv:name="metaData">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:translation</sv:value>
+                    <sv:value>nt:unstructured</sv:value>
                 </sv:property>
 
-                <sv:property sv:name="de" sv:type="String">
-                    <sv:value>Über uns</sv:value>
+                <sv:property sv:name="author" sv:type="String">
+                    <sv:value>CoManD-CMS</sv:value>
                 </sv:property>
-                <sv:property sv:name="en" sv:type="String">
-                    <sv:value>About us</sv:value>
+                <sv:property sv:name="keywords" sv:type="String">
+                    <sv:value>CMS, VueJS, SPA</sv:value>
                 </sv:property>
             </sv:node>
         </sv:node>
@@ -828,6 +803,15 @@
             <!--
               ** Classic page properties
               -->
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>demo.about.classic</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:name" sv:type="String">
+                <sv:value>classic</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:title" sv:type="String">
+                <sv:value>Classic CMS</sv:value>
+            </sv:property>
             <sv:property sv:name="jcr:description" sv:type="String">
                 <sv:value>Link to classic CMS</sv:value>
             </sv:property>
@@ -847,6 +831,9 @@
                 <sv:value>true</sv:value>
             </sv:property>
 
+            <!--
+              ** Classic page configuration
+              -->
             <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
                 <sv:value>true</sv:value>
             </sv:property>
@@ -868,25 +855,6 @@
             <sv:property sv:name="iconClass" sv:type="String">
                 <sv:value>icon-delete</sv:value>
             </sv:property>
-
-            <sv:node sv:name="metaData">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>cms:metaData</sv:value>
-                </sv:property>
-
-                <sv:node sv:name="title">
-                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                        <sv:value>cms:translation</sv:value>
-                    </sv:property>
-
-                    <sv:property sv:name="de" sv:type="String">
-                        <sv:value>Klassisches CMS</sv:value>
-                    </sv:property>
-                    <sv:property sv:name="en" sv:type="String">
-                        <sv:value>Classic CMS</sv:value>
-                    </sv:property>
-                </sv:node>
-            </sv:node>
         </sv:node>
     </sv:node>
 </sv:node>

@@ -1,95 +1,73 @@
 package com.biock.cms.page;
 
-import com.biock.cms.admin.page.dto.CreatePageDTO;
-import com.biock.cms.admin.page.dto.UpdatePageDTO;
-import com.biock.cms.component.Component;
-import com.biock.cms.shared.Descriptor;
-import com.biock.cms.shared.Label;
+import com.biock.cms.page.builder.PageBuilder;
+import com.biock.cms.shared.AbstractEntity;
+import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.Modification;
-import com.biock.cms.shared.page.PageConfig;
-import com.biock.cms.shared.page.PageMetaData;
-import com.biock.cms.utils.CollectionUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.lang3.StringUtils;
+import com.biock.cms.i18n.Translation;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+public class Page extends AbstractEntity<Page> {
 
-import static java.util.Collections.emptyMap;
-
-public class Page {
-
-    private final String parentId;
-    private final String id;
-    private final Descriptor descriptor;
+    private final String description;
     private final Modification modification;
     private final boolean active;
-    private final Label title;
-    private final String path;
-    private final PageMetaData metaData;
-    private final PageConfig config;
-    private final List<Component> components;
-    private final List<Page> children;
+    private final Translation topNavigationTitle;
+    private final Translation mainNavigationTitle;
+    private final Translation footerNavigationTitle;
+    private final boolean showInTopNavigation;
+    private final boolean showInMainNavigation;
+    private final boolean showInFooterNavigation;
+    private final String iconClass;
+    private final boolean external;
+    private final String href;
+    private final String target;
+    private final MetaData metaData;
+    private final String jcrPath;
 
     public Page(
-            final String parentId,
-            final String id,
-            final Descriptor descriptor,
+            final EntityId id,
+            final String description,
             final Modification modification,
             final boolean active,
-            final Label title,
-            final String path,
-            final PageMetaData metaData,
-            final PageConfig config,
-            final List<Component> components,
-            final List<Page> children) {
+            final Translation topNavigationTitle,
+            final Translation mainNavigationTitle,
+            final Translation footerNavigationTitle,
+            final boolean showInTopNavigation,
+            final boolean showInMainNavigation,
+            final boolean showInFooterNavigation,
+            final String iconClass,
+            final boolean external,
+            final String href,
+            final String target,
+            final MetaData metaData,
+            final String jcrPath) {
 
-        this.parentId = parentId;
-        this.id = id;
-        this.descriptor = descriptor;
+        super(id);
+        this.description = description;
         this.modification = modification;
         this.active = active;
-        this.title = title;
-        this.path = path;
+        this.topNavigationTitle = topNavigationTitle;
+        this.mainNavigationTitle = mainNavigationTitle;
+        this.footerNavigationTitle = footerNavigationTitle;
+        this.showInTopNavigation = showInTopNavigation;
+        this.showInMainNavigation = showInMainNavigation;
+        this.showInFooterNavigation = showInFooterNavigation;
+        this.iconClass = iconClass;
+        this.external = external;
+        this.href = href;
+        this.target = target;
         this.metaData = metaData;
-        this.config = config;
-        this.components = CollectionUtils.copy(components);
-        this.children = CollectionUtils.copy(children);
+        this.jcrPath = jcrPath;
     }
 
-    public static Builder builder() {
-        
-        return new Builder();
+    public static PageBuilder builder() {
+
+        return new PageBuilder();
     }
 
-    public static Page of(@NotNull final CreatePageDTO dto) {
+    public String getDescription() {
 
-        return Page.builder()
-                .parentId(dto.getParentId())
-                .descriptor(Descriptor.of(dto.getDescriptor()))
-                .active(dto.isActive())
-                .title(new Label(dto.getTitle()))
-                .metaData(new PageMetaData(Optional.ofNullable(dto.getMetaData()).orElse(emptyMap())))
-                .config(PageConfig.of(dto))
-                .build();
-    }
-
-    public String getParentId() {
-
-        return this.parentId;
-    }
-
-    public String getId() {
-
-        return this.id;
-    }
-
-    public Descriptor getDescriptor() {
-
-        return this.descriptor;
+        return this.description;
     }
 
     public Modification getModification() {
@@ -102,197 +80,63 @@ public class Page {
         return this.active;
     }
 
-    public Label getTitle() {
+    public Translation getTopNavigationTitle() {
 
-        return this.title;
+        return this.topNavigationTitle;
     }
 
-    public String getPath() {
+    public Translation getMainNavigationTitle() {
 
-        return this.path;
+        return this.mainNavigationTitle;
     }
 
-    public PageMetaData getMetaData() {
+    public Translation getFooterNavigationTitle() {
+
+        return this.footerNavigationTitle;
+    }
+
+    public boolean isShowInTopNavigation() {
+
+        return this.showInTopNavigation;
+    }
+
+    public boolean isShowInMainNavigation() {
+
+        return this.showInMainNavigation;
+    }
+
+    public boolean isShowInFooterNavigation() {
+
+        return this.showInFooterNavigation;
+    }
+
+    public String getIconClass() {
+
+        return this.iconClass;
+    }
+
+    public boolean isExternal() {
+
+        return this.external;
+    }
+
+    public String getHref() {
+
+        return this.href;
+    }
+
+    public String getTarget() {
+
+        return this.target;
+    }
+
+    public MetaData getMetaData() {
 
         return this.metaData;
     }
 
-    public PageConfig getConfig() {
+    public String getJcrPath() {
 
-        return this.config;
-    }
-
-    public List<Component> getComponents() {
-
-        return CollectionUtils.copy(this.components);
-    }
-
-    public List<Page> getChildren() {
-
-        return CollectionUtils.copy(this.children);
-    }
-
-    @JsonIgnore
-    public String getHref() {
-
-        if (this.config.isExternal()) {
-            return this.config.getHref();
-        }
-        return Stream.of(getPath().split("/"))
-            .skip(4)
-            .collect(Collectors.joining("/")) + ".html";
-    }
-
-    @JsonIgnore
-    public String getTopNavigationTitle(@NotNull final String language) {
-
-        return StringUtils.defaultIfBlank(
-                StringUtils.defaultIfBlank(
-                        getConfig().getTopNavigationTitle().getText(language),
-                        getTitle().getText(language)),
-                getDescriptor().getTitle());
-    }
-
-    @JsonIgnore
-    public String getMainNavigationTitle(@NotNull final String language) {
-
-        return StringUtils.defaultIfBlank(
-                StringUtils.defaultIfBlank(
-                        getConfig().getMainNavigationTitle().getText(language),
-                        getTitle().getText(language)),
-                getDescriptor().getTitle());
-    }
-
-    @JsonIgnore
-    public String getFooterNavigationTitle(@NotNull final String language) {
-
-        return StringUtils.defaultIfBlank(
-                StringUtils.defaultIfBlank(
-                        getConfig().getFooterNavigationTitle().getText(language),
-                        getTitle().getText(language)),
-                getDescriptor().getTitle());
-    }
-
-    public Page apply(final UpdatePageDTO update) {
-
-        return builder().apply(this).active(update.isActive()).build();
-    }
-
-    public static final class Builder implements com.biock.cms.shared.Builder<Page> {
-
-        private String parentId;
-        private String id;
-        private Descriptor descriptor;
-        private Modification modification;
-        private boolean active;
-        private Label title;
-        private String path;
-        private PageMetaData metaData;
-        private PageConfig config;
-        private List<Component> components;
-        private List<Page> children;
-
-        public Builder apply(final Page page) {
-
-            return parentId(page.getParentId())
-                    .id(page.getId())
-                    .descriptor(page.getDescriptor())
-                    .modification(page.getModification())
-                    .active(page.isActive())
-                    .title(page.getTitle())
-                    .path(page.getPath())
-                    .metaData(page.getMetaData())
-                    .config(page.getConfig())
-                    .components(page.getComponents())
-                    .children(page.getChildren());
-        }
-
-        public String path() {
-
-            return this.path;
-        }
-
-        public Builder parentId(final String parentId) {
-
-            this.parentId = parentId;
-            return this;
-        }
-
-        public Builder id(final String id) {
-
-            this.id = id;
-            return this;
-        }
-
-        public Builder descriptor(final Descriptor descriptor) {
-
-            this.descriptor = descriptor;
-            return this;
-        }
-
-        public Builder modification(final Modification modification) {
-
-            this.modification = modification;
-            return this;
-        }
-
-        public Builder active(final boolean active) {
-
-            this.active = active;
-            return this;
-        }
-
-        public Builder title(final Label title) {
-
-            this.title = title;
-            return this;
-        }
-
-        public Builder path(final String path) {
-
-            this.path = path;
-            return this;
-        }
-
-        public Builder metaData(final PageMetaData metaData) {
-
-            this.metaData = metaData;
-            return this;
-        }
-
-        public Builder config(final PageConfig config) {
-
-            this.config = config;
-            return this;
-        }
-
-        public Builder components(final List<Component> components) {
-
-            this.components = components;
-            return this;
-        }
-
-        public Builder children(final List<Page> children) {
-
-            this.children = children;
-            return this;
-        }
-
-        @Override
-        public Page build() {
-
-            return new Page(
-                    this.parentId,
-                    this.id,
-                    this.descriptor,
-                    this.modification,
-                    this.active,
-                    this.title,
-                    this.path,
-                    Optional.ofNullable(this.metaData).orElse(new PageMetaData(emptyMap())),
-                    this.config,
-                    this.components,
-                    this.children);
-        }
+        return this.jcrPath;
     }
 }

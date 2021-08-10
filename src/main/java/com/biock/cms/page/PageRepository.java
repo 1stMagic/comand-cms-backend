@@ -1,6 +1,7 @@
 package com.biock.cms.page;
 
 import com.biock.cms.CmsType;
+import com.biock.cms.jcr.JcrPaths;
 import com.biock.cms.jcr.JcrRepository;
 import com.biock.cms.page.mapper.PageMapper;
 import com.biock.cms.shared.EntityId;
@@ -27,6 +28,17 @@ public class PageRepository extends JcrRepository {
 
         super(repository);
         this.pageMapper = pageMapper;
+    }
+
+    public Optional<Page> findPageBySIteIdAndRelativePagePath(final String siteId, final String relativePagePath) {
+
+        try (final var session = getSession()) {
+            final String absolutePagePath = JcrPaths.sites(siteId, relativePagePath);
+            if (session.hasNode(absolutePagePath)) {
+                return Optional.of(this.pageMapper.toEntity(session.getNode(absolutePagePath)));
+            }
+            return Optional.empty();
+        }
     }
 
     @SafeVarargs

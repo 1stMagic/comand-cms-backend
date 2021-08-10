@@ -1,13 +1,24 @@
 package com.biock.cms.page;
 
+import com.biock.cms.CmsMetaData;
+import com.biock.cms.component.Component;
+import com.biock.cms.i18n.Translation;
 import com.biock.cms.page.builder.PageBuilder;
 import com.biock.cms.shared.AbstractEntity;
 import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.Modification;
-import com.biock.cms.i18n.Translation;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
 
 public class Page extends AbstractEntity<Page> {
 
+    private final String name;
     private final String description;
     private final Modification modification;
     private final boolean active;
@@ -23,9 +34,11 @@ public class Page extends AbstractEntity<Page> {
     private final String target;
     private final MetaData metaData;
     private final String jcrPath;
+    private final List<Component> components;
 
     public Page(
             final EntityId id,
+            final String name,
             final String description,
             final Modification modification,
             final boolean active,
@@ -40,9 +53,11 @@ public class Page extends AbstractEntity<Page> {
             final String href,
             final String target,
             final MetaData metaData,
-            final String jcrPath) {
+            final String jcrPath,
+            final List<Component> components) {
 
         super(id);
+        this.name = name;
         this.description = description;
         this.modification = modification;
         this.active = active;
@@ -58,11 +73,20 @@ public class Page extends AbstractEntity<Page> {
         this.target = target;
         this.metaData = metaData;
         this.jcrPath = jcrPath;
+        this.components = new ArrayList<>();
+        if (components != null) {
+            this.components.addAll(components);
+        }
     }
 
     public static PageBuilder builder() {
 
         return new PageBuilder();
+    }
+
+    public String getName() {
+
+        return this.name;
     }
 
     public String getDescription() {
@@ -82,17 +106,25 @@ public class Page extends AbstractEntity<Page> {
 
     public Translation getTopNavigationTitle() {
 
-        return this.topNavigationTitle;
+        return Translation.merge(
+                this.topNavigationTitle,
+                this.mainNavigationTitle,
+                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
     }
 
     public Translation getMainNavigationTitle() {
 
-        return this.mainNavigationTitle;
+        return Translation.merge(
+                this.mainNavigationTitle,
+                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
     }
 
     public Translation getFooterNavigationTitle() {
 
-        return this.footerNavigationTitle;
+        return Translation.merge(
+                this.footerNavigationTitle,
+                this.mainNavigationTitle,
+                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
     }
 
     public boolean isShowInTopNavigation() {
@@ -122,7 +154,11 @@ public class Page extends AbstractEntity<Page> {
 
     public String getHref() {
 
-        return this.href;
+        return StringUtils.defaultIfBlank(
+                this.href,
+                Stream.of(getJcrPath().split("/"))
+                        .skip(4)
+                        .collect(joining("/")) + ".html");
     }
 
     public String getTarget() {
@@ -138,5 +174,10 @@ public class Page extends AbstractEntity<Page> {
     public String getJcrPath() {
 
         return this.jcrPath;
+    }
+
+    public List<Component> getComponents() {
+
+        return new ArrayList<>(this.components);
     }
 }

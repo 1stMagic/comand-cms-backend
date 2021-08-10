@@ -31,6 +31,17 @@ public class Translation implements ValueObject<Translation> {
         return new Translation(emptyMap());
     }
 
+    public static Translation merge(final Translation... translations) {
+
+        final Map<String, String> translationMap = new HashMap<>();
+        for (final Translation translation : translations) {
+            if (translation != null) {
+                translation.getTranslations().forEach(translationMap::putIfAbsent);
+            }
+        }
+        return new Translation(translationMap);
+    }
+
     public Map<String, String> getTranslations() {
 
         return new HashMap<>(this.translations);

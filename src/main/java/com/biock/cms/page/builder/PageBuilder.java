@@ -1,5 +1,6 @@
 package com.biock.cms.page.builder;
 
+import com.biock.cms.component.Component;
 import com.biock.cms.page.MetaData;
 import com.biock.cms.page.Page;
 import com.biock.cms.shared.EntityId;
@@ -7,9 +8,12 @@ import com.biock.cms.shared.Modification;
 import com.biock.cms.i18n.Translation;
 import com.biock.cms.shared.builder.Builder;
 
+import java.util.List;
+
 public class PageBuilder implements Builder<Page> {
 
     private EntityId id;
+    private String name;
     private String description;
     private Modification modification;
     private boolean active;
@@ -25,10 +29,17 @@ public class PageBuilder implements Builder<Page> {
     private String target;
     private MetaData metaData;
     private String jcrPath;
+    private List<Component> components;
 
     public PageBuilder id(final EntityId id) {
 
         this.id = id;
+        return this;
+    }
+
+    public PageBuilder name(final String name) {
+
+        this.name = name;
         return this;
     }
 
@@ -122,11 +133,18 @@ public class PageBuilder implements Builder<Page> {
         return this;
     }
 
+    public PageBuilder components(final List<Component> components) {
+
+        this.components = components;
+        return this;
+    }
+
     @Override
     public PageBuilder apply(final Page other) {
 
         if (other != null) {
             return id(other.getId())
+                    .name(other.getName())
                     .description(other.getDescription())
                     .modification(other.getModification())
                     .active(other.isActive())
@@ -141,7 +159,8 @@ public class PageBuilder implements Builder<Page> {
                     .href(other.getHref())
                     .target(other.getTarget())
                     .metaData(other.getMetaData())
-                    .jcrPath(other.getJcrPath());
+                    .jcrPath(other.getJcrPath())
+                    .components(other.getComponents());
         }
         return this;
     }
@@ -151,6 +170,7 @@ public class PageBuilder implements Builder<Page> {
 
         return new Page(
                 this.id,
+                this.name,
                 this.description,
                 this.modification,
                 this.active,
@@ -165,6 +185,7 @@ public class PageBuilder implements Builder<Page> {
                 this.href,
                 this.target,
                 this.metaData,
-                this.jcrPath);
+                this.jcrPath,
+                this.components);
     }
 }

@@ -2,13 +2,14 @@ package com.biock.cms.page.mapper;
 
 import com.biock.cms.CmsNode;
 import com.biock.cms.CmsProperty;
+import com.biock.cms.component.mapper.ComponentsMapper;
+import com.biock.cms.i18n.mapper.TranslationMapper;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.page.Page;
 import com.biock.cms.page.builder.PageBuilder;
 import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.mapper.Mapper;
 import com.biock.cms.shared.mapper.ModificationMapper;
-import com.biock.cms.i18n.mapper.TranslationMapper;
 import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
@@ -24,15 +25,18 @@ public class PageMapper implements Mapper<Page> {
     private final ModificationMapper modificationMapper;
     private final TranslationMapper translationMapper;
     private final MetaDataMapper metaDataMapper;
+    private final ComponentsMapper componentsMapper;
 
     public PageMapper(
             final ModificationMapper modificationMapper,
             final TranslationMapper translationMapper,
-            final MetaDataMapper metaDataMapper) {
+            final MetaDataMapper metaDataMapper,
+            final ComponentsMapper componentsMapper) {
 
         this.modificationMapper = modificationMapper;
         this.translationMapper = translationMapper;
         this.metaDataMapper = metaDataMapper;
+        this.componentsMapper = componentsMapper;
     }
 
     @Override
@@ -41,6 +45,7 @@ public class PageMapper implements Mapper<Page> {
         try {
             return Page.builder()
                     .id(new EntityId(node.getName()))
+                    .name(getStringProperty(node, Property.JCR_NAME, ""))
                     .description(getStringProperty(node, Property.JCR_DESCRIPTION))
                     .modification(this.modificationMapper.toEntity(node))
                     .active(getBooleanProperty(node, CmsProperty.ACTIVE))
@@ -55,7 +60,8 @@ public class PageMapper implements Mapper<Page> {
                     .href(getStringProperty(node, CmsProperty.HREF, ""))
                     .target(getStringProperty(node, CmsProperty.TARGET, ""))
                     .metaData(this.metaDataMapper.map(node, CmsNode.META_DATA))
-                    .jcrPath(node.getPath());
+                    .jcrPath(node.getPath())
+                    .components(this.componentsMapper.toEntity(node));
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

@@ -62,6 +62,11 @@ public class NavigationItem implements ValueObject<NavigationItem> {
         return new ArrayList<>(this.children);
     }
 
+    public List<NavigationItem> getMutableChildren() {
+
+        return this.children;
+    }
+
     @Override
     public int compareTo(final NavigationItem other) {
 

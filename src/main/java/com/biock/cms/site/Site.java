@@ -180,7 +180,8 @@ public class Site extends AbstractEntity<Site> {
             final NavigationItemBuilder builder = NavigationItem.builder()
                     .href(page.getHref())
                     .target(page.getTarget())
-                    .iconClass(page.getIconClass());
+                    .iconClass(page.getIconClass())
+                    .children(new ArrayList<>());
             buildNavigation(pageRepository, page, builder, topNavigation, mainNavigation, footerNavigation);
         }
     }
@@ -193,26 +194,22 @@ public class Site extends AbstractEntity<Site> {
             final List<NavigationItem> mainNavigation,
             final List<NavigationItem> footerNavigation) {
 
-        if (page.isShowInTopNavigation() && topNavigation != null) {
+        if (page.isShowInTopNavigation()) {
             topNavigation.add(builder.title(page.getTopNavigationTitle()).build());
         }
-        if (page.isShowInMainNavigation() && mainNavigation != null) {
+        if (page.isShowInMainNavigation()) {
             mainNavigation.add(builder.title(page.getMainNavigationTitle()).build());
         }
-        if (page.isShowInFooterNavigation() && footerNavigation != null) {
+        if (page.isShowInFooterNavigation()) {
             footerNavigation.add(builder.title(page.getFooterNavigationTitle()).build());
         }
         buildNavigation(
                 pageRepository,
                 pageRepository.getChildrenOfPage(page, onlyActive()),
-                page.isShowInTopNavigation() && topNavigation != null
-                        ? topNavigation.get(topNavigation.size() - 1).getChildren()
-                        : null,
-                page.isShowInMainNavigation() && mainNavigation != null
-                        ? mainNavigation.get(mainNavigation.size() - 1).getChildren()
-                        : null,
-                page.isShowInFooterNavigation() && footerNavigation != null
-                        ? footerNavigation.get(footerNavigation.size() - 1).getChildren()
-                        : null);
+                topNavigation,
+                mainNavigation.isEmpty()
+                        ? mainNavigation
+                        : mainNavigation.get(mainNavigation.size() - 1).getMutableChildren(),
+                footerNavigation);
     }
 }

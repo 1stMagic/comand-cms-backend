@@ -9,9 +9,6 @@
         <sv:value>cms:site</sv:value>
     </sv:property>
 
-    <!--
-      ** Site properties
-      -->
     <sv:property sv:name="jcr:description" sv:type="String">
         <sv:value>This is a demonstration site for the CoManD-CMS</sv:value>
     </sv:property>
@@ -30,10 +27,6 @@
     <sv:property sv:name="active" sv:type="Boolean">
         <sv:value>true</sv:value>
     </sv:property>
-
-    <!--
-      ** Site configuration
-      -->
     <sv:property sv:name="layout" sv:type="String">
         <sv:value>Default</sv:value>
     </sv:property>
@@ -182,21 +175,21 @@
 
     <!--
       ***************************************************************************************************************
-      ** Site pages
+      ** Pages
       ***************************************************************************************************************
       -->
 
     <!--
-      ** Index page
+      ** Index
       -->
     <sv:node sv:name="index">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>cms:page</sv:value>
         </sv:property>
 
-        <!--
-          ** Index page properties
-          -->
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>index</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:description" sv:type="String">
             <sv:value>Demo Home Page</sv:value>
         </sv:property>
@@ -232,9 +225,6 @@
             </sv:property>
         </sv:node>
 
-        <!--
-          ** Index page meta data
-          -->
         <sv:node sv:name="metaData">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>cms:metaData</sv:value>
@@ -262,24 +252,18 @@
 
         <!--
           ***********************************************************************************************************
-          ** Index page components
+          ** Components
           ***********************************************************************************************************
           -->
 
         <!--
-          ** Slideshow component
+          ** Slideshow
           -->
         <sv:node sv:name="slideshow">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>cms:component</sv:value>
             </sv:property>
 
-            <!--
-              ** Slideshow properties
-              -->
-            <sv:property sv:name="jcr:name" sv:type="String">
-                <sv:value>slideshow</sv:value>
-            </sv:property>
             <sv:property sv:name="active" sv:type="Boolean">
                 <sv:value>true</sv:value>
             </sv:property>
@@ -441,7 +425,7 @@
         </sv:node>
 
         <!--
-          ** Headline component
+          ** Headline
           -->
         <sv:node sv:name="headline">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -491,28 +475,34 @@
                         <sv:value>nt:unstructured</sv:value>
                     </sv:property>
 
-                    <sv:property sv:name="innerHTML_de" sv:type="String">
-                        <sv:value>Die Kopflinie</sv:value>
-                    </sv:property>
-                    <sv:property sv:name="innerHTML_en" sv:type="String">
-                        <sv:value>The Headline</sv:value>
-                    </sv:property>
+                    <sv:node sv:name="innerHTML">
+                        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                            <sv:value>cms:translation</sv:value>
+                        </sv:property>
+
+                        <sv:property sv:name="de" sv:type="String">
+                            <sv:value>Die Kopflinie</sv:value>
+                        </sv:property>
+                        <sv:property sv:name="en" sv:type="String">
+                            <sv:value>The Headline</sv:value>
+                        </sv:property>
+                    </sv:node>
                 </sv:node>
             </sv:node>
         </sv:node>
     </sv:node>
 
     <!--
-      ** Team page
+      ** Team
       -->
     <sv:node sv:name="team">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>cms:page</sv:value>
         </sv:property>
 
-        <!--
-          ** Team page properties
-          -->
+        <sv:property sv:name="jcr:name" sv:type="String">
+            <sv:value>team</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:description" sv:type="String">
             <sv:value>Demo Team Page</sv:value>
         </sv:property>
@@ -579,16 +569,13 @@
         </sv:node>
 
         <!--
-          ** Header component
+          ** Header
           -->
         <sv:node sv:name="headline">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>cms:component</sv:value>
             </sv:property>
 
-            <!--
-              ** Header properties
-              -->
             <sv:property sv:name="jcr:name" sv:type="String">
                 <sv:value>headline</sv:value>
             </sv:property>
@@ -641,16 +628,13 @@
     </sv:node>
 
     <!--
-      ** About page
+      ** About
       -->
     <sv:node sv:name="about">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>cms:page</sv:value>
         </sv:property>
 
-        <!--
-          ** About page properties
-          -->
         <sv:property sv:name="jcr:description" sv:type="String">
             <sv:value>Demo About Page</sv:value>
         </sv:property>
@@ -691,16 +675,13 @@
         </sv:node>
 
         <!--
-          ** Header component
+          ** Header
           -->
         <sv:node sv:name="headline">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>cms:component</sv:value>
             </sv:property>
 
-            <!--
-              ** Header properties
-              -->
             <sv:property sv:name="jcr:name" sv:type="String">
                 <sv:value>headline</sv:value>
             </sv:property>
@@ -752,22 +733,13 @@
         </sv:node>
 
         <!--
-          ***********************************************************************************************************
-          ** About page child pages
-          ***********************************************************************************************************
-          -->
-
-        <!--
-          ** About us page
+          ** About us
           -->
         <sv:node sv:name="aboutus">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>cms:page</sv:value>
             </sv:property>
 
-            <!--
-              ** About us page properties
-              -->
             <sv:property sv:name="jcr:description" sv:type="String">
                 <sv:value>Demo About Us Page</sv:value>
             </sv:property>
@@ -787,9 +759,6 @@
                 <sv:value>true</sv:value>
             </sv:property>
 
-            <!--
-              ** About us page configuration
-              -->
             <sv:property sv:name="showInMainNavigation" sv:type="Boolean">
                 <sv:value>true</sv:value>
             </sv:property>
@@ -818,16 +787,13 @@
         </sv:node>
 
         <!--
-          ** Classic page
+          ** Classic
           -->
         <sv:node sv:name="classic">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>cms:page</sv:value>
             </sv:property>
 
-            <!--
-              ** Classic page properties
-              -->
             <sv:property sv:name="jcr:description" sv:type="String">
                 <sv:value>Link to classic CMS</sv:value>
             </sv:property>

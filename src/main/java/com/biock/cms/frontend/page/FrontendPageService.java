@@ -7,17 +7,17 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class PageService {
+public class FrontendPageService {
 
     private final PageRepository pageRepository;
 
-    public PageService(final PageRepository pageRepository) {
+    public FrontendPageService(final PageRepository pageRepository) {
 
         this.pageRepository = pageRepository;
     }
 
     public Optional<Page> getPageOfSite(final String siteId, final String relativePagePath) {
 
-        return this.pageRepository.findPageBySIteIdAndRelativePagePath(siteId, relativePagePath);
+        return this.pageRepository.findPageBySiteIdAndRelativePagePath(siteId, relativePagePath);
     }
 }

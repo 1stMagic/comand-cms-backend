@@ -2,20 +2,19 @@ package com.biock.cms.component.simple.builder;
 
 import com.biock.cms.component.simple.SimpleComponent;
 import com.biock.cms.component.simple.SimpleComponentProperty;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.builder.Builder;
 
 import java.util.List;
 
 public class SimpleComponentBuilder implements Builder<SimpleComponent> {
 
-    private EntityId id;
+    private String id;
     private boolean active;
     private String componentName;
     private List<SimpleComponentProperty> properties;
     private List<SimpleComponent> components;
 
-    public SimpleComponentBuilder id(final EntityId id) {
+    public SimpleComponentBuilder id(final String id) {
 
         this.id = id;
         return this;

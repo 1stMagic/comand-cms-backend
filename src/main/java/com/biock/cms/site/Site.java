@@ -4,7 +4,6 @@ import com.biock.cms.page.Page;
 import com.biock.cms.page.PageRepository;
 import com.biock.cms.shared.AbstractEntity;
 import com.biock.cms.shared.ContactData;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.Modification;
 import com.biock.cms.site.builder.NavigationItemBuilder;
 import com.biock.cms.site.builder.SiteBuilder;
@@ -35,7 +34,7 @@ public class Site extends AbstractEntity<Site> {
     private final List<NavigationItem> footerNavigation;
 
     public Site(
-            final EntityId id,
+            final String id,
             final String description,
             final Modification modification,
             final boolean active,
@@ -178,7 +177,7 @@ public class Site extends AbstractEntity<Site> {
 
         for (final Page page : pages) {
             final NavigationItemBuilder builder = NavigationItem.builder()
-                    .href(page.getHref())
+                    .href(page.buildHref())
                     .target(page.getTarget())
                     .iconClass(page.getIconClass())
                     .children(new ArrayList<>());
@@ -195,13 +194,13 @@ public class Site extends AbstractEntity<Site> {
             final List<NavigationItem> footerNavigation) {
 
         if (page.isShowInTopNavigation()) {
-            topNavigation.add(builder.title(page.getTopNavigationTitle()).build());
+            topNavigation.add(builder.title(page.buildTopNavigationTitle()).build());
         }
         if (page.isShowInMainNavigation()) {
-            mainNavigation.add(builder.title(page.getMainNavigationTitle()).build());
+            mainNavigation.add(builder.title(page.buildMainNavigationTitle()).build());
         }
         if (page.isShowInFooterNavigation()) {
-            footerNavigation.add(builder.title(page.getFooterNavigationTitle()).build());
+            footerNavigation.add(builder.title(page.buildFooterNavigationTitle()).build());
         }
         buildNavigation(
                 pageRepository,

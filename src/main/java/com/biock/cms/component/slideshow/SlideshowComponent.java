@@ -5,7 +5,6 @@ import com.biock.cms.component.dto.ComponentDTO;
 import com.biock.cms.component.slideshow.builder.SlideshowComponentBuilder;
 import com.biock.cms.component.slideshow.dto.frontend.SlideshowComponentDTO;
 import com.biock.cms.shared.AbstractEntity;
-import com.biock.cms.shared.EntityId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class SlideshowComponent extends AbstractEntity<SlideshowComponent> imple
     private final List<SlideshowItem> items;
 
     public SlideshowComponent(
-            final EntityId id,
+            final String id,
             final boolean active,
             final String componentName,
             final List<SlideshowItem> items) {

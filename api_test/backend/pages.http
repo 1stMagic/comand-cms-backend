@@ -1,0 +1,61 @@
+##
+## Create page
+##
+
+# parentId : String
+# title : Map<String, String>*
+# showInMainNavigation : Boolean
+# showInTopNavigation : Boolean
+# showInFooterNavigation : Boolean
+# afterPageId : String
+
+POST http://localhost:55578/api/v1/backend/pages/demo
+Content-Type: application/json
+
+{
+    "title": {
+        "de": "New page after last"
+    },
+    "showInMainNavigation": true,
+    "afterPageId": "d877fbc7-d7e2-498f-9a04-2f00045a34c3"
+}
+
+###
+
+##
+## Update page
+##
+
+# topNavigationTitle : Map<String, String>
+# mainNavigationTitle Map<String, String>
+# footerNavigationTitle Map<String, String>
+# showInMainNavigation Boolean
+# showInTopNavigation Boolean
+# showInFooterNavigation Boolean
+# active Boolean
+
+PUT http://localhost:55578/api/v1/backend/pages/demo/551f147e-c4b0-46c0-860e-6ecd7270479a
+Content-Type: application/json
+
+{
+    "showInTopNavigation": false,
+    "showInFooterNavigation": false
+}
+
+###
+
+##
+## Clone page
+##
+
+POST http://localhost:55578/api/v1/backend/pages/demo/clone/index
+
+###
+
+##
+## Delete page
+##
+
+DELETE http://localhost:55578/api/v1/backend/pages/demo/59f624af-5009-4591-b78d-5c97e847f44d
+
+###

@@ -5,10 +5,12 @@ import com.biock.cms.web.api.dto.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Service
 public class ResponseBuilder {
@@ -39,6 +41,16 @@ public class ResponseBuilder {
         final Optional<T> payload = payloadSupplier.get();
         return payload.map(statusOk(dto, payloadMapper))
                 .orElseGet(statusNotFound(dto, notFoundMessageSupplier.get()));
+    }
+
+    public <T> ResponseEntity<ResponseDTO<T>> build(final BindingResult bindingResult) {
+
+        return ResponseEntity.badRequest()
+                .body(new ResponseDTO<T>()
+                        .setMessages(bindingResult.getAllErrors()
+                                .stream()
+                                .map(this.messages::getMessage)
+                                .collect(Collectors.toList())));
     }
 
     private <T, D> Function<T, ResponseEntity<ResponseDTO<D>>> statusOk(

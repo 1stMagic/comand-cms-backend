@@ -2,19 +2,17 @@ package com.biock.cms.shared;
 
 import java.util.Objects;
 
-import static java.util.Objects.requireNonNull;
-
 public abstract class AbstractEntity<T> implements Entity<T> {
 
-    private final EntityId id;
+    private final String id;
 
-    protected AbstractEntity(final EntityId id) {
+    protected AbstractEntity(final String id) {
 
-        this.id = requireNonNull(id, "id is null");
+        this.id = id;
     }
 
     @Override
-    public EntityId getId() {
+    public String getId() {
 
         return this.id;
     }
@@ -34,8 +32,7 @@ public abstract class AbstractEntity<T> implements Entity<T> {
         if (other == null || getClass() != other.getClass()) {
             return false;
         }
-        //noinspection unchecked
-        return this.id.equals(((Entity<T>) other).getId());
+        return ((AbstractEntity<?>) other).getId().equals(this.getId());
     }
 
     @Override
@@ -43,5 +40,4 @@ public abstract class AbstractEntity<T> implements Entity<T> {
 
         return Objects.hash(this.id);
     }
-
 }

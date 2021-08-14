@@ -1,7 +1,6 @@
 package com.biock.cms.site.builder;
 
 import com.biock.cms.shared.ContactData;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.Modification;
 import com.biock.cms.shared.builder.Builder;
 import com.biock.cms.site.Language;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class SiteBuilder implements Builder<Site> {
     
-    private EntityId id;
+    private String id;
     private String description;
     private Modification modification;
     private boolean active;
@@ -25,7 +24,7 @@ public class SiteBuilder implements Builder<Site> {
     private List<User> users;
     private List<UserGroup> userGroups;
 
-    public SiteBuilder id(final EntityId id) {
+    public SiteBuilder id(final String id) {
 
         this.id = id;
         return this;

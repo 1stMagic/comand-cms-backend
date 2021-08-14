@@ -4,7 +4,6 @@ import com.biock.cms.CmsNode;
 import com.biock.cms.CmsProperty;
 import com.biock.cms.jcr.PropertyUtils;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.mapper.ContactDataMapper;
 import com.biock.cms.shared.mapper.Mapper;
 import com.biock.cms.shared.mapper.ModificationMapper;
@@ -41,7 +40,7 @@ public class SiteMapper implements Mapper<Site> {
 
         try {
             return Site.builder()
-                    .id(new EntityId(node.getName()))
+                    .id(node.getName())
                     .description(getStringProperty(node, Property.JCR_DESCRIPTION))
                     .modification(this.modificationMapper.toEntity(node))
                     .active(PropertyUtils.getBooleanProperty(node, CmsProperty.ACTIVE))

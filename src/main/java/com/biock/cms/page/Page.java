@@ -5,8 +5,8 @@ import com.biock.cms.component.Component;
 import com.biock.cms.i18n.Translation;
 import com.biock.cms.page.builder.PageBuilder;
 import com.biock.cms.shared.AbstractEntity;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.Modification;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class Page extends AbstractEntity<Page> {
     private final List<Component> components;
 
     public Page(
-            final EntityId id,
+            final String id,
             final String name,
             final String description,
             final Modification modification,
@@ -106,25 +106,17 @@ public class Page extends AbstractEntity<Page> {
 
     public Translation getTopNavigationTitle() {
 
-        return Translation.merge(
-                this.topNavigationTitle,
-                this.mainNavigationTitle,
-                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
+        return this.topNavigationTitle;
     }
 
     public Translation getMainNavigationTitle() {
 
-        return Translation.merge(
-                this.mainNavigationTitle,
-                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
+        return this.mainNavigationTitle;
     }
 
     public Translation getFooterNavigationTitle() {
 
-        return Translation.merge(
-                this.footerNavigationTitle,
-                this.mainNavigationTitle,
-                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
+        return this.footerNavigationTitle;
     }
 
     public boolean isShowInTopNavigation() {
@@ -154,11 +146,7 @@ public class Page extends AbstractEntity<Page> {
 
     public String getHref() {
 
-        return StringUtils.defaultIfBlank(
-                this.href,
-                Stream.of(getJcrPath().split("/"))
-                        .skip(4)
-                        .collect(joining("/")) + ".html");
+        return this.href;
     }
 
     public String getTarget() {
@@ -179,5 +167,61 @@ public class Page extends AbstractEntity<Page> {
     public List<Component> getComponents() {
 
         return new ArrayList<>(this.components);
+    }
+
+    @JsonIgnore
+    public boolean hasTopNavigationTitle() {
+
+        return this.topNavigationTitle != null && !this.topNavigationTitle.isEmpty();
+    }
+
+    @JsonIgnore
+    public boolean hasMainNavigationTitle() {
+
+        return this.mainNavigationTitle != null && !this.mainNavigationTitle.isEmpty();
+    }
+
+    @JsonIgnore
+    public boolean hasFooterNavigationTitle() {
+
+        return this.footerNavigationTitle != null && !this.footerNavigationTitle.isEmpty();
+    }
+
+    @JsonIgnore
+    public boolean hasMetaData() {
+
+        return this.metaData != null && !this.metaData.isEmpty();
+    }
+
+    public String buildHref() {
+
+        return StringUtils.defaultIfBlank(
+                this.href,
+                Stream.of(getJcrPath().split("/"))
+                        .skip(4)
+                        .collect(joining("/")) + ".html");
+    }
+
+    public Translation buildTopNavigationTitle() {
+
+        return Translation.merge(
+                this.topNavigationTitle,
+                this.mainNavigationTitle,
+                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
+    }
+
+    public Translation buildMainNavigationTitle() {
+
+        return Translation.merge(
+                this.mainNavigationTitle,
+                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
+    }
+
+    public Translation buildFooterNavigationTitle() {
+
+        return Translation.merge(
+                this.footerNavigationTitle,
+                this.mainNavigationTitle,
+                Optional.ofNullable(this.metaData).orElse(MetaData.empty()).getMetaData().get(CmsMetaData.TITLE));
     }
 }

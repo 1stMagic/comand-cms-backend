@@ -29,6 +29,11 @@ public class Modification implements ValueObject<Modification> {
         return new ModificationBuilder();
     }
 
+    public static Modification now(final String user) {
+
+        return new Modification(OffsetDateTime.now(), user, OffsetDateTime.now(), user);
+    }
+
     public OffsetDateTime getCreated() {
 
         return this.created;

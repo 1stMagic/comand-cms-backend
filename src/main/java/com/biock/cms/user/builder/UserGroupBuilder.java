@@ -1,17 +1,16 @@
 package com.biock.cms.user.builder;
 
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.i18n.Translation;
 import com.biock.cms.user.UserGroup;
 import com.biock.cms.shared.builder.Builder;
 
 public class UserGroupBuilder implements Builder<UserGroup> {
 
-    private EntityId id;
+    private String id;
     private Translation name;
     private boolean active;
 
-    public UserGroupBuilder id(final EntityId id) {
+    public UserGroupBuilder id(final String id) {
 
         this.id = id;
         return this;

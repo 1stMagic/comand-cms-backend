@@ -3,7 +3,6 @@ package com.biock.cms.site.mapper;
 import com.biock.cms.CmsProperty;
 import com.biock.cms.i18n.mapper.TranslationMapper;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.mapper.Mapper;
 import com.biock.cms.site.Language;
 import com.biock.cms.site.builder.LanguageBuilder;
@@ -30,7 +29,7 @@ public class LanguageMapper implements Mapper<Language> {
 
         try {
             return Language.builder()
-                    .id(new EntityId(node.getName()))
+                    .id(node.getName())
                     .iso6391Code(getStringProperty(node, CmsProperty.ISO_639_1_CODE))
                     .iso6392Code(getStringProperty(node, CmsProperty.ISO_639_2_CODE))
                     .name(this.translationMapper.map(node, CmsProperty.NAME))

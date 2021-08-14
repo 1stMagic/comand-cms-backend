@@ -1,21 +1,16 @@
 package com.biock.cms.jcr;
 
-import com.biock.cms.CmsApi;
 import com.biock.cms.CmsNode;
-import com.biock.cms.CmsProperty;
-import com.biock.cms.CmsType;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
-import com.biock.cms.shared.EntityId;
 
 import javax.jcr.*;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import static com.biock.cms.jcr.PropertyUtils.getBooleanProperty;
-import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 
 public class JcrRepository {
 
@@ -31,36 +26,15 @@ public class JcrRepository {
         return CloseableJcrSession.adminSession(this.repository);
     }
 
-    public Optional<Node> getSiteNode(final Session session, final EntityId siteId) {
+    public Optional<Node> getSiteNode(final Session session, final String siteId) {
 
         try {
             final var rootNode = session.getRootNode();
-            final String sitePath = JcrPaths.relative(CmsNode.CMS, CmsNode.SITES, siteId.getId());
+            final String sitePath = JcrPaths.relative(CmsNode.CMS, CmsNode.SITES, siteId);
             if (rootNode.hasNode(sitePath)) {
                 return Optional.of(rootNode.getNode(sitePath));
             }
             return Optional.empty();
-        } catch (final RepositoryException e) {
-            throw new RuntimeRepositoryException(e);
-        }
-    }
-
-    public String getDefaultLanguageOfSite(final String siteId) {
-
-        try (final CloseableJcrSession session = getSession()) {
-            final String languagesPath = JcrPaths.absolute(CmsNode.CMS, CmsNode.SITES, siteId, CmsNode.LANGUAGES);
-            if (session.hasNode(languagesPath)) {
-                final NodeIterator languageNodes = session.getNode(languagesPath).getNodes();
-                while (languageNodes.hasNext()) {
-                    final Node languageNode = languageNodes.nextNode();
-                    if (CmsType.LANGUAGE.isNodeType(languageNode)
-                            && getBooleanProperty(languageNode, CmsProperty.ACTIVE, false)
-                            && getBooleanProperty(languageNode, CmsProperty.DEFAULT_LANGUAGE, false)) {
-                        return getStringProperty(languageNode, CmsProperty.ISO_639_1_CODE);
-                    }
-                }
-            }
-            return CmsApi.DEFAULT_LANGUAGE;
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }
@@ -86,6 +60,40 @@ public class JcrRepository {
                 }
             }
             return childNodes;
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public List<Node> findByQuery(final Session session, final JcrQuery query) {
+
+        try {
+            final List<Node> nodes = new ArrayList<>();
+            final QueryResult result = session.getWorkspace()
+                    .getQueryManager()
+                    .createQuery(query.getQuery(), Query.JCR_SQL2)
+                    .execute();
+            final NodeIterator nodeIterator = result.getNodes();
+            if (nodeIterator.hasNext()) {
+                nodes.add(nodeIterator.nextNode());
+            }
+            return nodes;
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public Optional<Node> getNextSibling(final Node node) {
+
+        try {
+            final NodeIterator nodes = node.getParent().getNodes();
+            while (nodes.hasNext()) {
+                final Node siblingNode = nodes.nextNode();
+                if (siblingNode.isSame(node) && nodes.hasNext()) {
+                    return Optional.of(nodes.nextNode());
+                }
+            }
+            return Optional.empty();
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class SiteService {
+public class FrontendSiteService {
 
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
 
-    public SiteService(final SiteRepository siteRepository, final PageRepository pageRepository) {
+    public FrontendSiteService(final SiteRepository siteRepository, final PageRepository pageRepository) {
 
         this.siteRepository = siteRepository;
         this.pageRepository = pageRepository;

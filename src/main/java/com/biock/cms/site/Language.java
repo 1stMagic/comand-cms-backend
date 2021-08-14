@@ -1,7 +1,6 @@
 package com.biock.cms.site;
 
 import com.biock.cms.shared.AbstractEntity;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.i18n.Translation;
 import com.biock.cms.site.builder.LanguageBuilder;
 
@@ -15,7 +14,7 @@ public class Language extends AbstractEntity<Language> {
     private final boolean defaultLanguage;
 
     public Language(
-            final EntityId id,
+            final String id,
             final String iso6391Code,
             final String iso6392Code,
             final Translation name,

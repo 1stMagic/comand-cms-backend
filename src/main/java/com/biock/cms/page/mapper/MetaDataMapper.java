@@ -1,6 +1,7 @@
 package com.biock.cms.page.mapper;
 
 import com.biock.cms.CmsType;
+import com.biock.cms.i18n.Translation;
 import com.biock.cms.i18n.mapper.TranslationMapper;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.page.MetaData;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
+import java.util.Map.Entry;
 
 @Component
 public class MetaDataMapper implements Mapper<MetaData> {
@@ -43,6 +45,9 @@ public class MetaDataMapper implements Mapper<MetaData> {
     @Override
     public void toNode(final MetaData entity, final Node node) {
 
+        for (final Entry<String, Translation> metaData : entity.getMetaData().entrySet()) {
+            this.translationMapper.map(metaData.getValue(), node, metaData.getKey());
+        }
     }
 
     public MetaData map(final Node node, final String nodeName) {
@@ -55,6 +60,21 @@ public class MetaDataMapper implements Mapper<MetaData> {
                 }
             }
             return MetaData.empty();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public void map(final MetaData entity, final Node node, final String nodeName) {
+
+        try {
+            if (entity != null) {
+                toNode(
+                        entity,
+                        node.hasNode(nodeName)
+                                ? node.getNode(nodeName)
+                                : node.addNode(nodeName, CmsType.META_DATA.getName()));
+            }
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

@@ -3,7 +3,6 @@ package com.biock.cms.page.builder;
 import com.biock.cms.component.Component;
 import com.biock.cms.page.MetaData;
 import com.biock.cms.page.Page;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.Modification;
 import com.biock.cms.i18n.Translation;
 import com.biock.cms.shared.builder.Builder;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class PageBuilder implements Builder<Page> {
 
-    private EntityId id;
+    private String id;
     private String name;
     private String description;
     private Modification modification;
@@ -31,7 +30,7 @@ public class PageBuilder implements Builder<Page> {
     private String jcrPath;
     private List<Component> components;
 
-    public PageBuilder id(final EntityId id) {
+    public PageBuilder id(final String id) {
 
         this.id = id;
         return this;

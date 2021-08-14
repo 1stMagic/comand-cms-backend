@@ -2,7 +2,7 @@ package com.biock.cms.frontend.page;
 
 import com.biock.cms.CmsApi;
 import com.biock.cms.frontend.page.dto.PageDTO;
-import com.biock.cms.frontend.site.SiteService;
+import com.biock.cms.frontend.site.FrontendSiteService;
 import com.biock.cms.i18n.Messages;
 import com.biock.cms.utils.LanguageUtils;
 import com.biock.cms.web.api.ResponseBuilder;
@@ -12,22 +12,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = CmsApi.PAGES, produces = MediaType.APPLICATION_JSON_VALUE)
-public class PageController {
+@RequestMapping(path = CmsApi.FRONTEND_PAGES, produces = MediaType.APPLICATION_JSON_VALUE)
+public class FrontendPageController {
 
-    private final PageService pageService;
-    private final SiteService siteService;
+    private final FrontendPageService frontendPageService;
+    private final FrontendSiteService frontendSiteService;
     private final ResponseBuilder responseBuilder;
     private final Messages messages;
 
-    public PageController(
-            final PageService pageService,
-            final SiteService siteService,
+    public FrontendPageController(
+            final FrontendPageService frontendPageService,
+            final FrontendSiteService frontendSiteService,
             final ResponseBuilder responseBuilder,
             final Messages messages) {
 
-        this.pageService = pageService;
-        this.siteService = siteService;
+        this.frontendPageService = frontendPageService;
+        this.frontendSiteService = frontendSiteService;
         this.responseBuilder = responseBuilder;
         this.messages = messages;
     }
@@ -38,8 +38,8 @@ public class PageController {
             @RequestParam final String relativePagePath) {
 
         return this.responseBuilder.build(
-                () -> this.pageService.getPageOfSite(siteId, relativePagePath),
-                page -> PageDTO.of(page, LanguageUtils.getLanguage(), this.siteService.getDefaultLanguageOfSite(siteId)),
+                () -> this.frontendPageService.getPageOfSite(siteId, relativePagePath),
+                page -> PageDTO.of(page, LanguageUtils.getLanguage(), this.frontendSiteService.getDefaultLanguageOfSite(siteId)),
                 this.messages.supplyMessage("frontend.page.not_found"));
     }
 }

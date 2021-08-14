@@ -6,6 +6,7 @@ import com.biock.cms.i18n.builder.TranslationBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 import static java.util.Collections.emptyMap;
 
@@ -58,6 +59,17 @@ public class Translation implements ValueObject<Translation> {
             }
         }
         return this.translations.get(CmsApi.DEFAULT_LANGUAGE);
+    }
+
+    public boolean isEmpty() {
+
+        return this.translations.isEmpty();
+    }
+
+    public Translation modify(final UnaryOperator<String> modifier) {
+
+        this.translations.forEach((k, v) -> this.translations.put(k, modifier.apply(v)));
+        return this;
     }
 
     @Override

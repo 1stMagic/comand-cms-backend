@@ -7,9 +7,9 @@ import com.biock.cms.i18n.mapper.TranslationMapper;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.page.Page;
 import com.biock.cms.page.builder.PageBuilder;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.mapper.Mapper;
 import com.biock.cms.shared.mapper.ModificationMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
@@ -44,7 +44,7 @@ public class PageMapper implements Mapper<Page> {
 
         try {
             return Page.builder()
-                    .id(new EntityId(node.getName()))
+                    .id(getStringProperty(node, Property.JCR_ID))
                     .name(getStringProperty(node, Property.JCR_NAME, ""))
                     .description(getStringProperty(node, Property.JCR_DESCRIPTION))
                     .modification(this.modificationMapper.toEntity(node))
@@ -70,6 +70,30 @@ public class PageMapper implements Mapper<Page> {
     @Override
     public void toNode(final Page entity, final Node node) {
 
+        try {
+            node.setProperty(Property.JCR_ID, entity.getId());
+            node.setProperty(Property.JCR_NAME, StringUtils.defaultString(entity.getName()));
+            node.setProperty(Property.JCR_DESCRIPTION, StringUtils.defaultString(entity.getDescription()));
+            if (entity.getModification() != null) {
+                this.modificationMapper.toNode(entity.getModification(), node);
+            }
+            node.setProperty(CmsProperty.ACTIVE, entity.isActive());
+            this.translationMapper.map(entity.getTopNavigationTitle(), node, CmsNode.TOP_NAVIGATION_TITLE);
+            this.translationMapper.map(entity.getMainNavigationTitle(), node, CmsNode.MAIN_NAVIGATION_TITLE);
+            this.translationMapper.map(entity.getFooterNavigationTitle(), node, CmsNode.FOOTER_NAVIGATION_TITLE);
+            node.setProperty(CmsProperty.SHOW_IN_TOP_NAVIGATION, entity.isShowInTopNavigation());
+            node.setProperty(CmsProperty.SHOW_IN_MAIN_NAVIGATION, entity.isShowInMainNavigation());
+            node.setProperty(CmsProperty.SHOW_IN_FOOTER_NAVIGATION, entity.isShowInFooterNavigation());
+            node.setProperty(CmsProperty.ICON_CLASS, StringUtils.defaultString(entity.getIconClass()));
+            node.setProperty(CmsProperty.EXTERNAL, entity.isExternal());
+            node.setProperty(CmsProperty.HREF, StringUtils.defaultString(entity.getHref()));
+            node.setProperty(CmsProperty.TARGET, StringUtils.defaultString(entity.getTarget()));
+            if (entity.getMetaData() != null) {
+                this.metaDataMapper.map(entity.getMetaData(), node, CmsNode.META_DATA);
+            }
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
     }
 
 }

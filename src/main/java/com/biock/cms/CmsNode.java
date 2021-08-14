@@ -12,6 +12,7 @@ public final class CmsNode {
     public static final String TOP_NAVIGATION_TITLE = "topNavigationTitle";
     public static final String MAIN_NAVIGATION_TITLE = "mainNavigationTitle";
     public static final String FOOTER_NAVIGATION_TITLE = "footerNavigationTitle";
+    public static final String TITLE = "title";
 
     private CmsNode() {
 

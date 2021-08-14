@@ -26,7 +26,11 @@ public final class JcrPaths {
 
     public static String absolute(final String... pathElements) {
 
-        return "/" + relative(pathElements);
+        final String path = relative(pathElements);
+        if (path.length() == 0 || path.charAt(0) != '/') {
+            return "/" + path;
+        }
+        return path;
     }
 
     public static String relative(final String... pathElements) {

@@ -6,7 +6,6 @@ import com.biock.cms.component.mapper.ComponentMapper;
 import com.biock.cms.component.simple.SimpleComponent;
 import com.biock.cms.component.simple.builder.SimpleComponentBuilder;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
-import com.biock.cms.shared.EntityId;
 import org.springframework.context.annotation.Primary;
 
 import javax.jcr.Node;
@@ -31,7 +30,7 @@ public class SimpleComponentMapper implements ComponentMapper<SimpleComponent> {
 
         try {
             return SimpleComponent.builder()
-                    .id(new EntityId(node.getName()))
+                    .id(node.getName())
                     .active(getBooleanProperty(node, CmsProperty.ACTIVE, false))
                     .componentName(getStringProperty(node, CmsProperty.COMPONENT_NAME))
                     .properties(this.componentPropertiesMapper.map(node, CmsNode.PROPERTIES))

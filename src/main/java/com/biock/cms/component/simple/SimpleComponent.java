@@ -5,7 +5,6 @@ import com.biock.cms.component.dto.ComponentDTO;
 import com.biock.cms.component.simple.builder.SimpleComponentBuilder;
 import com.biock.cms.component.simple.dto.frontend.SimpleComponentDTO;
 import com.biock.cms.shared.AbstractEntity;
-import com.biock.cms.shared.EntityId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ public class SimpleComponent extends AbstractEntity<SimpleComponent> implements 
     private final List<SimpleComponent> components;
 
     public SimpleComponent(
-            final EntityId id,
+            final String id,
             final boolean active,
             final String componentName,
             final List<SimpleComponentProperty> properties,

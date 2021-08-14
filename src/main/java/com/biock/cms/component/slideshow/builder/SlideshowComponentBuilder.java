@@ -2,19 +2,18 @@ package com.biock.cms.component.slideshow.builder;
 
 import com.biock.cms.component.slideshow.SlideshowComponent;
 import com.biock.cms.component.slideshow.SlideshowItem;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.builder.Builder;
 
 import java.util.List;
 
 public class SlideshowComponentBuilder implements Builder<SlideshowComponent> {
 
-    private EntityId id;
+    private String id;
     private boolean active;
     private String componentName;
     private List<SlideshowItem> items;
 
-    public SlideshowComponentBuilder id(final EntityId id) {
+    public SlideshowComponentBuilder id(final String id) {
 
         this.id = id;
         return this;

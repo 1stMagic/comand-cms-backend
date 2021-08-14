@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = CmsApi.SITES, produces = MediaType.APPLICATION_JSON_VALUE)
-public class SiteController {
+@RequestMapping(path = CmsApi.FRONTEND_SITES, produces = MediaType.APPLICATION_JSON_VALUE)
+public class FrontendSiteController {
 
-    private final SiteService siteService;
+    private final FrontendSiteService frontendSiteService;
     private final ResponseBuilder responseBuilder;
     private final Messages messages;
 
-    public SiteController(
-            final SiteService siteService,
+    public FrontendSiteController(
+            final FrontendSiteService frontendSiteService,
             final ResponseBuilder responseBuilder,
             final Messages messages) {
 
-        this.siteService = siteService;
+        this.frontendSiteService = frontendSiteService;
         this.responseBuilder = responseBuilder;
         this.messages = messages;
     }
@@ -35,8 +35,8 @@ public class SiteController {
     public ResponseEntity<ResponseDTO<SiteDTO>> getSite(@PathVariable final String id) {
 
         return this.responseBuilder.build(
-                () -> this.siteService.getSite(id),
-                site -> SiteDTO.of(site, LanguageUtils.getLanguage(), this.siteService.getDefaultLanguageOfSite(id)),
+                () -> this.frontendSiteService.getSite(id),
+                site -> SiteDTO.of(site, LanguageUtils.getLanguage(), this.frontendSiteService.getDefaultLanguageOfSite(id)),
                 this.messages.supplyMessage("frontend.site.not_found"));
     }
 }

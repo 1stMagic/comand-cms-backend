@@ -35,7 +35,7 @@ public class PageDTO {
                 .getMetaData()
                 .forEach((k, v) -> metaData.put(k, v.getTranslation(language, fallbackLanguage)));
         return new PageDTO()
-                .setId(entity.getId().getId())
+                .setId(entity.getId())
                 .setName(entity.getName())
                 .setMetaData(metaData)
                 .setComponents(Optional.ofNullable(entity.getComponents())

@@ -187,6 +187,9 @@
             <sv:value>cms:page</sv:value>
         </sv:property>
 
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>index</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:name" sv:type="String">
             <sv:value>index</sv:value>
         </sv:property>
@@ -500,6 +503,9 @@
             <sv:value>cms:page</sv:value>
         </sv:property>
 
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>team</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:name" sv:type="String">
             <sv:value>team</sv:value>
         </sv:property>
@@ -635,6 +641,9 @@
             <sv:value>cms:page</sv:value>
         </sv:property>
 
+        <sv:property sv:name="jcr:id" sv:type="String">
+            <sv:value>about</sv:value>
+        </sv:property>
         <sv:property sv:name="jcr:description" sv:type="String">
             <sv:value>Demo About Page</sv:value>
         </sv:property>
@@ -740,6 +749,9 @@
                 <sv:value>cms:page</sv:value>
             </sv:property>
 
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>aboutus</sv:value>
+            </sv:property>
             <sv:property sv:name="jcr:description" sv:type="String">
                 <sv:value>Demo About Us Page</sv:value>
             </sv:property>
@@ -772,6 +784,15 @@
                 <sv:value>icon-cancel</sv:value>
             </sv:property>
 
+            <sv:node sv:name="topNavigationTitle">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:translation</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="de" sv:type="String">
+                    <sv:value>Über uns</sv:value>
+                </sv:property>
+            </sv:node>
             <sv:node sv:name="mainNavigationTitle">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>cms:translation</sv:value>
@@ -784,6 +805,15 @@
                     <sv:value>About us</sv:value>
                 </sv:property>
             </sv:node>
+            <sv:node sv:name="footerNavigationTitle">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:translation</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="de" sv:type="String">
+                    <sv:value>Über</sv:value>
+                </sv:property>
+            </sv:node>
         </sv:node>
 
         <!--
@@ -794,6 +824,9 @@
                 <sv:value>cms:page</sv:value>
             </sv:property>
 
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>classic</sv:value>
+            </sv:property>
             <sv:property sv:name="jcr:description" sv:type="String">
                 <sv:value>Link to classic CMS</sv:value>
             </sv:property>

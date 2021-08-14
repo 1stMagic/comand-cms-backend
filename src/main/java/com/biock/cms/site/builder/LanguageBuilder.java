@@ -1,13 +1,12 @@
 package com.biock.cms.site.builder;
 
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.shared.builder.Builder;
 import com.biock.cms.site.Language;
 import com.biock.cms.i18n.Translation;
 
 public class LanguageBuilder implements Builder<Language> {
 
-    private EntityId id;
+    private String id;
     private String iso6391Code;
     private String iso6392Code;
     private Translation name;
@@ -15,7 +14,7 @@ public class LanguageBuilder implements Builder<Language> {
     private boolean active;
     private boolean defaultLanguage;
 
-    public LanguageBuilder id(final EntityId id) {
+    public LanguageBuilder id(final String id) {
 
         this.id = id;
         return this;

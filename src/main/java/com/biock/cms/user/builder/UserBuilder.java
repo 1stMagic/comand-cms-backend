@@ -1,7 +1,6 @@
 package com.biock.cms.user.builder;
 
 import com.biock.cms.shared.ContactData;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.user.User;
 import com.biock.cms.user.UserGroup;
 import com.biock.cms.shared.builder.Builder;
@@ -10,7 +9,7 @@ import java.util.Set;
 
 public class UserBuilder implements Builder<User> {
 
-    private EntityId id;
+    private String id;
     private String email;
     private String salutation;
     private String title;
@@ -20,7 +19,7 @@ public class UserBuilder implements Builder<User> {
     private boolean active;
     private Set<UserGroup> groups;
 
-    public UserBuilder id(final EntityId id) {
+    public UserBuilder id(final String id) {
 
         this.id = id;
         return this;

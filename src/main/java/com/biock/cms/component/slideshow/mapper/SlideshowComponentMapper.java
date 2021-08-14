@@ -5,7 +5,6 @@ import com.biock.cms.component.mapper.ComponentMapper;
 import com.biock.cms.component.slideshow.SlideshowComponent;
 import com.biock.cms.component.slideshow.builder.SlideshowComponentBuilder;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
-import com.biock.cms.shared.EntityId;
 import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
@@ -29,7 +28,7 @@ public class SlideshowComponentMapper implements ComponentMapper<SlideshowCompon
 
         try {
             return SlideshowComponent.builder()
-                    .id(new EntityId(node.getName()))
+                    .id(node.getName())
                     .active(getBooleanProperty(node, CmsProperty.ACTIVE, false))
                     .componentName(getStringProperty(node, CmsProperty.COMPONENT_NAME))
                     .items(this.slideshowItemMapper.map(node));

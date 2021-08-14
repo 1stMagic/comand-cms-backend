@@ -2,7 +2,6 @@ package com.biock.cms.user;
 
 import com.biock.cms.shared.AbstractEntity;
 import com.biock.cms.shared.ContactData;
-import com.biock.cms.shared.EntityId;
 import com.biock.cms.user.builder.UserBuilder;
 
 import java.util.HashSet;
@@ -20,7 +19,7 @@ public class User extends AbstractEntity<User> {
     private final Set<UserGroup> groups;
 
     public User(
-            final EntityId id,
+            final String id,
             final String email,
             final String salutation,
             final String title,

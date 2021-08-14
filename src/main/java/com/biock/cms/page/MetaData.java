@@ -6,6 +6,7 @@ import com.biock.cms.shared.ValueObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 import static java.util.Collections.emptyMap;
 
@@ -34,6 +35,20 @@ public class MetaData implements ValueObject<MetaData> {
     public Map<String, Translation> getMetaData() {
 
         return new HashMap<>(this.metaDataMap);
+    }
+
+    public boolean isEmpty() {
+
+        return this.metaDataMap.isEmpty();
+    }
+
+    public MetaData mofify(final String key, final UnaryOperator<String> modifier) {
+
+        this.metaDataMap.entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().equals(key))
+                .forEach(entry -> this.metaDataMap.put(entry.getKey(), entry.getValue().modify(modifier)));
+        return this;
     }
 
     @Override

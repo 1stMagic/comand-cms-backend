@@ -1,10 +1,7 @@
 package com.biock.cms.backend.page;
 
 import com.biock.cms.CmsApi;
-import com.biock.cms.backend.page.dto.ClonePageDTO;
-import com.biock.cms.backend.page.dto.CreatePageDTO;
-import com.biock.cms.backend.page.dto.PageModificationResultDTO;
-import com.biock.cms.backend.page.dto.UpdatePageDTO;
+import com.biock.cms.backend.page.dto.*;
 import com.biock.cms.web.api.ResponseBuilder;
 import com.biock.cms.web.api.dto.ResponseDTO;
 import org.springframework.http.MediaType;
@@ -28,6 +25,14 @@ public class BackendPageController {
 
         this.backendPageService = backendPageService;
         this.responseBuilder = responseBuilder;
+    }
+
+    @GetMapping("/{site}/{id}")
+    public ResponseEntity<ResponseDTO<PageDTO>> getPage(@PathVariable final String site, @PathVariable final String id) {
+
+        return this.responseBuilder.build(
+                () -> this.backendPageService.getPage(site, id),
+                PageDTO::of);
     }
 
     @PostMapping(path = "/{site}", consumes = MediaType.APPLICATION_JSON_VALUE)

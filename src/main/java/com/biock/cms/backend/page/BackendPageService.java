@@ -11,6 +11,7 @@ import com.biock.cms.page.Page;
 import com.biock.cms.page.PageRepository;
 import com.biock.cms.page.builder.PageBuilder;
 import com.biock.cms.shared.Modification;
+import com.biock.cms.site.SiteRepository;
 import com.biock.cms.utils.LanguageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,17 @@ import java.util.function.UnaryOperator;
 public class BackendPageService {
 
     private final PageRepository pageRepository;
+    private final SiteRepository siteRepository;
 
-    public BackendPageService(final PageRepository pageRepository) {
+    public BackendPageService(final PageRepository pageRepository, final SiteRepository siteRepository) {
 
         this.pageRepository = pageRepository;
+        this.siteRepository = siteRepository;
+    }
+
+    public Optional<Page> getPage(final String siteId, final String pageId) {
+
+        return this.pageRepository.findPageOfSiteById(siteId, pageId);
     }
 
     public String createPage(final String siteId, final CreatePageDTO dto) {
@@ -115,6 +123,11 @@ public class BackendPageService {
     public String deletePage(final String siteId, final String pageId) {
 
         return this.pageRepository.deletePage(siteId, pageId);
+    }
+
+    public String getDefaultLanguageOfSite(final String siteId) {
+
+        return this.siteRepository.getDefaultLanguageOfSite(siteId);
     }
 
     private String buildPageName(final String title) {

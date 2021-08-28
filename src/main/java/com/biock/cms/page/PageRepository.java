@@ -97,7 +97,9 @@ public class PageRepository extends JcrRepository {
             if (parent.isEmpty() && StringUtils.isNotBlank(parentId)) {
                 throw new NodeNotFoundException("Parent page " + parentId);
             }
-            return createPage(pageBuilder, requireNonNull(coalesce(parent, site).orElse(null)), afterPageId);
+            final String pageId = createPage(pageBuilder, requireNonNull(coalesce(parent, site).orElse(null)), afterPageId);
+            session.save();
+            return pageId;
         }
     }
 

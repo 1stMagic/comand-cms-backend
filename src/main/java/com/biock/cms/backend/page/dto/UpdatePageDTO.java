@@ -3,13 +3,11 @@ package com.biock.cms.backend.page.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 public class UpdatePageDTO {
 
-    @NotEmpty
     private Map<@NotBlank String, @NotNull String> title;
     private Map<@NotBlank String, @NotNull Map<@NotBlank String, @NotNull String>> metaData;
     private Boolean showInMainNavigation;

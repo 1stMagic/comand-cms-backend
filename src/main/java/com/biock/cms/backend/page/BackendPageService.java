@@ -57,17 +57,17 @@ public class BackendPageService {
                 .media(dto.isMedia())
                 .external(dto.isExternal())
                 .href(dto.getHref())
-                .metaData(MetaData.builder().metaDate(CmsMetaData.TITLE, title).build())
-                .component(SimpleComponent.builder()
-                        .componentName("CmdWidthLimitationWrapper")
-                        .active(true)
-                        .property(new SimpleComponentProperty("innerWrapper", false))
-                        .component(SimpleComponent.builder()
-                                .componentName("h1")
-                                .active(true)
-                                .property(new SimpleComponentProperty("innerHTML", title))
-                                .build())
-                        .build());
+                .metaData(MetaData.builder().metaDate(CmsMetaData.TITLE, title).build());
+//                .component(SimpleComponent.builder()
+//                        .componentName("CmdWidthLimitationWrapper")
+//                        .active(true)
+//                        .property(new SimpleComponentProperty("innerWrapper", false))
+//                        .component(SimpleComponent.builder()
+//                                .componentName("h1")
+//                                .active(true)
+//                                .property(new SimpleComponentProperty("innerHTML", title))
+//                                .build())
+//                        .build());
 
         return this.pageRepository.createPage(siteId, pageBuilder, dto.getParentId(), dto.getAfterPageId());
     }

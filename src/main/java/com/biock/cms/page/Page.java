@@ -29,6 +29,8 @@ public class Page extends AbstractEntity<Page> {
     private final boolean showInMainNavigation;
     private final boolean showInFooterNavigation;
     private final String iconClass;
+    private final boolean navigationEntry;
+    private final boolean media;
     private final boolean external;
     private final String href;
     private final String target;
@@ -49,6 +51,8 @@ public class Page extends AbstractEntity<Page> {
             final boolean showInMainNavigation,
             final boolean showInFooterNavigation,
             final String iconClass,
+            final boolean navigationEntry,
+            final boolean media,
             final boolean external,
             final String href,
             final String target,
@@ -68,6 +72,8 @@ public class Page extends AbstractEntity<Page> {
         this.showInMainNavigation = showInMainNavigation;
         this.showInFooterNavigation = showInFooterNavigation;
         this.iconClass = iconClass;
+        this.navigationEntry = navigationEntry;
+        this.media = media;
         this.external = external;
         this.href = href;
         this.target = target;
@@ -137,6 +143,16 @@ public class Page extends AbstractEntity<Page> {
     public String getIconClass() {
 
         return this.iconClass;
+    }
+
+    public boolean isNavigationEntry() {
+
+        return this.navigationEntry;
+    }
+
+    public boolean isMedia() {
+
+        return this.media;
     }
 
     public boolean isExternal() {

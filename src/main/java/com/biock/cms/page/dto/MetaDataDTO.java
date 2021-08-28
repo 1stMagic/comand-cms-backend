@@ -1,5 +1,6 @@
-package com.biock.cms.backend.page.dto;
+package com.biock.cms.page.dto;
 
+import com.biock.cms.i18n.dto.TranslationDTO;
 import com.biock.cms.page.MetaData;
 
 import java.util.HashMap;

@@ -16,6 +16,8 @@ public class NavigationBuilder implements Builder<Navigation> {
     private Translation metaDataTitle;
     private String description;
     private String href;
+    private boolean navigationEntry;
+    private boolean media;
     private boolean external;
     private boolean active;
     private List<Navigation> children;
@@ -69,6 +71,18 @@ public class NavigationBuilder implements Builder<Navigation> {
         return this;
     }
 
+    public NavigationBuilder navigationEntry(final boolean navigationEntry) {
+
+        this.navigationEntry = navigationEntry;
+        return this;
+    }
+
+    public NavigationBuilder media(final boolean media) {
+
+        this.media = media;
+        return this;
+    }
+
     public NavigationBuilder external(final boolean external) {
 
         this.external = external;
@@ -105,6 +119,8 @@ public class NavigationBuilder implements Builder<Navigation> {
                     .metaDataTitle(other.getMetaDataTitle())
                     .description(other.getDescription())
                     .href(other.getHref())
+                    .navigationEntry(other.isNavigationEntry())
+                    .media(other.isMedia())
                     .external(other.isExternal())
                     .active(other.isActive())
                     .children(other.getChildren())
@@ -125,6 +141,8 @@ public class NavigationBuilder implements Builder<Navigation> {
                 this.metaDataTitle,
                 this.description,
                 this.href,
+                this.navigationEntry,
+                this.media,
                 this.external,
                 this.active,
                 this.children,

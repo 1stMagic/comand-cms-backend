@@ -1,6 +1,10 @@
-package com.biock.cms.backend.page.dto;
+package com.biock.cms.page.dto;
 
+import com.biock.cms.i18n.dto.TranslationDTO;
 import com.biock.cms.page.Page;
+import com.biock.cms.shared.dto.ModificationDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PageDTO {
 
@@ -9,13 +13,18 @@ public class PageDTO {
     private String description;
     private ModificationDTO modification;
     private boolean active;
+    @JsonIgnore
     private TranslationDTO topNavigationTitle;
+    @JsonProperty("navigationTitle")
     private TranslationDTO mainNavigationTitle;
+    @JsonIgnore
     private TranslationDTO footerNavigationTitle;
     private boolean showInTopNavigation;
     private boolean showInMainNavigation;
     private boolean showInFooterNavigation;
     private String iconClass;
+    private boolean navigationEntry;
+    private boolean media;
     private boolean external;
     private String href;
     private String target;
@@ -39,6 +48,8 @@ public class PageDTO {
                 .setShowInMainNavigation(entity.isShowInMainNavigation())
                 .setShowInFooterNavigation(entity.isShowInFooterNavigation())
                 .setIconClass(entity.getIconClass())
+                .setNavigationEntry(entity.isNavigationEntry())
+                .setMedia(entity.isMedia())
                 .setExternal(entity.isExternal())
                 .setHref(entity.getHref())
                 .setTarget(entity.getTarget())
@@ -174,6 +185,28 @@ public class PageDTO {
     public PageDTO setIconClass(final String iconClass) {
 
         this.iconClass = iconClass;
+        return this;
+    }
+
+    public boolean isNavigationEntry() {
+
+        return this.navigationEntry;
+    }
+
+    public PageDTO setNavigationEntry(final boolean navigationEntry) {
+
+        this.navigationEntry = navigationEntry;
+        return this;
+    }
+
+    public boolean isMedia() {
+
+        return this.media;
+    }
+
+    public PageDTO setMedia(final boolean media) {
+
+        this.media = media;
         return this;
     }
 

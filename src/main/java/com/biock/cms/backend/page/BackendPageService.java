@@ -4,11 +4,14 @@ import com.biock.cms.CmsMetaData;
 import com.biock.cms.backend.page.dto.ClonePageDTO;
 import com.biock.cms.backend.page.dto.CreatePageDTO;
 import com.biock.cms.backend.page.dto.UpdatePageDTO;
+import com.biock.cms.component.simple.SimpleComponent;
+import com.biock.cms.component.simple.SimpleComponentProperty;
 import com.biock.cms.exception.NodeNotFoundException;
 import com.biock.cms.i18n.Translation;
 import com.biock.cms.page.MetaData;
 import com.biock.cms.page.Page;
 import com.biock.cms.page.PageRepository;
+import com.biock.cms.page.builder.MetaDataBuilder;
 import com.biock.cms.page.builder.PageBuilder;
 import com.biock.cms.shared.Modification;
 import com.biock.cms.site.SiteRepository;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 @Service
@@ -44,13 +49,25 @@ public class BackendPageService {
         final PageBuilder pageBuilder = Page.builder()
                 .name(buildPageName(title.getTranslation(LanguageUtils.getLanguage())))
                 .modification(Modification.now("api"))
-                .topNavigationTitle(title)
                 .mainNavigationTitle(title)
-                .footerNavigationTitle(title)
                 .showInTopNavigation(dto.isShowInTopNavigation())
                 .showInMainNavigation(dto.isShowInMainNavigation())
                 .showInFooterNavigation(dto.isShowInFooterNavigation())
-                .metaData(MetaData.builder().metaDate(CmsMetaData.TITLE, title).build());
+                .navigationEntry(dto.isNavigationEntry())
+                .media(dto.isMedia())
+                .external(dto.isExternal())
+                .href(dto.getHref())
+                .metaData(MetaData.builder().metaDate(CmsMetaData.TITLE, title).build())
+                .component(SimpleComponent.builder()
+                        .componentName("CmdWidthLimitationWrapper")
+                        .active(true)
+                        .property(new SimpleComponentProperty("innerWrapper", false))
+                        .component(SimpleComponent.builder()
+                                .componentName("h1")
+                                .active(true)
+                                .property(new SimpleComponentProperty("innerHTML", title))
+                                .build())
+                        .build());
 
         return this.pageRepository.createPage(siteId, pageBuilder, dto.getParentId(), dto.getAfterPageId());
     }
@@ -63,27 +80,31 @@ public class BackendPageService {
         }
         if (!dto.isEmpty()) {
             final PageBuilder pageBuilder = Page.builder().apply(page.get());
-            if (dto.getTopNavigationTitle() != null && !dto.getTopNavigationTitle().isEmpty()) {
-                pageBuilder.topNavigationTitle(Translation.builder().translations(dto.getTopNavigationTitle()).build());
+            final BiConsumer<Boolean, Consumer<Boolean>> setIf = (value, setter) -> {
+                if (value != null) {
+                    setter.accept(value);
+                }
+            };
+            if (dto.getTitle() != null && !dto.getTitle().isEmpty()) {
+                pageBuilder.mainNavigationTitle(Translation.builder().translations(dto.getTitle()).build());
             }
-            if (dto.getMainNavigationTitle() != null && !dto.getMainNavigationTitle().isEmpty()) {
-                pageBuilder.mainNavigationTitle(Translation.builder().translations(dto.getMainNavigationTitle()).build());
+            if (dto.getMetaData() != null && !dto.getMetaData().isEmpty()) {
+                final MetaDataBuilder metaDataBuilder = MetaData.builder();
+                dto.getMetaData().forEach((name, translations) -> metaDataBuilder.metaDate(
+                        name,
+                        Translation.builder().translations(translations).build()));
+                pageBuilder.metaData(metaDataBuilder.build());
             }
-            if (dto.getFooterNavigationTitle() != null && !dto.getFooterNavigationTitle().isEmpty()) {
-                pageBuilder.footerNavigationTitle(Translation.builder().translations(dto.getFooterNavigationTitle()).build());
+            if (dto.getHref() != null) {
+                pageBuilder.href(dto.getHref());
             }
-            if (dto.isShowInTopNavigation() != null) {
-                pageBuilder.showInTopNavigation(dto.isShowInTopNavigation());
-            }
-            if (dto.isShowInMainNavigation() != null) {
-                pageBuilder.showInMainNavigation(dto.isShowInMainNavigation());
-            }
-            if (dto.isShowInFooterNavigation() != null) {
-                pageBuilder.showInFooterNavigation(dto.isShowInFooterNavigation());
-            }
-            if (dto.isActive() != null) {
-                pageBuilder.active(dto.isActive());
-            }
+            setIf.accept(dto.isShowInTopNavigation(), pageBuilder::showInTopNavigation);
+            setIf.accept(dto.isShowInMainNavigation(), pageBuilder::showInMainNavigation);
+            setIf.accept(dto.isShowInFooterNavigation(), pageBuilder::showInFooterNavigation);
+            setIf.accept(dto.isNavigationEntry(), pageBuilder::navigationEntry);
+            setIf.accept(dto.isMedia(), pageBuilder::media);
+            setIf.accept(dto.isExternal(), pageBuilder::external);
+            setIf.accept(dto.isActive(), pageBuilder::active);
             pageBuilder.modification(Modification.builder()
                     .apply(page.get().getModification())
                     .lastModified(OffsetDateTime.now())

@@ -20,6 +20,8 @@ public class Navigation extends AbstractEntity<Navigation> { // NOSONAR -java:S2
     private final Translation metaDataTitle;
     private final String description;
     private final String href;
+    private final boolean navigationEntry;
+    private final boolean media;
     private final boolean external;
     private final boolean active;
     private final List<Navigation> children;
@@ -34,6 +36,8 @@ public class Navigation extends AbstractEntity<Navigation> { // NOSONAR -java:S2
             final Translation metaDataTitle,
             final String description,
             final String href,
+            final boolean navigationEntry,
+            final boolean media,
             final boolean external,
             final boolean active,
             final List<Navigation> children,
@@ -47,6 +51,8 @@ public class Navigation extends AbstractEntity<Navigation> { // NOSONAR -java:S2
         this.metaDataTitle = metaDataTitle;
         this.description = description;
         this.href = href;
+        this.navigationEntry = navigationEntry;
+        this.media = media;
         this.external = external;
         this.active = active;
         this.children = new ArrayList<>();
@@ -98,6 +104,16 @@ public class Navigation extends AbstractEntity<Navigation> { // NOSONAR -java:S2
                 Stream.of(getJcrPath().split("/"))
                         .skip(4)
                         .collect(joining("/")) + ".html");
+    }
+
+    public boolean isNavigationEntry() {
+
+        return this.navigationEntry;
+    }
+
+    public boolean isMedia() {
+
+        return this.media;
     }
 
     public boolean isExternal() {

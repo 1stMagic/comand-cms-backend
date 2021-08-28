@@ -44,6 +44,14 @@ public class BackendSiteController {
         this.messages = messages;
     }
 
+    @GetMapping("/{id}/navigation")
+    public ResponseEntity<ResponseDTO<List<NavigationDTO>>> getNavigation(@PathVariable final String id) {
+
+        return getNavigation(
+                () -> this.backendSiteService.getNavigation(id),
+                navigation -> translator(id).apply(navigation.getMainNavigationTitle(), navigation.getMetaDataTitle()));
+    }
+
     @GetMapping("/{id}/top-navigation")
     public ResponseEntity<ResponseDTO<List<NavigationDTO>>> getTopNavigation(@PathVariable final String id) {
 

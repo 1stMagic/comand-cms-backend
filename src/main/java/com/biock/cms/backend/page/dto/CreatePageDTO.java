@@ -13,6 +13,10 @@ public class CreatePageDTO {
     private boolean showInMainNavigation;
     private boolean showInTopNavigation;
     private boolean showInFooterNavigation;
+    private boolean navigationEntry;
+    private boolean media;
+    private boolean external;
+    private String href;
     private String afterPageId;
 
     public String getParentId() {
@@ -67,6 +71,50 @@ public class CreatePageDTO {
     public CreatePageDTO setShowInFooterNavigation(final boolean showInFooterNavigation) {
 
         this.showInFooterNavigation = showInFooterNavigation;
+        return this;
+    }
+
+    public boolean isNavigationEntry() {
+
+        return this.navigationEntry;
+    }
+
+    public CreatePageDTO setNavigationEntry(final boolean navigationEntry) {
+
+        this.navigationEntry = navigationEntry;
+        return this;
+    }
+
+    public boolean isMedia() {
+
+        return this.media;
+    }
+
+    public CreatePageDTO setMedia(final boolean media) {
+
+        this.media = media;
+        return this;
+    }
+
+    public boolean isExternal() {
+
+        return this.external;
+    }
+
+    public CreatePageDTO setExternal(final boolean external) {
+
+        this.external = external;
+        return this;
+    }
+
+    public String getHref() {
+
+        return this.href;
+    }
+
+    public CreatePageDTO setHref(final String href) {
+
+        this.href = href;
         return this;
     }
 

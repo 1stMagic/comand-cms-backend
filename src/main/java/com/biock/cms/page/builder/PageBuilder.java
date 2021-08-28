@@ -7,6 +7,7 @@ import com.biock.cms.shared.Modification;
 import com.biock.cms.i18n.Translation;
 import com.biock.cms.shared.builder.Builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PageBuilder implements Builder<Page> {
@@ -23,6 +24,8 @@ public class PageBuilder implements Builder<Page> {
     private boolean showInMainNavigation;
     private boolean showInFooterNavigation;
     private String iconClass;
+    private boolean navigationEntry;
+    private boolean media;
     private boolean external;
     private String href;
     private String target;
@@ -102,6 +105,18 @@ public class PageBuilder implements Builder<Page> {
         return this;
     }
 
+    public PageBuilder navigationEntry(final boolean navigationEntry) {
+
+        this.navigationEntry = navigationEntry;
+        return this;
+    }
+
+    public PageBuilder media(final boolean media) {
+
+        this.media = media;
+        return this;
+    }
+
     public PageBuilder external(final boolean external) {
 
         this.external = external;
@@ -138,6 +153,15 @@ public class PageBuilder implements Builder<Page> {
         return this;
     }
 
+    public PageBuilder component(final Component component) {
+
+        if (this.components == null) {
+            this.components = new ArrayList<>();
+        }
+        this.components.add(component);
+        return this;
+    }
+
     @Override
     public PageBuilder apply(final Page other) {
 
@@ -154,6 +178,8 @@ public class PageBuilder implements Builder<Page> {
                     .showInMainNavigation(other.isShowInMainNavigation())
                     .showInFooterNavigation(other.isShowInFooterNavigation())
                     .iconClass(other.getIconClass())
+                    .navigationEntry(other.isNavigationEntry())
+                    .media(other.isMedia())
                     .external(other.isExternal())
                     .href(other.getHref())
                     .target(other.getTarget())
@@ -180,6 +206,8 @@ public class PageBuilder implements Builder<Page> {
                 this.showInMainNavigation,
                 this.showInFooterNavigation,
                 this.iconClass,
+                this.navigationEntry,
+                this.media,
                 this.external,
                 this.href,
                 this.target,

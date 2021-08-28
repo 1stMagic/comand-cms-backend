@@ -57,6 +57,24 @@ public class SiteRepository extends JcrRepository {
         return Optional.empty();
     }
 
+    public Optional<List<Navigation>> getNavigation(final String siteId) {
+
+        try (final CloseableJcrSession session = getSession()) {
+            final Optional<Node> siteNode = getSiteNode(session, siteId);
+            if (siteNode.isPresent()) {
+                final List<Navigation> navigation = new ArrayList<>();
+                processNavigationNodes(
+                        getChildNodes(siteNode.get(), NodeFilters.ofType(CmsType.PAGE)),
+                        navigation,
+                        null,
+                        null,
+                        false);
+                return Optional.of(navigation);
+            }
+            return Optional.empty();
+        }
+    }
+
     public Optional<List<Navigation>> getTopNavigation(final String siteId) {
 
         return getNavigation(siteId, CmsProperty.SHOW_IN_TOP_NAVIGATION, true);
@@ -138,7 +156,7 @@ public class SiteRepository extends JcrRepository {
 
         try {
             for (final Node node : nodes) {
-                final boolean matches = nodeFilter.test(node);
+                final boolean matches = nodeFilter == null || nodeFilter.test(node);
                 if (matches) {
                     navigation.add(this.navigationMapper.toEntityBuilder(node).parentId(parentId).build());
                 }

@@ -3,49 +3,43 @@ package com.biock.cms.backend.page.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 public class UpdatePageDTO {
 
-    private Map<@NotBlank String, @NotNull String> topNavigationTitle;
-    private Map<@NotBlank String, @NotNull String> mainNavigationTitle;
-    private Map<@NotBlank String, @NotNull String> footerNavigationTitle;
+    @NotEmpty
+    private Map<@NotBlank String, @NotNull String> title;
+    private Map<@NotBlank String, @NotNull Map<@NotBlank String, @NotNull String>> metaData;
     private Boolean showInMainNavigation;
     private Boolean showInTopNavigation;
     private Boolean showInFooterNavigation;
+    private Boolean navigationEntry;
+    private Boolean media;
+    private Boolean external;
+    private String href;
     private Boolean active;
 
-    public Map<String, String> getTopNavigationTitle() {
+    public Map<String, String> getTitle() {
 
-        return this.topNavigationTitle;
+        return this.title;
     }
 
-    public UpdatePageDTO setTopNavigationTitle(final Map<String, String> topNavigationTitle) {
+    public UpdatePageDTO setTitle(final Map<String, String> title) {
 
-        this.topNavigationTitle = topNavigationTitle;
+        this.title = title;
         return this;
     }
 
-    public Map<String, String> getMainNavigationTitle() {
+    public Map<String, Map<String, String>> getMetaData() {
 
-        return this.mainNavigationTitle;
+        return this.metaData;
     }
 
-    public UpdatePageDTO setMainNavigationTitle(final Map<String, String> mainNavigationTitle) {
+    public UpdatePageDTO setMetaData(final Map<String, Map<String, String>> metaData) {
 
-        this.mainNavigationTitle = mainNavigationTitle;
-        return this;
-    }
-
-    public Map<String, String> getFooterNavigationTitle() {
-
-        return this.footerNavigationTitle;
-    }
-
-    public UpdatePageDTO setFooterNavigationTitle(final Map<String, String> footerNavigationTitle) {
-
-        this.footerNavigationTitle = footerNavigationTitle;
+        this.metaData = metaData;
         return this;
     }
 
@@ -82,6 +76,50 @@ public class UpdatePageDTO {
         return this;
     }
 
+    public Boolean isNavigationEntry() {
+
+        return this.navigationEntry;
+    }
+
+    public UpdatePageDTO setNavigationEntry(final Boolean navigationEntry) {
+
+        this.navigationEntry = navigationEntry;
+        return this;
+    }
+
+    public Boolean isMedia() {
+
+        return this.media;
+    }
+
+    public UpdatePageDTO setMedia(final Boolean media) {
+
+        this.media = media;
+        return this;
+    }
+
+    public Boolean isExternal() {
+
+        return this.external;
+    }
+
+    public UpdatePageDTO setExternal(final Boolean external) {
+
+        this.external = external;
+        return this;
+    }
+
+    public String getHref() {
+
+        return this.href;
+    }
+
+    public UpdatePageDTO setHref(final String href) {
+
+        this.href = href;
+        return this;
+    }
+
     public Boolean isActive() {
 
         return this.active;
@@ -96,12 +134,14 @@ public class UpdatePageDTO {
     @JsonIgnore
     public boolean isEmpty() {
 
-        return (this.topNavigationTitle == null || this.topNavigationTitle.isEmpty())
-                && (this.mainNavigationTitle == null || this.mainNavigationTitle.isEmpty())
-                && (this.footerNavigationTitle == null || this.footerNavigationTitle.isEmpty())
+        return (this.title == null || this.title.isEmpty())
                 && this.showInTopNavigation == null
                 && this.showInMainNavigation == null
                 && this.showInFooterNavigation == null
+                && this.navigationEntry == null
+                && this.media == null
+                && this.external == null
+                && this.href == null
                 && this.active == null;
     }
 }

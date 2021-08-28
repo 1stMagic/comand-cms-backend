@@ -13,6 +13,8 @@ public final class CmsProperty {
     public static final String SHOW_IN_MAIN_NAVIGATION = "showInMainNavigation";
     public static final String SHOW_IN_TOP_NAVIGATION = "showInTopNavigation";
     public static final String SHOW_IN_FOOTER_NAVIGATION = "showInFooterNavigation";
+    public static final String NAVIGATION_ENTRY = "navigationEntry";
+    public static final String MEDIA = "media";
     public static final String EXTERNAL = "external";
     public static final String HREF = "href";
     public static final String TARGET = "target";

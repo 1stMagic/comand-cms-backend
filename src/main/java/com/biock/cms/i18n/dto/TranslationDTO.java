@@ -1,4 +1,4 @@
-package com.biock.cms.backend.page.dto;
+package com.biock.cms.i18n.dto;
 
 import com.biock.cms.i18n.Translation;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;

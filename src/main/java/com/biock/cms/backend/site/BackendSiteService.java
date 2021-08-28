@@ -17,6 +17,11 @@ public class BackendSiteService {
         this.siteRepository = siteRepository;
     }
 
+    public Optional<List<Navigation>> getNavigation(final String siteId) {
+
+        return this.siteRepository.getNavigation(siteId);
+    }
+
     public Optional<List<Navigation>> getTopNavigation(final String siteId) {
 
         return this.siteRepository.getTopNavigation(siteId);

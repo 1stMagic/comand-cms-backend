@@ -1,5 +1,6 @@
 package com.biock.cms.component.mapper;
 
+import com.biock.cms.CmsNode;
 import com.biock.cms.CmsProperty;
 import com.biock.cms.CmsType;
 import com.biock.cms.component.Component;
@@ -12,6 +13,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 
@@ -51,5 +53,15 @@ public class ComponentsMapper implements Mapper<List<Component>> {
     @Override
     public void toNode(final List<Component> entity, final Node node) {
 
+//        try {
+//            if (entity != null) {
+//                for (final Component component : entity) {
+//                    final Node componentNode = node.addNode(UUID.randomUUID().toString(), CmsType.COMPONENT.getName());
+//                    this.mappers.getOrDefault(componentNode.getName(), this.defaultMapper).toNode(component, componentNode);
+//                }
+//            }
+//        } catch (final RepositoryException e) {
+//            throw new RuntimeRepositoryException(e);
+//        }
     }
 }

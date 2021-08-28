@@ -56,6 +56,8 @@ public class PageMapper implements Mapper<Page> {
                     .showInMainNavigation(getBooleanProperty(node, CmsProperty.SHOW_IN_MAIN_NAVIGATION, false))
                     .showInFooterNavigation(getBooleanProperty(node, CmsProperty.SHOW_IN_FOOTER_NAVIGATION, false))
                     .iconClass(getStringProperty(node, CmsProperty.ICON_CLASS, ""))
+                    .navigationEntry(getBooleanProperty(node, CmsProperty.NAVIGATION_ENTRY, false))
+                    .media(getBooleanProperty(node, CmsProperty.MEDIA, false))
                     .external(getBooleanProperty(node, CmsProperty.EXTERNAL, false))
                     .href(getStringProperty(node, CmsProperty.HREF, ""))
                     .target(getStringProperty(node, CmsProperty.TARGET, ""))
@@ -85,12 +87,17 @@ public class PageMapper implements Mapper<Page> {
             node.setProperty(CmsProperty.SHOW_IN_MAIN_NAVIGATION, entity.isShowInMainNavigation());
             node.setProperty(CmsProperty.SHOW_IN_FOOTER_NAVIGATION, entity.isShowInFooterNavigation());
             node.setProperty(CmsProperty.ICON_CLASS, StringUtils.defaultString(entity.getIconClass()));
+            node.setProperty(CmsProperty.NAVIGATION_ENTRY, entity.isNavigationEntry());
+            node.setProperty(CmsProperty.MEDIA, entity.isExternal());
             node.setProperty(CmsProperty.EXTERNAL, entity.isExternal());
             node.setProperty(CmsProperty.HREF, StringUtils.defaultString(entity.getHref()));
             node.setProperty(CmsProperty.TARGET, StringUtils.defaultString(entity.getTarget()));
             if (entity.getMetaData() != null) {
                 this.metaDataMapper.map(entity.getMetaData(), node, CmsNode.META_DATA);
             }
+//            if (entity.getComponents() != null) {
+//                this.componentsMapper.toNode(entity.getComponents(), node);
+//            }
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

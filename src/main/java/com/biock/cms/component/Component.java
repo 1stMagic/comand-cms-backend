@@ -2,7 +2,9 @@ package com.biock.cms.component;
 
 import com.biock.cms.component.dto.ComponentDTO;
 
-public interface Component {
+import java.io.Serializable;
+
+public interface Component extends Serializable {
 
     boolean isActive();
     String getComponentName();

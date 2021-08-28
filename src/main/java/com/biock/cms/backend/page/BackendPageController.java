@@ -2,6 +2,7 @@ package com.biock.cms.backend.page;
 
 import com.biock.cms.CmsApi;
 import com.biock.cms.backend.page.dto.*;
+import com.biock.cms.page.dto.PageDTO;
 import com.biock.cms.web.api.ResponseBuilder;
 import com.biock.cms.web.api.dto.ResponseDTO;
 import org.springframework.http.MediaType;

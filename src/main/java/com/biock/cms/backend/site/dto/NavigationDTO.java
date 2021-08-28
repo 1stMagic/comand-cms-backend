@@ -19,6 +19,8 @@ public class NavigationDTO {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String description;
     private String href;
+    private boolean navigationEntry;
+    private boolean media;
     private boolean external;
     private boolean active;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -35,6 +37,8 @@ public class NavigationDTO {
                 .setTitle(titleSupplier.apply(entity))
                 .setDescription(entity.getDescription())
                 .setHref(entity.getHref())
+                .setNavigationEntry(entity.isNavigationEntry())
+                .setMedia(entity.isMedia())
                 .setExternal(entity.isExternal())
                 .setActive(entity.isActive())
                 .setChildren(Optional.ofNullable(entity.getChildren())
@@ -96,6 +100,28 @@ public class NavigationDTO {
     public NavigationDTO setHref(final String href) {
 
         this.href = href;
+        return this;
+    }
+
+    public boolean isNavigationEntry() {
+
+        return this.navigationEntry;
+    }
+
+    public NavigationDTO setNavigationEntry(final boolean navigationEntry) {
+
+        this.navigationEntry = navigationEntry;
+        return this;
+    }
+
+    public boolean isMedia() {
+
+        return this.media;
+    }
+
+    public NavigationDTO setMedia(final boolean media) {
+
+        this.media = media;
         return this;
     }
 

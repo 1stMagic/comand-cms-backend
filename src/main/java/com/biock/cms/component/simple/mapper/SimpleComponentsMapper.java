@@ -5,13 +5,14 @@ import com.biock.cms.component.simple.SimpleComponent;
 import com.biock.cms.component.simple.builder.SimpleComponentsBuilder;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.shared.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import java.util.List;
 
-@org.springframework.stereotype.Component
+@Component
 public class SimpleComponentsMapper implements Mapper<List<SimpleComponent>> {
 
     private final SimpleComponentMapper componentMapper;

@@ -1,4 +1,4 @@
-package com.biock.cms.backend.page.dto;
+package com.biock.cms.shared.dto;
 
 import com.biock.cms.shared.Modification;
 

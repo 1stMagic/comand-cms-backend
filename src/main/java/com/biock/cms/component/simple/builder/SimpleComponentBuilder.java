@@ -3,8 +3,11 @@ package com.biock.cms.component.simple.builder;
 import com.biock.cms.component.simple.SimpleComponent;
 import com.biock.cms.component.simple.SimpleComponentProperty;
 import com.biock.cms.shared.builder.Builder;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SimpleComponentBuilder implements Builder<SimpleComponent> {
 
@@ -38,9 +41,27 @@ public class SimpleComponentBuilder implements Builder<SimpleComponent> {
         return this;
     }
 
+    public SimpleComponentBuilder property(final SimpleComponentProperty property) {
+
+        if (this.properties == null) {
+            this.properties = new ArrayList<>();
+        }
+        this.properties.add(property);
+        return this;
+    }
+
     public SimpleComponentBuilder components(final List<SimpleComponent> components) {
 
         this.components = components;
+        return this;
+    }
+
+    public SimpleComponentBuilder component(final SimpleComponent component) {
+
+        if (this.components == null) {
+            this.components = new ArrayList<>();
+        }
+        this.components.add(component);
         return this;
     }
 
@@ -61,7 +82,7 @@ public class SimpleComponentBuilder implements Builder<SimpleComponent> {
     public SimpleComponent build() {
 
         return new SimpleComponent(
-                this.id,
+                StringUtils.defaultIfBlank(this.id, UUID.randomUUID().toString()),
                 this.active,
                 this.componentName,
                 this.properties,

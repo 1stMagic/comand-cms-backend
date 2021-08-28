@@ -7,6 +7,7 @@ import com.biock.cms.component.simple.SimpleComponent;
 import com.biock.cms.component.simple.builder.SimpleComponentBuilder;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -15,7 +16,7 @@ import static com.biock.cms.jcr.PropertyUtils.getBooleanProperty;
 import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 
 @Primary
-@org.springframework.stereotype.Component
+@Component
 public class SimpleComponentMapper implements ComponentMapper<SimpleComponent> {
 
     private final SimpleComponentPropertiesMapper componentPropertiesMapper;

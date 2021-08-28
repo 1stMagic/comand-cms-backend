@@ -39,6 +39,8 @@ public class NavigationMapper implements Mapper<Navigation> {
                     .metaDataTitle(this.translationMapper.map(node, JcrPaths.relative(CmsNode.META_DATA, CmsNode.TITLE)))
                     .description(getStringProperty(node, Property.JCR_DESCRIPTION, ""))
                     .href(getStringProperty(node, CmsProperty.HREF, ""))
+                    .navigationEntry(getBooleanProperty(node, CmsProperty.NAVIGATION_ENTRY, false))
+                    .media(getBooleanProperty(node, CmsProperty.MEDIA, false))
                     .external(getBooleanProperty(node, CmsProperty.EXTERNAL, false))
                     .active(getBooleanProperty(node, CmsProperty.ACTIVE, false))
                     .jcrPath(node.getPath());
@@ -50,5 +52,6 @@ public class NavigationMapper implements Mapper<Navigation> {
     @Override
     public void toNode(final Navigation entity, final Node node) {
 
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

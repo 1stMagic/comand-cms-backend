@@ -157,4 +157,9 @@ public class NavigationDTO {
         this.children = children;
         return this;
     }
+
+    public boolean isPage() {
+
+        return !(this.media || this.external || this.navigationEntry);
+    }
 }

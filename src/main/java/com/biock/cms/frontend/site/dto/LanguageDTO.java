@@ -13,6 +13,9 @@ public class LanguageDTO {
     private String name;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String tooltip;
+    private boolean active;
+    @JsonProperty("default")
+    private boolean defaultLanguage;
 
     public static LanguageDTO of(final Language entity, final String language, final String fallbackLanguage) {
 
@@ -22,7 +25,9 @@ public class LanguageDTO {
         return new LanguageDTO()
                 .setIso6391Code(entity.getIso6391Code())
                 .setName(entity.getName().getTranslation(language, fallbackLanguage))
-                .setTooltip(entity.getTooltip().getTranslation(language, fallbackLanguage));
+                .setTooltip(entity.getTooltip().getTranslation(language, fallbackLanguage))
+                .setActive(entity.isActive())
+                .setDefaultLanguage(entity.isDefaultLanguage());
     }
 
     public String getIso6391Code() {
@@ -55,6 +60,28 @@ public class LanguageDTO {
     public LanguageDTO setTooltip(final String tooltip) {
 
         this.tooltip = tooltip;
+        return this;
+    }
+
+    public boolean isActive() {
+
+        return this.active;
+    }
+
+    public LanguageDTO setActive(final boolean active) {
+
+        this.active = active;
+        return this;
+    }
+
+    public boolean isDefaultLanguage() {
+
+        return this.defaultLanguage;
+    }
+
+    public LanguageDTO setDefaultLanguage(final boolean defaultLanguage) {
+
+        this.defaultLanguage = defaultLanguage;
         return this;
     }
 }

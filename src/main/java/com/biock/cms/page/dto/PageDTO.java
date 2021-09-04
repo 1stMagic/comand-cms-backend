@@ -5,6 +5,7 @@ import com.biock.cms.page.Page;
 import com.biock.cms.shared.dto.ModificationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 public class PageDTO {
 
@@ -28,6 +29,7 @@ public class PageDTO {
     private boolean external;
     private String href;
     private String target;
+    @JsonUnwrapped
     private MetaDataDTO metaData;
 
     public static PageDTO of(final Page entity) {

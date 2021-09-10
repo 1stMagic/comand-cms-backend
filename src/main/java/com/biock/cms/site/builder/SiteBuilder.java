@@ -5,8 +5,6 @@ import com.biock.cms.shared.Modification;
 import com.biock.cms.shared.builder.Builder;
 import com.biock.cms.site.Language;
 import com.biock.cms.site.Site;
-import com.biock.cms.user.User;
-import com.biock.cms.user.UserGroup;
 
 import java.util.List;
 
@@ -21,8 +19,6 @@ public class SiteBuilder implements Builder<Site> {
     private String homePage;
     private List<Language> languages;
     private ContactData contactData;
-    private List<User> users;
-    private List<UserGroup> userGroups;
 
     public SiteBuilder id(final String id) {
 
@@ -78,18 +74,6 @@ public class SiteBuilder implements Builder<Site> {
         return this;
     }
 
-    public SiteBuilder users(final List<User> users) {
-
-        this.users = users;
-        return this;
-    }
-
-    public SiteBuilder userGroups(final List<UserGroup> userGroups) {
-
-        this.userGroups = userGroups;
-        return this;
-    }
-
     @Override
     public SiteBuilder apply(final Site other) {
 
@@ -102,9 +86,7 @@ public class SiteBuilder implements Builder<Site> {
                     .theme(other.getTheme())
                     .homePage(other.getHomePage())
                     .languages(other.getLanguages())
-                    .contactData(other.getContactData())
-                    .users(other.getUsers())
-                    .userGroups(other.getUserGroups());
+                    .contactData(other.getContactData());
         }
         return this;
     }
@@ -121,8 +103,6 @@ public class SiteBuilder implements Builder<Site> {
                 this.theme,
                 this.homePage,
                 this.languages,
-                this.contactData,
-                this.users,
-                this.userGroups);
+                this.contactData);
     }
 }

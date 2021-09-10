@@ -16,7 +16,6 @@ import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 
 import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
-import static java.util.Collections.emptyList;
 
 @Component
 public class SiteMapper implements Mapper<Site> {
@@ -48,9 +47,7 @@ public class SiteMapper implements Mapper<Site> {
                     .theme(getStringProperty(node, CmsProperty.THEME))
                     .homePage(getStringProperty(node, CmsProperty.HOME_PAGE))
                     .languages(this.languagesMapper.map(node, CmsNode.LANGUAGES))
-                    .contactData(this.contactDataMapper.map(node, CmsNode.CONTACT_DATA))
-                    .users(emptyList())
-                    .userGroups(emptyList());
+                    .contactData(this.contactDataMapper.map(node, CmsNode.CONTACT_DATA));
         } catch (RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

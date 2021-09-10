@@ -2,6 +2,8 @@ package com.biock.cms.backend.site;
 
 import com.biock.cms.CmsApi;
 import com.biock.cms.backend.site.dto.NavigationDTO;
+import com.biock.cms.backend.site.dto.UserDTO;
+import com.biock.cms.backend.site.dto.UserGroupDTO;
 import com.biock.cms.exception.NodeNotFoundException;
 import com.biock.cms.i18n.Messages;
 import com.biock.cms.i18n.Translation;
@@ -74,6 +76,26 @@ public class BackendSiteController {
         return getNavigation(
                 () -> this.backendSiteService.getFooterNavigation(id),
                 navigation -> translator(id).apply(navigation.getFooterNavigationTitle(), navigation.getMetaDataTitle()));
+    }
+
+    @GetMapping("/{id}/users")
+    public ResponseEntity<ResponseDTO<List<UserDTO>>> getUsers(@PathVariable final String id) {
+
+        return this.responseBuilder.build(
+                () -> Optional.of(this.backendSiteService.getUsers(id)),
+                users -> users.stream().map(UserDTO::of).collect(toList()));
+    }
+
+    @GetMapping("/{id}/user-groups")
+    public ResponseEntity<ResponseDTO<List<UserGroupDTO>>> getUserGroups(@PathVariable final String id) {
+
+        final String language = LanguageUtils.getLanguage();
+        final String fallbackLanguage = this.backendSiteService.getDefaultLanguageOfSite(id);
+        return this.responseBuilder.build(
+                () -> Optional.of(this.backendSiteService.getUserGroups(id)),
+                userGroups -> userGroups.stream()
+                        .map(userGroup -> UserGroupDTO.of(userGroup, language, fallbackLanguage))
+                        .collect(toList()));
     }
 
     @GetMapping("/{id}/export")

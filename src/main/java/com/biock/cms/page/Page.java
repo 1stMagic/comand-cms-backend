@@ -34,6 +34,7 @@ public class Page extends AbstractEntity<Page> {
     private final boolean external;
     private final String href;
     private final String target;
+    private final String[] requiredGroups;
     private final MetaData metaData;
     private final String jcrPath;
     private final List<Component> components;
@@ -56,6 +57,7 @@ public class Page extends AbstractEntity<Page> {
             final boolean external,
             final String href,
             final String target,
+            final String[] requiredGroups,
             final MetaData metaData,
             final String jcrPath,
             final List<Component> components) {
@@ -77,6 +79,7 @@ public class Page extends AbstractEntity<Page> {
         this.external = external;
         this.href = href;
         this.target = target;
+        this.requiredGroups = requiredGroups;
         this.metaData = metaData;
         this.jcrPath = jcrPath;
         this.components = new ArrayList<>();
@@ -168,6 +171,11 @@ public class Page extends AbstractEntity<Page> {
     public String getTarget() {
 
         return this.target;
+    }
+
+    public String[] getRequiredGroups() {
+
+        return this.requiredGroups;
     }
 
     public MetaData getMetaData() {

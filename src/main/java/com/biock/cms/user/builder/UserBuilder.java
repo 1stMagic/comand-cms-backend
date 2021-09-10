@@ -1,11 +1,8 @@
 package com.biock.cms.user.builder;
 
 import com.biock.cms.shared.ContactData;
-import com.biock.cms.user.User;
-import com.biock.cms.user.UserGroup;
 import com.biock.cms.shared.builder.Builder;
-
-import java.util.Set;
+import com.biock.cms.user.User;
 
 public class UserBuilder implements Builder<User> {
 
@@ -17,7 +14,7 @@ public class UserBuilder implements Builder<User> {
     private String lastName;
     private ContactData contactData;
     private boolean active;
-    private Set<UserGroup> groups;
+    private String[] groups;
 
     public UserBuilder id(final String id) {
 
@@ -67,7 +64,7 @@ public class UserBuilder implements Builder<User> {
         return this;
     }
 
-    public UserBuilder groups(final Set<UserGroup> groups) {
+    public UserBuilder groups(final String[] groups) {
 
         this.groups = groups;
         return this;

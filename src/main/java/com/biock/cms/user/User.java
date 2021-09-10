@@ -4,9 +4,6 @@ import com.biock.cms.shared.AbstractEntity;
 import com.biock.cms.shared.ContactData;
 import com.biock.cms.user.builder.UserBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class User extends AbstractEntity<User> {
 
     private final String email;
@@ -16,7 +13,7 @@ public class User extends AbstractEntity<User> {
     private final String lastName;
     private final ContactData contactData;
     private final boolean active;
-    private final Set<UserGroup> groups;
+    private final String[] groups;
 
     public User(
             final String id,
@@ -27,7 +24,7 @@ public class User extends AbstractEntity<User> {
             final String lastName,
             final ContactData contactData,
             final boolean active,
-            final Set<UserGroup> groups) {
+            final String[] groups) {
 
         super(id);
         this.email = email;
@@ -37,10 +34,7 @@ public class User extends AbstractEntity<User> {
         this.lastName = lastName;
         this.contactData = contactData;
         this.active = active;
-        this.groups = new HashSet<>();
-        if (groups != null) {
-            this.groups.addAll(groups);
-        }
+        this.groups = groups;
     }
 
     public static UserBuilder builder() {
@@ -83,9 +77,9 @@ public class User extends AbstractEntity<User> {
         return this.active;
     }
 
-    public Set<UserGroup> getGroups() {
+    public String[] getGroups() {
 
-        return new HashSet<>(this.groups);
+        return this.groups;
     }
 
 }

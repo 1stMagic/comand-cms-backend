@@ -19,6 +19,7 @@ public final class CmsProperty {
     public static final String HREF = "href";
     public static final String TARGET = "target";
     public static final String ICON_CLASS = "iconClass";
+    public static final String REQUIRED_GROUPS = "requiredGroups";
     public static final String TITLE = "title";
     public static final String TOOLTIP = "tooltip";
     public static final String INNER_HTML = "innerHTML";
@@ -37,6 +38,9 @@ public final class CmsProperty {
     public static final String CONTACT_DATA_FAX = "fax";
     public static final String CONTACT_DATA_EMAIL = "email";
     public static final String CONTACT_DATA_COUNTRY = "country";
+
+    public static final String USER_EMAIL = "email";
+    public static final String USER_GROUPS = "groups";
 
     private CmsProperty() {
 

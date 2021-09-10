@@ -1,6 +1,8 @@
 package com.biock.cms.backend.site;
 
 import com.biock.cms.site.SiteRepository;
+import com.biock.cms.user.User;
+import com.biock.cms.user.UserGroup;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,16 @@ public class BackendSiteService {
     public String getDefaultLanguageOfSite(final String siteId) {
 
         return this.siteRepository.getDefaultLanguageOfSite(siteId);
+    }
+
+    public List<User> getUsers(final String siteId) {
+
+        return this.siteRepository.getUsers(siteId);
+    }
+
+    public List<UserGroup> getUserGroups(final String siteId) {
+
+        return this.siteRepository.getUserGroups(siteId);
     }
 
     public Resource exportSite(final String siteId) {

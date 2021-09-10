@@ -9,6 +9,7 @@ import com.biock.cms.shared.builder.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PageBuilder implements Builder<Page> {
 
@@ -29,6 +30,7 @@ public class PageBuilder implements Builder<Page> {
     private boolean external;
     private String href;
     private String target;
+    private String[] requiredGroups;
     private MetaData metaData;
     private String jcrPath;
     private List<Component> components;
@@ -135,6 +137,12 @@ public class PageBuilder implements Builder<Page> {
         return this;
     }
 
+    public PageBuilder requiredGroups(final String[] requiredGroups) {
+
+        this.requiredGroups = requiredGroups;
+        return this;
+    }
+
     public PageBuilder metaData(final MetaData metaData) {
 
         this.metaData = metaData;
@@ -183,6 +191,7 @@ public class PageBuilder implements Builder<Page> {
                     .external(other.isExternal())
                     .href(other.getHref())
                     .target(other.getTarget())
+                    .requiredGroups(other.getRequiredGroups())
                     .metaData(other.getMetaData())
                     .jcrPath(other.getJcrPath())
                     .components(other.getComponents());
@@ -211,6 +220,7 @@ public class PageBuilder implements Builder<Page> {
                 this.external,
                 this.href,
                 this.target,
+                Optional.ofNullable(this.requiredGroups).orElse(new String[0]),
                 this.metaData,
                 this.jcrPath,
                 this.components);

@@ -4,6 +4,7 @@ import com.biock.cms.i18n.dto.TranslationDTO;
 import com.biock.cms.page.Page;
 import com.biock.cms.shared.dto.ModificationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
@@ -29,6 +30,8 @@ public class PageDTO {
     private boolean external;
     private String href;
     private String target;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String[] requiredGroups;
     @JsonUnwrapped
     private MetaDataDTO metaData;
 
@@ -55,6 +58,7 @@ public class PageDTO {
                 .setExternal(entity.isExternal())
                 .setHref(entity.getHref())
                 .setTarget(entity.getTarget())
+                .setRequiredGroups(entity.getRequiredGroups())
                 .setMetaData(MetaDataDTO.of(entity.getMetaData()));
     }
 
@@ -245,6 +249,17 @@ public class PageDTO {
         return this;
     }
 
+    public String[] getRequiredGroups() {
+
+        return this.requiredGroups;
+    }
+
+    public PageDTO setRequiredGroups(final String[] requiredGroups) {
+
+        this.requiredGroups = requiredGroups;
+        return this;
+    }
+
     public MetaDataDTO getMetaData() {
 
         return this.metaData;
@@ -254,5 +269,10 @@ public class PageDTO {
 
         this.metaData = metaData;
         return this;
+    }
+
+    public boolean isRestricted() {
+
+        return this.requiredGroups != null && this.requiredGroups.length > 0;
     }
 }

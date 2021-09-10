@@ -13,6 +13,10 @@ import com.biock.cms.jcr.JcrRepository;
 import com.biock.cms.jcr.NodeFilters;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.site.mapper.SiteMapper;
+import com.biock.cms.user.User;
+import com.biock.cms.user.UserGroup;
+import com.biock.cms.user.mapper.UserGroupsMapper;
+import com.biock.cms.user.mapper.UsersMapper;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -35,15 +39,21 @@ public class SiteRepository extends JcrRepository {
 
     private final SiteMapper siteMapper;
     private final NavigationMapper navigationMapper;
+    private final UsersMapper usersMapper;
+    private final UserGroupsMapper userGroupsMapper;
 
     public SiteRepository(
             final Repository repository,
             final SiteMapper siteMapper,
-            final NavigationMapper navigationMapper) {
+            final NavigationMapper navigationMapper,
+            final UsersMapper usersMapper,
+            final UserGroupsMapper userGroupsMapper) {
 
         super(repository);
         this.siteMapper = siteMapper;
         this.navigationMapper = navigationMapper;
+        this.usersMapper = usersMapper;
+        this.userGroupsMapper = userGroupsMapper;
     }
 
     public Optional<Site> findSiteById(final String siteId) {
@@ -108,6 +118,28 @@ public class SiteRepository extends JcrRepository {
             return CmsApi.DEFAULT_LANGUAGE;
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public List<User> getUsers(final String siteId) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> siteNode = getSiteNode(session, siteId);
+            if (siteNode.isEmpty()) {
+                throw new NodeNotFoundException("Site " + siteId);
+            }
+            return this.usersMapper.map(siteNode.get(), CmsNode.USERS);
+        }
+    }
+
+    public List<UserGroup> getUserGroups(final String siteId) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> siteNode = getSiteNode(session, siteId);
+            if (siteNode.isEmpty()) {
+                throw new NodeNotFoundException("Site " + siteId);
+            }
+            return this.userGroupsMapper.map(siteNode.get(), CmsNode.USER_GROUPS);
         }
     }
 

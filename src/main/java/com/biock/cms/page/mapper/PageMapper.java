@@ -16,8 +16,9 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 
-import static com.biock.cms.jcr.PropertyUtils.getBooleanProperty;
-import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
+import java.util.Optional;
+
+import static com.biock.cms.jcr.PropertyUtils.*;
 
 @Component
 public class PageMapper implements Mapper<Page> {
@@ -61,6 +62,7 @@ public class PageMapper implements Mapper<Page> {
                     .external(getBooleanProperty(node, CmsProperty.EXTERNAL, false))
                     .href(getStringProperty(node, CmsProperty.HREF, ""))
                     .target(getStringProperty(node, CmsProperty.TARGET, ""))
+                    .requiredGroups(getStringArrayProperty(node, CmsProperty.REQUIRED_GROUPS, new String[0]))
                     .metaData(this.metaDataMapper.map(node, CmsNode.META_DATA))
                     .jcrPath(node.getPath())
                     .components(this.componentsMapper.toEntity(node));
@@ -92,6 +94,7 @@ public class PageMapper implements Mapper<Page> {
             node.setProperty(CmsProperty.EXTERNAL, entity.isExternal());
             node.setProperty(CmsProperty.HREF, StringUtils.defaultString(entity.getHref()));
             node.setProperty(CmsProperty.TARGET, StringUtils.defaultString(entity.getTarget()));
+            node.setProperty(CmsProperty.REQUIRED_GROUPS, Optional.ofNullable(entity.getRequiredGroups()).orElse(new String[0]));
             if (entity.getMetaData() != null) {
                 this.metaDataMapper.map(entity.getMetaData(), node, CmsNode.META_DATA);
             }

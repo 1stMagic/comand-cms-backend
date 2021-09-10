@@ -7,8 +7,6 @@ import com.biock.cms.shared.ContactData;
 import com.biock.cms.shared.Modification;
 import com.biock.cms.site.builder.NavigationItemBuilder;
 import com.biock.cms.site.builder.SiteBuilder;
-import com.biock.cms.user.User;
-import com.biock.cms.user.UserGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +25,6 @@ public class Site extends AbstractEntity<Site> {
     private final String homePage;
     private final List<Language> languages;
     private final ContactData contactData;
-    private final List<User> users;
-    private final List<UserGroup> userGroups;
     private final List<NavigationItem> topNavigation;
     private final List<NavigationItem> mainNavigation;
     private final List<NavigationItem> footerNavigation;
@@ -42,9 +38,7 @@ public class Site extends AbstractEntity<Site> {
             final String theme,
             final String homePage,
             final List<Language> languages,
-            final ContactData contactData,
-            final List<User> users,
-            final List<UserGroup> userGroups) {
+            final ContactData contactData) {
 
         super(id);
         this.description = description;
@@ -55,20 +49,12 @@ public class Site extends AbstractEntity<Site> {
         this.homePage = homePage;
         this.languages = new ArrayList<>();
         this.contactData = contactData;
-        this.users = new ArrayList<>();
-        this.userGroups = new ArrayList<>();
         this.topNavigation = new ArrayList<>();
         this.mainNavigation = new ArrayList<>();
         this.footerNavigation = new ArrayList<>();
 
         if (languages != null) {
             this.languages.addAll(languages);
-        }
-        if (users != null) {
-            this.users.addAll(users);
-        }
-        if (userGroups != null) {
-            this.userGroups.addAll(userGroups);
         }
     }
 
@@ -115,16 +101,6 @@ public class Site extends AbstractEntity<Site> {
     public ContactData getContactData() {
 
         return this.contactData;
-    }
-
-    public List<User> getUsers() {
-
-        return this.users;
-    }
-
-    public List<UserGroup> getUserGroups() {
-
-        return this.userGroups;
     }
 
     public List<NavigationItem> getTopNavigation() {

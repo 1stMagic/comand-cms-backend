@@ -173,6 +173,120 @@
         </sv:property>
     </sv:node>
 
+    <sv:node sv:name="users">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>nt:unstructured</sv:value>
+        </sv:property>
+
+        <sv:node sv:name="user1">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:user</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="email" sv:type="String">
+                <sv:value>kai.schofield@gmx.de</sv:value>
+            </sv:property>
+            <sv:property sv:name="groups" sv:type="String" sv:multiple="true">
+                <sv:value>ADMIN</sv:value>
+            </sv:property>
+        </sv:node>
+
+        <sv:node sv:name="user2">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:user</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="email" sv:type="String">
+                <sv:value>schofield@cominto.de</sv:value>
+            </sv:property>
+            <sv:property sv:name="groups" sv:type="String" sv:multiple="true">
+                <sv:value>USER</sv:value>
+                <sv:value>VIP</sv:value>
+            </sv:property>
+        </sv:node>
+    </sv:node>
+
+    <sv:node sv:name="userGroups">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>nt:unstructured</sv:value>
+        </sv:property>
+
+        <sv:node sv:name="userGroup1">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:userGroup</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>ADMIN</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+
+            <sv:node sv:name="name">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:translation</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="de" sv:type="String">
+                    <sv:value>Administrator</sv:value>
+                </sv:property>
+            </sv:node>
+        </sv:node>
+
+        <sv:node sv:name="userGroup2">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:userGroup</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>USER</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+
+            <sv:node sv:name="name">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:translation</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="de" sv:type="String">
+                    <sv:value>Anwender</sv:value>
+                </sv:property>
+                <sv:property sv:name="en" sv:type="String">
+                    <sv:value>User</sv:value>
+                </sv:property>
+            </sv:node>
+        </sv:node>
+
+        <sv:node sv:name="userGroup3">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:userGroup</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>VIP</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+
+            <sv:node sv:name="name">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:translation</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="de" sv:type="String">
+                    <sv:value>SWP</sv:value>
+                </sv:property>
+                <sv:property sv:name="en" sv:type="String">
+                    <sv:value>VIP</sv:value>
+                </sv:property>
+            </sv:node>
+        </sv:node>
+    </sv:node>
+
     <!--
       ***************************************************************************************************************
       ** Pages
@@ -535,6 +649,9 @@
         </sv:property>
         <sv:property sv:name="showInFooterNavigation" sv:type="Boolean">
             <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="requiredGroups" sv:type="String" sv:multiple="true">
+            <sv:value>USER</sv:value>
         </sv:property>
 
         <sv:node sv:name="topNavigationTitle">

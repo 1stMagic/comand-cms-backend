@@ -64,6 +64,18 @@ public final class PropertyUtils {
         return getStringArrayProperty(getProperty(node, relPath));
     }
 
+    public static String[] getStringArrayProperty(@NotNull final Node node, @NotNull final String relPath, final String[] defaultValue) {
+
+        try {
+            if (node.hasProperty(relPath)) {
+                return getStringArrayProperty(getProperty(node, relPath));
+            }
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+        return defaultValue;
+    }
+
     public static String[] getStringArrayProperty(@NotNull final Property property) {
 
         try {

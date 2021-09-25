@@ -19,15 +19,15 @@ public class ContactDataMapper implements Mapper<ContactData> {
     public ContactDataBuilder toEntityBuilder(final Node node) {
 
         return ContactData.builder()
-                .company(getStringProperty(node, CmsProperty.CONTACT_DATA_COMPANY))
-                .street(getStringProperty(node, CmsProperty.CONTACT_DATA_STREET))
-                .postalCode(getStringProperty(node, CmsProperty.CONTACT_DATA_POSTAL_CODE))
-                .city(getStringProperty(node, CmsProperty.CONTACT_DATA_CITY))
-                .phone(getStringProperty(node, CmsProperty.CONTACT_DATA_PHONE))
-                .mobile(getStringProperty(node, CmsProperty.CONTACT_DATA_MOBILE))
-                .fax(getStringProperty(node, CmsProperty.CONTACT_DATA_FAX))
-                .email(getStringProperty(node, CmsProperty.CONTACT_DATA_EMAIL))
-                .country(getStringProperty(node, CmsProperty.CONTACT_DATA_COUNTRY));
+                .company(getStringProperty(node, CmsProperty.CONTACT_DATA_COMPANY, ""))
+                .street(getStringProperty(node, CmsProperty.CONTACT_DATA_STREET, ""))
+                .postalCode(getStringProperty(node, CmsProperty.CONTACT_DATA_POSTAL_CODE, ""))
+                .city(getStringProperty(node, CmsProperty.CONTACT_DATA_CITY, ""))
+                .phone(getStringProperty(node, CmsProperty.CONTACT_DATA_PHONE, ""))
+                .mobile(getStringProperty(node, CmsProperty.CONTACT_DATA_MOBILE, ""))
+                .fax(getStringProperty(node, CmsProperty.CONTACT_DATA_FAX, ""))
+                .email(getStringProperty(node, CmsProperty.CONTACT_DATA_EMAIL, ""))
+                .country(getStringProperty(node, CmsProperty.CONTACT_DATA_COUNTRY, ""));
     }
 
     @Override

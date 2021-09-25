@@ -208,10 +208,47 @@
             <sv:property sv:name="email" sv:type="String">
                 <sv:value>schofield@cominto.de</sv:value>
             </sv:property>
+            <sv:property sv:name="salutation" sv:type="String">
+                <sv:value>Herr</sv:value>
+            </sv:property>
+            <sv:property sv:name="firstName" sv:type="String">
+                <sv:value>Kai</sv:value>
+            </sv:property>
+            <sv:property sv:name="lastName" sv:type="String">
+                <sv:value>Schofield</sv:value>
+            </sv:property>
             <sv:property sv:name="groups" sv:type="String" sv:multiple="true">
                 <sv:value>USER</sv:value>
                 <sv:value>VIP</sv:value>
             </sv:property>
+
+            <sv:node sv:name="contactData">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:contactData</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="street" sv:type="String">
+                    <sv:value>Duisburger Str. 210</sv:value>
+                </sv:property>
+                <sv:property sv:name="postalCode" sv:type="String">
+                    <sv:value>47198</sv:value>
+                </sv:property>
+                <sv:property sv:name="city" sv:type="String">
+                    <sv:value>Duisburg</sv:value>
+                </sv:property>
+                <sv:property sv:name="phone" sv:type="String">
+                    <sv:value>11 22 33</sv:value>
+                </sv:property>
+                <sv:property sv:name="mobile" sv:type="String">
+                    <sv:value>22 33 44</sv:value>
+                </sv:property>
+                <sv:property sv:name="fax" sv:type="String">
+                    <sv:value>33 44 55</sv:value>
+                </sv:property>
+                <sv:property sv:name="country" sv:type="String">
+                    <sv:value>Deutschland</sv:value>
+                </sv:property>
+            </sv:node>
         </sv:node>
     </sv:node>
 

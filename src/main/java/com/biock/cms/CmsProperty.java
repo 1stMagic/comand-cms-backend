@@ -44,6 +44,10 @@ public final class CmsProperty {
 
     public static final String USER_EMAIL = "email";
     public static final String USER_GROUPS = "groups";
+    public static final String USER_SALUTATION = "salutation";
+    public static final String USER_TITLE = "title";
+    public static final String USER_FIRST_NAME = "firstName";
+    public static final String USER_LAST_NAME = "lastName";
 
     private CmsProperty() {
 

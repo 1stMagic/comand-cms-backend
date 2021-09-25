@@ -88,7 +88,7 @@ public class Modification implements ValueObject<Modification> {
 
     public void formatDates(final SiteRepository siteRepository, final String siteId) {
 
-        final DateTimeFormatter formatter = siteRepository.getDateTimeFormatter(siteId);
+        final DateTimeFormatter formatter = siteRepository.getDateFormatter(siteId);
         if (this.created != null) {
             this.createdFormatted = formatter.format(this.created);
         }

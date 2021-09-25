@@ -129,6 +129,20 @@ public class SiteRepository extends JcrRepository {
         }
     }
 
+    public DateTimeFormatter getDateFormatter(final String siteId) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> siteNode = getSiteNode(session, siteId);
+            ZoneId timeZone = this.config.getTimeZoneId();
+            String dateFormat = this.config.getDateFormat();
+            if (siteNode.isPresent()) {
+                timeZone = ZoneId.of(getStringProperty(siteNode.get(), CmsProperty.TIME_ZONE, this.config.getTimeZone()));
+                dateFormat = getStringProperty(siteNode.get(), CmsProperty.DATE_FORMAT, this.config.getDateFormat());
+            }
+            return DateTimeFormatter.ofPattern(dateFormat).withZone(timeZone);
+        }
+    }
+
     public DateTimeFormatter getDateTimeFormatter(final String siteId) {
 
         try (final var session = getSession()) {

@@ -14,10 +14,13 @@ Content-Type: application/json
 
 {
     "title": {
-        "de": "New page after last"
+        "de": "New"
     },
     "showInMainNavigation": true,
-    "afterPageId": "d877fbc7-d7e2-498f-9a04-2f00045a34c3"
+    "navigationEntry": false,
+    "media": false,
+    "external": false,
+    "href": ""
 }
 
 ###
@@ -34,12 +37,21 @@ Content-Type: application/json
 # showInFooterNavigation Boolean
 # active Boolean
 
-PUT http://localhost:55578/api/v1/backend/pages/demo/551f147e-c4b0-46c0-860e-6ecd7270479a
+PUT http://localhost:55578/api/v1/backend/pages/demo/6ad3d8e7-5717-4845-bdbe-0ddad1454222
 Content-Type: application/json
 
 {
+    "title": {
+        "de": "Neu",
+        "en": "New"
+    },
     "showInTopNavigation": false,
-    "showInFooterNavigation": false
+    "showInFooterNavigation": false,
+    "navigationEntry": false,
+    "media": false,
+    "external": false,
+    "href": "",
+    "active": true
 }
 
 ###

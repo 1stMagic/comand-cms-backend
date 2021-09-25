@@ -1,0 +1,17 @@
+##
+## Create user group
+##
+
+# name : Map<String, String>*
+
+POST http://localhost:55578/api/v1/backend/sites/demo/user-groups
+Content-Type: application/json
+
+{
+    "name": {
+        "de": "Mitarbeiter",
+        "en": "Employee"
+    }
+}
+
+###

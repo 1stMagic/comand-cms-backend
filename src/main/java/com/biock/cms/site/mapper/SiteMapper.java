@@ -2,6 +2,7 @@ package com.biock.cms.site.mapper;
 
 import com.biock.cms.CmsNode;
 import com.biock.cms.CmsProperty;
+import com.biock.cms.config.CmsConfig;
 import com.biock.cms.jcr.PropertyUtils;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.shared.mapper.ContactDataMapper;
@@ -20,15 +21,18 @@ import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 @Component
 public class SiteMapper implements Mapper<Site> {
 
+    private final CmsConfig config;
     private final ModificationMapper modificationMapper;
     private final LanguagesMapper languagesMapper;
     private final ContactDataMapper contactDataMapper;
 
     public SiteMapper(
+            final CmsConfig config,
             final ModificationMapper modificationMapper,
             final LanguagesMapper languagesMapper,
             final ContactDataMapper contactDataMapper) {
 
+        this.config = config;
         this.modificationMapper = modificationMapper;
         this.languagesMapper = languagesMapper;
         this.contactDataMapper = contactDataMapper;
@@ -46,6 +50,9 @@ public class SiteMapper implements Mapper<Site> {
                     .layout(getStringProperty(node, CmsProperty.LAYOUT))
                     .theme(getStringProperty(node, CmsProperty.THEME))
                     .homePage(getStringProperty(node, CmsProperty.HOME_PAGE))
+                    .timeZone(getStringProperty(node, CmsProperty.TIME_ZONE, this.config.getTimeZone()))
+                    .dateFormat(getStringProperty(node, CmsProperty.DATE_FORMAT, this.config.getDateFormat()))
+                    .timeFormat(getStringProperty(node, CmsProperty.TIME_FORMAT, this.config.getTimeFormat()))
                     .languages(this.languagesMapper.map(node, CmsNode.LANGUAGES))
                     .contactData(this.contactDataMapper.map(node, CmsNode.CONTACT_DATA));
         } catch (RepositoryException e) {

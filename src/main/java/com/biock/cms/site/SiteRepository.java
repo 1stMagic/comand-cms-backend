@@ -6,17 +6,11 @@ import com.biock.cms.CmsProperty;
 import com.biock.cms.CmsType;
 import com.biock.cms.backend.site.Navigation;
 import com.biock.cms.backend.site.mapper.NavigationMapper;
+import com.biock.cms.config.CmsConfig;
 import com.biock.cms.exception.NodeNotFoundException;
-import com.biock.cms.jcr.CloseableJcrSession;
-import com.biock.cms.jcr.JcrPaths;
-import com.biock.cms.jcr.JcrRepository;
-import com.biock.cms.jcr.NodeFilters;
+import com.biock.cms.jcr.*;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.site.mapper.SiteMapper;
-import com.biock.cms.user.User;
-import com.biock.cms.user.UserGroup;
-import com.biock.cms.user.mapper.UserGroupsMapper;
-import com.biock.cms.user.mapper.UsersMapper;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -26,6 +20,8 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import java.io.ByteArrayOutputStream;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,23 +33,20 @@ import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
 @Service
 public class SiteRepository extends JcrRepository {
 
+    private final CmsConfig config;
     private final SiteMapper siteMapper;
     private final NavigationMapper navigationMapper;
-    private final UsersMapper usersMapper;
-    private final UserGroupsMapper userGroupsMapper;
 
     public SiteRepository(
             final Repository repository,
+            final CmsConfig config,
             final SiteMapper siteMapper,
-            final NavigationMapper navigationMapper,
-            final UsersMapper usersMapper,
-            final UserGroupsMapper userGroupsMapper) {
+            final NavigationMapper navigationMapper) {
 
         super(repository);
+        this.config = config;
         this.siteMapper = siteMapper;
         this.navigationMapper = navigationMapper;
-        this.usersMapper = usersMapper;
-        this.userGroupsMapper = userGroupsMapper;
     }
 
     public Optional<Site> findSiteById(final String siteId) {
@@ -121,28 +114,6 @@ public class SiteRepository extends JcrRepository {
         }
     }
 
-    public List<User> getUsers(final String siteId) {
-
-        try (final var session = getSession()) {
-            final Optional<Node> siteNode = getSiteNode(session, siteId);
-            if (siteNode.isEmpty()) {
-                throw new NodeNotFoundException("Site " + siteId);
-            }
-            return this.usersMapper.map(siteNode.get(), CmsNode.USERS);
-        }
-    }
-
-    public List<UserGroup> getUserGroups(final String siteId) {
-
-        try (final var session = getSession()) {
-            final Optional<Node> siteNode = getSiteNode(session, siteId);
-            if (siteNode.isEmpty()) {
-                throw new NodeNotFoundException("Site " + siteId);
-            }
-            return this.userGroupsMapper.map(siteNode.get(), CmsNode.USER_GROUPS);
-        }
-    }
-
     public Resource exportSite(final String siteId) {
 
         try (final var session = getSession()) {
@@ -155,6 +126,22 @@ public class SiteRepository extends JcrRepository {
             return new ByteArrayResource(baos.toByteArray());
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public DateTimeFormatter getDateTimeFormatter(final String siteId) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> siteNode = getSiteNode(session, siteId);
+            ZoneId timeZone = this.config.getTimeZoneId();
+            String dateFormat = this.config.getDateFormat();
+            String timeFormat = this.config.getTimeFormat();
+            if (siteNode.isPresent()) {
+                timeZone = ZoneId.of(getStringProperty(siteNode.get(), CmsProperty.TIME_ZONE, this.config.getTimeZone()));
+                dateFormat = getStringProperty(siteNode.get(), CmsProperty.DATE_FORMAT, this.config.getDateFormat());
+                timeFormat = getStringProperty(siteNode.get(), CmsProperty.TIME_FORMAT, this.config.getTimeFormat());
+            }
+            return DateTimeFormatter.ofPattern(String.format("%s %s", dateFormat, timeFormat).trim()).withZone(timeZone);
         }
     }
 

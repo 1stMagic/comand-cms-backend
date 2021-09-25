@@ -23,6 +23,9 @@ public class Site extends AbstractEntity<Site> {
     private final String layout;
     private final String theme;
     private final String homePage;
+    private final String timeZone;
+    private final String dateFormat;
+    private final String timeFormat;
     private final List<Language> languages;
     private final ContactData contactData;
     private final List<NavigationItem> topNavigation;
@@ -37,6 +40,9 @@ public class Site extends AbstractEntity<Site> {
             final String layout,
             final String theme,
             final String homePage,
+            final String timeZone,
+            final String dateFormat,
+            final String timeFormat,
             final List<Language> languages,
             final ContactData contactData) {
 
@@ -47,6 +53,9 @@ public class Site extends AbstractEntity<Site> {
         this.layout = layout;
         this.theme = theme;
         this.homePage = homePage;
+        this.timeZone = timeZone;
+        this.dateFormat = dateFormat;
+        this.timeFormat = timeFormat;
         this.languages = new ArrayList<>();
         this.contactData = contactData;
         this.topNavigation = new ArrayList<>();
@@ -91,6 +100,21 @@ public class Site extends AbstractEntity<Site> {
     public String getHomePage() {
 
         return this.homePage;
+    }
+
+    public String getTimeZone() {
+
+        return this.timeZone;
+    }
+
+    public String getDateFormat() {
+
+        return this.dateFormat;
+    }
+
+    public String getTimeFormat() {
+
+        return this.timeFormat;
     }
 
     public List<Language> getLanguages() {

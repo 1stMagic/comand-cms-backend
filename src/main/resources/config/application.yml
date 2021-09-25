@@ -18,6 +18,8 @@ cms:
     repository-path: file:${user.dir}/cms-repository
     assets-path: file:${user.dir}/cms-assets
     time-zone: Europe/Berlin
+    date-format: dd.MM.yyyy
+    time-format: HH:mm
     api-allowed-client-origin-patterns:
         - http://localhost:[*]
         - http://127.0.0.1:[*]

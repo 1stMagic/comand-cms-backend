@@ -1,9 +1,11 @@
 package com.biock.cms.shared;
 
 import com.biock.cms.shared.builder.ModificationBuilder;
+import com.biock.cms.site.SiteRepository;
 
 import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Modification implements ValueObject<Modification> {
 
@@ -11,6 +13,8 @@ public class Modification implements ValueObject<Modification> {
     private final String createdBy;
     private final OffsetDateTime lastModified;
     private final String lastModifiedBy;
+    private String createdFormatted;
+    private String lastModifiedFormatted;
 
     public Modification(
             final OffsetDateTime created,
@@ -54,6 +58,16 @@ public class Modification implements ValueObject<Modification> {
         return this.lastModifiedBy;
     }
 
+    public String getCreatedFormatted() {
+
+        return this.createdFormatted;
+    }
+
+    public String getLastModifiedFormatted() {
+
+        return this.lastModifiedFormatted;
+    }
+
     @Override
     public int compareTo(@NotNull final Modification other) {
 
@@ -70,5 +84,16 @@ public class Modification implements ValueObject<Modification> {
             return c;
         }
         return this.lastModifiedBy.compareTo(other.lastModifiedBy);
+    }
+
+    public void formatDates(final SiteRepository siteRepository, final String siteId) {
+
+        final DateTimeFormatter formatter = siteRepository.getDateTimeFormatter(siteId);
+        if (this.created != null) {
+            this.createdFormatted = formatter.format(this.created);
+        }
+        if (this.lastModified != null) {
+            this.lastModifiedFormatted = formatter.format(this.lastModified);
+        }
     }
 }

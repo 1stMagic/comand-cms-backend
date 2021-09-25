@@ -40,7 +40,11 @@ public class BackendPageService {
 
     public Optional<Page> getPage(final String siteId, final String pageId) {
 
-        return this.pageRepository.findPageOfSiteById(siteId, pageId);
+        final Optional<Page> page = this.pageRepository.findPageOfSiteById(siteId, pageId);
+        if (page.isPresent() && page.get().getModification() != null) {
+            page.get().getModification().formatDates(this.siteRepository, siteId);
+        }
+        return page;
     }
 
     public String createPage(final String siteId, final CreatePageDTO dto) {

@@ -17,6 +17,9 @@ public class SiteDTO {
     private String theme;
     private String language;
     private String homePage;
+    private String timeZone;
+    private String dateFormat;
+    private String timeFormat;
     @JsonProperty("supportedLanguages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LanguageDTO> languages;
@@ -39,6 +42,9 @@ public class SiteDTO {
                 .setTheme(entity.getTheme())
                 .setLanguage(entity.getDefaultLanguage().orElse(CmsApi.DEFAULT_LANGUAGE))
                 .setHomePage(entity.getHomePage())
+                .setTimeZone(entity.getTimeZone())
+                .setDateFormat(entity.getDateFormat())
+                .setTimeFormat(entity.getTimeFormat())
                 .setLanguages(Optional.ofNullable(entity.getLanguages())
                         .orElse(emptyList())
                         .stream()
@@ -103,6 +109,39 @@ public class SiteDTO {
     public SiteDTO setHomePage(final String homePage) {
 
         this.homePage = homePage;
+        return this;
+    }
+
+    public String getTimeZone() {
+
+        return this.timeZone;
+    }
+
+    public SiteDTO setTimeZone(final String timeZone) {
+
+        this.timeZone = timeZone;
+        return this;
+    }
+
+    public String getDateFormat() {
+
+        return this.dateFormat;
+    }
+
+    public SiteDTO setDateFormat(final String dateFormat) {
+
+        this.dateFormat = dateFormat;
+        return this;
+    }
+
+    public String getTimeFormat() {
+
+        return this.timeFormat;
+    }
+
+    public SiteDTO setTimeFormat(final String timeFormat) {
+
+        this.timeFormat = timeFormat;
         return this;
     }
 

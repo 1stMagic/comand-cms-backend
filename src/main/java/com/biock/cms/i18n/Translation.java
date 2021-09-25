@@ -6,6 +6,7 @@ import com.biock.cms.i18n.builder.TranslationBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import static java.util.Collections.emptyMap;
@@ -46,6 +47,14 @@ public class Translation implements ValueObject<Translation> {
     public Map<String, String> getTranslations() {
 
         return new HashMap<>(this.translations);
+    }
+
+    public Optional<String> getFirstTranslation() {
+
+        if (this.translations.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(this.translations.entrySet().iterator().next().getValue());
     }
 
     public String getTranslation(final String iso6391Code, final String... fallbackIso6391Codes) {

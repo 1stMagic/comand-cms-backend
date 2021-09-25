@@ -3,6 +3,7 @@ package com.biock.cms.user.mapper;
 import com.biock.cms.CmsNode;
 import com.biock.cms.CmsProperty;
 import com.biock.cms.i18n.mapper.TranslationMapper;
+import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.shared.mapper.Mapper;
 import com.biock.cms.user.UserGroup;
 import com.biock.cms.user.builder.UserGroupBuilder;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
+import javax.jcr.RepositoryException;
 
 import static com.biock.cms.jcr.PropertyUtils.getBooleanProperty;
 import static com.biock.cms.jcr.PropertyUtils.getStringProperty;
@@ -36,6 +38,12 @@ public class UserGroupMapper implements Mapper<UserGroup> {
     @Override
     public void toNode(final UserGroup entity, final Node node) {
 
-
+        try {
+            node.setProperty(Property.JCR_ID, entity.getId());
+            this.translationMapper.map(entity.getName(), node, CmsNode.NAME);
+            node.setProperty(CmsProperty.ACTIVE, entity.isActive());
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
     }
 }

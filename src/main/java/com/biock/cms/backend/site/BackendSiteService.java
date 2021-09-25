@@ -1,8 +1,11 @@
 package com.biock.cms.backend.site;
 
+import com.biock.cms.backend.site.dto.CreateUserGroupDTO;
+import com.biock.cms.i18n.Translation;
 import com.biock.cms.site.SiteRepository;
 import com.biock.cms.user.User;
 import com.biock.cms.user.UserGroup;
+import com.biock.cms.user.UserRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +16,12 @@ import java.util.Optional;
 public class BackendSiteService {
 
     private final SiteRepository siteRepository;
+    private final UserRepository userRepository;
 
-    public BackendSiteService(final SiteRepository siteRepository) {
+    public BackendSiteService(final SiteRepository siteRepository, final UserRepository userRepository) {
 
         this.siteRepository = siteRepository;
+        this.userRepository = userRepository;
     }
 
     public Optional<List<Navigation>> getNavigation(final String siteId) {
@@ -46,12 +51,21 @@ public class BackendSiteService {
 
     public List<User> getUsers(final String siteId) {
 
-        return this.siteRepository.getUsers(siteId);
+        return this.userRepository.getUsers(siteId);
     }
 
     public List<UserGroup> getUserGroups(final String siteId) {
 
-        return this.siteRepository.getUserGroups(siteId);
+        return this.userRepository.getUserGroups(siteId);
+    }
+
+    public UserGroup createUserGroup(final String siteId, final CreateUserGroupDTO dto) {
+
+        return this.userRepository.createUserGroup(
+                siteId,
+                UserGroup.builder()
+                        .name(new Translation(dto.getName()))
+                        .active(true));
     }
 
     public Resource exportSite(final String siteId) {

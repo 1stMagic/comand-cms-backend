@@ -1,6 +1,7 @@
 package com.biock.cms.backend.site;
 
 import com.biock.cms.CmsApi;
+import com.biock.cms.backend.site.dto.CreateUserGroupDTO;
 import com.biock.cms.backend.site.dto.NavigationDTO;
 import com.biock.cms.backend.site.dto.UserDTO;
 import com.biock.cms.backend.site.dto.UserGroupDTO;
@@ -15,11 +16,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -96,6 +96,23 @@ public class BackendSiteController {
                 userGroups -> userGroups.stream()
                         .map(userGroup -> UserGroupDTO.of(userGroup, language, fallbackLanguage))
                         .collect(toList()));
+    }
+
+    @PostMapping("/{id}/user-groups")
+    public ResponseEntity<ResponseDTO<UserGroupDTO>> createUserGroup(
+            @PathVariable final String id,
+            @Valid @RequestBody final CreateUserGroupDTO userGroup,
+            final BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return this.responseBuilder.build(bindingResult);
+        }
+
+        final String language = LanguageUtils.getLanguage();
+        final String fallbackLanguage = this.backendSiteService.getDefaultLanguageOfSite(id);
+        return this.responseBuilder.build(
+                () -> Optional.of(this.backendSiteService.createUserGroup(id, userGroup)),
+                group -> UserGroupDTO.of(group, language, fallbackLanguage));
     }
 
     @GetMapping("/{id}/export")

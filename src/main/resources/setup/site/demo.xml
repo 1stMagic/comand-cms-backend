@@ -36,6 +36,15 @@
     <sv:property sv:name="homePage" sv:type="String">
         <sv:value>index.html</sv:value>
     </sv:property>
+    <sv:property sv:name="timeZone" sv:type="String">
+        <sv:value>Europe/Berlin</sv:value>
+    </sv:property>
+    <sv:property sv:name="dateFormat" sv:type="String">
+        <sv:value>dd.MM.yyyy</sv:value>
+    </sv:property>
+    <sv:property sv:name="timeFormat" sv:type="String">
+        <sv:value>HH:mm</sv:value>
+    </sv:property>
 
     <sv:node sv:name="languages">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">

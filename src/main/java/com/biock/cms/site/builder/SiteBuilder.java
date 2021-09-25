@@ -17,6 +17,9 @@ public class SiteBuilder implements Builder<Site> {
     private String layout;
     private String theme;
     private String homePage;
+    private String timeZone;
+    private String dateFormat;
+    private String timeFormat;
     private List<Language> languages;
     private ContactData contactData;
 
@@ -62,6 +65,24 @@ public class SiteBuilder implements Builder<Site> {
         return this;
     }
 
+    public SiteBuilder timeZone(final String timeZone) {
+
+        this.timeZone = timeZone;
+        return this;
+    }
+
+    public SiteBuilder dateFormat(final String dateFormat) {
+
+        this.dateFormat = dateFormat;
+        return this;
+    }
+
+    public SiteBuilder timeFormat(final String timeFormat) {
+
+        this.timeFormat = timeFormat;
+        return this;
+    }
+
     public SiteBuilder languages(final List<Language> languages) {
 
         this.languages = languages;
@@ -85,6 +106,9 @@ public class SiteBuilder implements Builder<Site> {
                     .layout(other.getLayout())
                     .theme(other.getTheme())
                     .homePage(other.getHomePage())
+                    .timeZone(other.getTimeZone())
+                    .dateFormat(other.getDateFormat())
+                    .timeFormat(other.getTimeFormat())
                     .languages(other.getLanguages())
                     .contactData(other.getContactData());
         }
@@ -102,6 +126,9 @@ public class SiteBuilder implements Builder<Site> {
                 this.layout,
                 this.theme,
                 this.homePage,
+                this.timeZone,
+                this.dateFormat,
+                this.timeFormat,
                 this.languages,
                 this.contactData);
     }

@@ -1,5 +1,6 @@
 package com.biock.cms.shared.mapper;
 
+import com.biock.cms.CmsNode;
 import com.biock.cms.CmsProperty;
 import com.biock.cms.CmsType;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
@@ -45,6 +46,29 @@ public class ContactDataMapper implements Mapper<ContactData> {
                 }
             }
             return ContactData.empty();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public void map(final ContactData contactData, final Node node, final String nodeName) {
+
+        try {
+            if (contactData == null) {
+                return;
+            }
+            final Node contactDataNode = node.hasNode(nodeName)
+                    ? node.getNode(nodeName)
+                    : node.addNode(nodeName, CmsType.CONTACT_DATA.getName());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_COMPANY, contactData.getCompany());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_STREET, contactData.getStreet());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_POSTAL_CODE, contactData.getPostalCode());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_CITY, contactData.getCity());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_PHONE, contactData.getPhone());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_MOBILE, contactData.getMobile());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_FAX, contactData.getFax());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_EMAIL, contactData.getEmail());
+            contactDataNode.setProperty(CmsProperty.CONTACT_DATA_COUNTRY, contactData.getCountry());
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

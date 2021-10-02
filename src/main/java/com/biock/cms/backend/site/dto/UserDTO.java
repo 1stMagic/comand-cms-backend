@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 public class UserDTO {
 
+    private String id;
     private String email;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String salutation;
@@ -27,6 +28,7 @@ public class UserDTO {
             return new UserDTO();
         }
         return new UserDTO()
+                .setId(entity.getId())
                 .setEmail(entity.getEmail())
                 .setSalutation(entity.getSalutation())
                 .setTitle(entity.getTitle())
@@ -35,6 +37,17 @@ public class UserDTO {
                 .setActive(entity.isActive())
                 .setGroups(entity.getGroups())
                 .setContactData(ContactDataDTO.of(entity.getContactData()));
+    }
+
+    public String getId() {
+
+        return this.id;
+    }
+
+    public UserDTO setId(final String id) {
+
+        this.id = id;
+        return this;
     }
 
     public String getEmail() {

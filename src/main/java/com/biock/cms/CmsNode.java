@@ -16,6 +16,9 @@ public final class CmsNode {
     public static final String NAME = "name";
     public static final String USERS = "users";
     public static final String USER_GROUPS = "userGroups";
+    public static final String TIME_ZONE = "timeZone";
+    public static final String DATE_FORMAT = "dateFormat";
+    public static final String TIME_FORMAT = "timeFormat";
 
     private CmsNode() {
 

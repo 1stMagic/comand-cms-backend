@@ -36,15 +36,45 @@
     <sv:property sv:name="homePage" sv:type="String">
         <sv:value>index.html</sv:value>
     </sv:property>
-    <sv:property sv:name="timeZone" sv:type="String">
-        <sv:value>Europe/Berlin</sv:value>
-    </sv:property>
-    <sv:property sv:name="dateFormat" sv:type="String">
-        <sv:value>dd.MM.yyyy</sv:value>
-    </sv:property>
-    <sv:property sv:name="timeFormat" sv:type="String">
-        <sv:value>HH:mm</sv:value>
-    </sv:property>
+
+    <sv:node sv:name="timeZone">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>cms:translation</sv:value>
+        </sv:property>
+
+        <sv:property sv:name="de" sv:type="String">
+            <sv:value>Europe/Berlin</sv:value>
+        </sv:property>
+        <sv:property sv:name="en" sv:type="String">
+            <sv:value>GMT</sv:value>
+        </sv:property>
+    </sv:node>
+
+    <sv:node sv:name="dateFormat">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>cms:translation</sv:value>
+        </sv:property>
+
+        <sv:property sv:name="de" sv:type="String">
+            <sv:value>dd.MM.yyyy</sv:value>
+        </sv:property>
+        <sv:property sv:name="en" sv:type="String">
+            <sv:value>MM/dd/yyyy</sv:value>
+        </sv:property>
+    </sv:node>
+
+    <sv:node sv:name="timeFormat">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>cms:translation</sv:value>
+        </sv:property>
+
+        <sv:property sv:name="de" sv:type="String">
+            <sv:value>HH:mm</sv:value>
+        </sv:property>
+        <sv:property sv:name="en" sv:type="String">
+            <sv:value>hh:mm</sv:value>
+        </sv:property>
+    </sv:node>
 
     <sv:node sv:name="languages">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -192,6 +222,9 @@
                 <sv:value>cms:user</sv:value>
             </sv:property>
 
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>1</sv:value>
+            </sv:property>
             <sv:property sv:name="email" sv:type="String">
                 <sv:value>kai.schofield@gmx.de</sv:value>
             </sv:property>
@@ -205,6 +238,9 @@
                 <sv:value>cms:user</sv:value>
             </sv:property>
 
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>2</sv:value>
+            </sv:property>
             <sv:property sv:name="email" sv:type="String">
                 <sv:value>schofield@cominto.de</sv:value>
             </sv:property>

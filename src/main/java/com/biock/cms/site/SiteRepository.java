@@ -8,9 +8,15 @@ import com.biock.cms.backend.site.Navigation;
 import com.biock.cms.backend.site.mapper.NavigationMapper;
 import com.biock.cms.config.CmsConfig;
 import com.biock.cms.exception.NodeNotFoundException;
-import com.biock.cms.jcr.*;
+import com.biock.cms.i18n.mapper.TranslationMapper;
+import com.biock.cms.jcr.CloseableJcrSession;
+import com.biock.cms.jcr.JcrPaths;
+import com.biock.cms.jcr.JcrRepository;
+import com.biock.cms.jcr.NodeFilters;
 import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.site.mapper.SiteMapper;
+import com.biock.cms.utils.LanguageUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -36,17 +42,20 @@ public class SiteRepository extends JcrRepository {
     private final CmsConfig config;
     private final SiteMapper siteMapper;
     private final NavigationMapper navigationMapper;
+    private final TranslationMapper translationMapper;
 
     public SiteRepository(
             final Repository repository,
             final CmsConfig config,
             final SiteMapper siteMapper,
-            final NavigationMapper navigationMapper) {
+            final NavigationMapper navigationMapper,
+            final TranslationMapper translationMapper) {
 
         super(repository);
         this.config = config;
         this.siteMapper = siteMapper;
         this.navigationMapper = navigationMapper;
+        this.translationMapper = translationMapper;
     }
 
     public Optional<Site> findSiteById(final String siteId) {
@@ -133,13 +142,11 @@ public class SiteRepository extends JcrRepository {
 
         try (final var session = getSession()) {
             final Optional<Node> siteNode = getSiteNode(session, siteId);
-            ZoneId timeZone = this.config.getTimeZoneId();
-            String dateFormat = this.config.getDateFormat();
-            if (siteNode.isPresent()) {
-                timeZone = ZoneId.of(getStringProperty(siteNode.get(), CmsProperty.TIME_ZONE, this.config.getTimeZone()));
-                dateFormat = getStringProperty(siteNode.get(), CmsProperty.DATE_FORMAT, this.config.getDateFormat());
-            }
-            return DateTimeFormatter.ofPattern(dateFormat).withZone(timeZone);
+            final String language = LanguageUtils.getLanguage();
+            final String fallbackLanguage = getDefaultLanguageOfSite(siteId);
+            return DateTimeFormatter
+                    .ofPattern(getDateFormat(siteNode, language, fallbackLanguage))
+                    .withZone(getTimeZone(siteNode, language, fallbackLanguage));
         }
     }
 
@@ -147,16 +154,48 @@ public class SiteRepository extends JcrRepository {
 
         try (final var session = getSession()) {
             final Optional<Node> siteNode = getSiteNode(session, siteId);
-            ZoneId timeZone = this.config.getTimeZoneId();
-            String dateFormat = this.config.getDateFormat();
-            String timeFormat = this.config.getTimeFormat();
-            if (siteNode.isPresent()) {
-                timeZone = ZoneId.of(getStringProperty(siteNode.get(), CmsProperty.TIME_ZONE, this.config.getTimeZone()));
-                dateFormat = getStringProperty(siteNode.get(), CmsProperty.DATE_FORMAT, this.config.getDateFormat());
-                timeFormat = getStringProperty(siteNode.get(), CmsProperty.TIME_FORMAT, this.config.getTimeFormat());
-            }
-            return DateTimeFormatter.ofPattern(String.format("%s %s", dateFormat, timeFormat).trim()).withZone(timeZone);
+            final String language = LanguageUtils.getLanguage();
+            final String fallbackLanguage = getDefaultLanguageOfSite(siteId);
+            return DateTimeFormatter
+                    .ofPattern(String.format(
+                            "%s %s",
+                            getDateFormat(siteNode, language, fallbackLanguage),
+                            getTimeFormat(siteNode, language, fallbackLanguage)).trim())
+                    .withZone(getTimeZone(siteNode, language, fallbackLanguage));
         }
+    }
+
+    private ZoneId getTimeZone(final Optional<Node> siteNode, final String language, final String fallbackLanguage) {
+
+        return siteNode
+                .map(node -> ZoneId.of(StringUtils.defaultIfBlank(
+                        this.translationMapper
+                                .map(node, CmsNode.TIME_ZONE)
+                                .getTranslation(language, fallbackLanguage),
+                        this.config.getTimeZone())))
+                .orElseGet(this.config::getTimeZoneId);
+    }
+
+    private String getDateFormat(final Optional<Node> siteNode, final String language, final String fallbackLanguage) {
+
+        return siteNode
+                .map(node -> StringUtils.defaultIfBlank(
+                        this.translationMapper
+                                .map(node, CmsNode.DATE_FORMAT)
+                                .getTranslation(language, fallbackLanguage),
+                        this.config.getTimeZone()))
+                .orElseGet(this.config::getDateFormat);
+    }
+
+    private String getTimeFormat(final Optional<Node> siteNode, final String language, final String fallbackLanguage) {
+
+        return siteNode
+                .map(node -> StringUtils.defaultIfBlank(
+                        this.translationMapper
+                                .map(node, CmsNode.TIME_FORMAT)
+                                .getTranslation(language, fallbackLanguage),
+                        this.config.getTimeZone()))
+                .orElseGet(this.config::getTimeFormat);
     }
 
     private Optional<List<Navigation>> getNavigation(

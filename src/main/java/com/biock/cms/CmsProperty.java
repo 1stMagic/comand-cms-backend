@@ -10,9 +10,6 @@ public final class CmsProperty {
     public static final String THEME = "theme";
     public static final String LANGUAGE = "language";
     public static final String HOME_PAGE = "homePage";
-    public static final String TIME_ZONE = "timeZone";
-    public static final String DATE_FORMAT = "dateFormat";
-    public static final String TIME_FORMAT = "timeFormat";
     public static final String SHOW_IN_MAIN_NAVIGATION = "showInMainNavigation";
     public static final String SHOW_IN_TOP_NAVIGATION = "showInTopNavigation";
     public static final String SHOW_IN_FOOTER_NAVIGATION = "showInFooterNavigation";

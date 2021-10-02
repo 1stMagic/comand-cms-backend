@@ -10,8 +10,11 @@ import com.biock.cms.jcr.exception.RuntimeRepositoryException;
 import com.biock.cms.user.builder.UserGroupBuilder;
 import com.biock.cms.user.mapper.UserGroupMapper;
 import com.biock.cms.user.mapper.UserGroupsMapper;
+import com.biock.cms.user.mapper.UserMapper;
 import com.biock.cms.user.mapper.UsersMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.jcr.*;
@@ -21,20 +24,45 @@ import java.util.*;
 @Service
 public class UserRepository extends JcrRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserRepository.class);
+
+    private final UserMapper userMapper;
     private final UsersMapper usersMapper;
     private final UserGroupMapper userGroupMapper;
     private final UserGroupsMapper userGroupsMapper;
 
     public UserRepository(
             final Repository repository,
+            final UserMapper userMapper,
             final UsersMapper usersMapper,
             final UserGroupMapper userGroupMapper,
             final UserGroupsMapper userGroupsMapper) {
 
         super(repository);
+        this.userMapper = userMapper;
         this.usersMapper = usersMapper;
         this.userGroupMapper = userGroupMapper;
         this.userGroupsMapper = userGroupsMapper;
+    }
+
+    public Optional<User> getUser(final String siteId, final String userId) {
+
+        try (final var session = getSession()) {
+            final Map<String, String> bindValues = new HashMap<>();
+            bindValues.put("$$site", siteId);
+            bindValues.put("userId", userId);
+            final QueryResult result = JcrQueryManager.executeQuery(
+                    session,
+                    "select * from [cms:user] as u where isdescendantnode(u, '/cms/sites/$$site/users') and [jcr:id] = $userId",
+                    bindValues);
+            final NodeIterator nodes = result.getNodes();
+            if (nodes.hasNext()) {
+                return Optional.of(this.userMapper.toEntity(nodes.nextNode()));
+            }
+            return Optional.empty();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
     }
 
     public List<User> getUsers(final String siteId) {
@@ -48,6 +76,11 @@ public class UserRepository extends JcrRepository {
         }
     }
 
+    public boolean hasUserWithEmail(final Session session, final String siteId, final String userEmail) {
+
+        return getUserNodeByEmail(session, siteId, userEmail).isPresent();
+    }
+
     public List<UserGroup> getUserGroups(final String siteId) {
 
         try (final var session = getSession()) {
@@ -59,23 +92,9 @@ public class UserRepository extends JcrRepository {
         }
     }
 
-    public boolean hasUserGroupWithId(final String siteId, final String userGroupId) {
-
-        try (final var session = getSession()) {
-            return hasUserGroupWithId(session, siteId, userGroupId);
-        }
-    }
-
     public boolean hasUserGroupWithId(final Session session, final String siteId, final String userGroupId) {
 
         return getUserGroupNodeById(session, siteId, userGroupId).isPresent();
-    }
-
-    public Optional<UserGroup> getUserGroupById(final String siteId, final String userGroupId) {
-
-        try (final var session = getSession()) {
-            return getUserGroupNodeById(session, siteId, userGroupId).map(this.userGroupMapper::toEntity);
-        }
     }
 
     public UserGroup createUserGroup(final String siteId, final UserGroupBuilder userGroupBuilder) {
@@ -92,6 +111,52 @@ public class UserRepository extends JcrRepository {
         }
     }
 
+    public Optional<User> createUser(final String siteId, final User user) {
+
+        try (final var session = getSession()) {
+            if (hasUserWithEmail(session, siteId, user.getEmail())) {
+                LOG.error("Unable to create user because a user with e-mail '{}' already exists", user.getEmail());
+                return Optional.empty();
+            }
+            final User newUser = User.builder().apply(user).id(UUID.randomUUID().toString()).build();
+            final Node userNode = session.getNode(JcrPaths.sites(siteId, CmsNode.USERS))
+                    .addNode(newUser.getId(), CmsType.USER.getName());
+            this.userMapper.toNode(newUser, userNode);
+            session.save();
+            return Optional.of(newUser);
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public String updateUser(final String siteId, final User user) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> userNode = getUserNodeById(session, siteId, user.getId());
+            if (userNode.isEmpty()) {
+                throw new NodeNotFoundException("User " + user.getId());
+            }
+            this.userMapper.toNode(user, userNode.get());
+            session.save();
+            return user.getId();
+        }
+    }
+
+    public String deleteUser(final String siteId, final String userId) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> userNode = getUserNodeById(session, siteId, userId);
+            if (userNode.isEmpty()) {
+                throw new NodeNotFoundException("User " + userId);
+            }
+            userNode.get().remove();
+            session.save();
+            return userId;
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
     private Optional<Node> getUserGroupNodeById(final Session session, final String siteId, final String userGroupId) {
 
         try {
@@ -101,6 +166,46 @@ public class UserRepository extends JcrRepository {
             final QueryResult result = JcrQueryManager.executeQuery(
                     session,
                     "select * from [cms:userGroup] as g where isdescendantnode(g, '/cms/sites/$$site/userGroups') and [jcr:id] = $userGroupId",
+                    bindValues);
+            final NodeIterator nodes = result.getNodes();
+            if (nodes.hasNext()) {
+                return Optional.of(nodes.nextNode());
+            }
+            return Optional.empty();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    private Optional<Node> getUserNodeById(final Session session, final String siteId, final String userId) {
+
+        try {
+            final Map<String, String> bindValues = new HashMap<>();
+            bindValues.put("$$site", siteId);
+            bindValues.put("userId", userId);
+            final QueryResult result = JcrQueryManager.executeQuery(
+                    session,
+                    "select * from [cms:user] as u where isdescendantnode(u, '/cms/sites/$$site/users') and [jcr:id] = $userId",
+                    bindValues);
+            final NodeIterator nodes = result.getNodes();
+            if (nodes.hasNext()) {
+                return Optional.of(nodes.nextNode());
+            }
+            return Optional.empty();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    private Optional<Node> getUserNodeByEmail(final Session session, final String siteId, final String userEmail) {
+
+        try {
+            final Map<String, String> bindValues = new HashMap<>();
+            bindValues.put("$$site", siteId);
+            bindValues.put("userEmail", userEmail);
+            final QueryResult result = JcrQueryManager.executeQuery(
+                    session,
+                    "select * from [cms:user] as u where isdescendantnode(u, '/cms/sites/$$site/users') and [email] = $userEmail",
                     bindValues);
             final NodeIterator nodes = result.getNodes();
             if (nodes.hasNext()) {

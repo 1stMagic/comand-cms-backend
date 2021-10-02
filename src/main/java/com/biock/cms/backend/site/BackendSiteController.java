@@ -1,10 +1,7 @@
 package com.biock.cms.backend.site;
 
 import com.biock.cms.CmsApi;
-import com.biock.cms.backend.site.dto.CreateUserGroupDTO;
-import com.biock.cms.backend.site.dto.NavigationDTO;
-import com.biock.cms.backend.site.dto.UserDTO;
-import com.biock.cms.backend.site.dto.UserGroupDTO;
+import com.biock.cms.backend.site.dto.*;
 import com.biock.cms.exception.NodeNotFoundException;
 import com.biock.cms.i18n.Messages;
 import com.biock.cms.i18n.Translation;
@@ -84,6 +81,47 @@ public class BackendSiteController {
         return this.responseBuilder.build(
                 () -> Optional.of(this.backendSiteService.getUsers(id)),
                 users -> users.stream().map(UserDTO::of).collect(toList()));
+    }
+
+    @PostMapping("/{id}/users")
+    public ResponseEntity<ResponseDTO<UserDTO>> createUser(
+            @PathVariable final String id,
+            @Valid @RequestBody final CreateUserDTO user,
+            final BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return this.responseBuilder.build(bindingResult);
+        }
+
+        return this.responseBuilder.build(
+                () -> this.backendSiteService.createUser(id, user),
+                UserDTO::of);
+    }
+
+    @PutMapping("/{id}/users/{userId}")
+    public ResponseEntity<ResponseDTO<UserModificationResultDTO>> updateUser(
+            @PathVariable final String id,
+            @PathVariable final String userId,
+            @Valid @RequestBody final UpdateUserDTO user,
+            final BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return this.responseBuilder.build(bindingResult);
+        }
+
+        return this.responseBuilder.build(
+                () -> Optional.of(this.backendSiteService.updateUser(id, userId, user)),
+                updatedUserId -> new UserModificationResultDTO().setId(updatedUserId));
+    }
+
+    @DeleteMapping("/{id}/users/{userId}")
+    public ResponseEntity<ResponseDTO<UserModificationResultDTO>> deleteUser(
+            @PathVariable final String id,
+            @PathVariable final String userId) {
+
+        return this.responseBuilder.build(
+                () -> Optional.of(this.backendSiteService.deleteUser(id, userId)),
+                deletedUserId -> new UserModificationResultDTO().setId(deletedUserId));
     }
 
     @GetMapping("/{id}/user-groups")

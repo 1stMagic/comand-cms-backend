@@ -1,5 +1,6 @@
 package com.biock.cms.site.builder;
 
+import com.biock.cms.i18n.Translation;
 import com.biock.cms.shared.ContactData;
 import com.biock.cms.shared.Modification;
 import com.biock.cms.shared.builder.Builder;
@@ -17,9 +18,9 @@ public class SiteBuilder implements Builder<Site> {
     private String layout;
     private String theme;
     private String homePage;
-    private String timeZone;
-    private String dateFormat;
-    private String timeFormat;
+    private Translation timeZone;
+    private Translation dateFormat;
+    private Translation timeFormat;
     private List<Language> languages;
     private ContactData contactData;
 
@@ -65,19 +66,19 @@ public class SiteBuilder implements Builder<Site> {
         return this;
     }
 
-    public SiteBuilder timeZone(final String timeZone) {
+    public SiteBuilder timeZone(final Translation timeZone) {
 
         this.timeZone = timeZone;
         return this;
     }
 
-    public SiteBuilder dateFormat(final String dateFormat) {
+    public SiteBuilder dateFormat(final Translation dateFormat) {
 
         this.dateFormat = dateFormat;
         return this;
     }
 
-    public SiteBuilder timeFormat(final String timeFormat) {
+    public SiteBuilder timeFormat(final Translation timeFormat) {
 
         this.timeFormat = timeFormat;
         return this;

@@ -1,5 +1,6 @@
 package com.biock.cms.site;
 
+import com.biock.cms.i18n.Translation;
 import com.biock.cms.page.Page;
 import com.biock.cms.page.PageRepository;
 import com.biock.cms.shared.AbstractEntity;
@@ -23,9 +24,9 @@ public class Site extends AbstractEntity<Site> {
     private final String layout;
     private final String theme;
     private final String homePage;
-    private final String timeZone;
-    private final String dateFormat;
-    private final String timeFormat;
+    private final Translation timeZone;
+    private final Translation dateFormat;
+    private final Translation timeFormat;
     private final List<Language> languages;
     private final ContactData contactData;
     private final List<NavigationItem> topNavigation;
@@ -40,9 +41,9 @@ public class Site extends AbstractEntity<Site> {
             final String layout,
             final String theme,
             final String homePage,
-            final String timeZone,
-            final String dateFormat,
-            final String timeFormat,
+            final Translation timeZone,
+            final Translation dateFormat,
+            final Translation timeFormat,
             final List<Language> languages,
             final ContactData contactData) {
 
@@ -102,17 +103,17 @@ public class Site extends AbstractEntity<Site> {
         return this.homePage;
     }
 
-    public String getTimeZone() {
+    public Translation getTimeZone() {
 
         return this.timeZone;
     }
 
-    public String getDateFormat() {
+    public Translation getDateFormat() {
 
         return this.dateFormat;
     }
 
-    public String getTimeFormat() {
+    public Translation getTimeFormat() {
 
         return this.timeFormat;
     }

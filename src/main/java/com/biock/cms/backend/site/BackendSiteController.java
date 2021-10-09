@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -42,12 +41,6 @@ public class BackendSiteController {
         this.backendSiteService = backendSiteService;
         this.responseBuilder = responseBuilder;
         this.messages = messages;
-    }
-
-    @PostMapping("/test")
-    public ResponseEntity<TestDTO> test(@Valid @RequestBody final TestDTO dto) {
-
-        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/{id}/navigation")

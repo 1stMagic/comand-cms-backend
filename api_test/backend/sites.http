@@ -16,6 +16,22 @@ Content-Type: application/json
 
 ###
 
+PUT http://localhost:55578/api/v1/backend/sites/demo/user-groups/MITARBEITER
+Content-Type: application/json
+
+{
+    "name": {
+        "de": "Mitarbeiter"
+    },
+    "active": true
+}
+
+###
+
+DELETE http://localhost:55578/api/v1/backend/sites/demo/user-groups/MITARBEITER
+
+###
+
 ##
 ## Create user
 ##
@@ -54,5 +70,17 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:55578/api/v1/backend/sites/demo/users/c2a09acd-33a2-4000-8dcd-0c433ba19062
+
+###
+
+
+
+POST http://localhost:55578/api/v1/backend/sites/test
+Content-Type: application/json
+
+{
+    "xname": "MyName",
+    "message": "MyMessage"
+}
 
 ###

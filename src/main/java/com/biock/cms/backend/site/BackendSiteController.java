@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -41,6 +42,12 @@ public class BackendSiteController {
         this.backendSiteService = backendSiteService;
         this.responseBuilder = responseBuilder;
         this.messages = messages;
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<TestDTO> test(@Valid @RequestBody final TestDTO dto) {
+
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/{id}/navigation")
@@ -151,6 +158,32 @@ public class BackendSiteController {
         return this.responseBuilder.build(
                 () -> Optional.of(this.backendSiteService.createUserGroup(id, userGroup)),
                 group -> UserGroupDTO.of(group, language, fallbackLanguage));
+    }
+
+    @PutMapping("/{id}/user-groups/{userGroupId}")
+    public ResponseEntity<ResponseDTO<UserGroupModificationResultDTO>> updateUserGroup(
+            @PathVariable final String id,
+            @PathVariable final String userGroupId,
+            @Valid @RequestBody final UpdateUserGroupDTO userGroup,
+            final BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return this.responseBuilder.build(bindingResult);
+        }
+
+        return this.responseBuilder.build(
+                () -> Optional.of(this.backendSiteService.updateUserGroup(id, userGroupId, userGroup)),
+                updatedUserGroupId -> new UserGroupModificationResultDTO().setId(updatedUserGroupId));
+    }
+
+    @DeleteMapping("/{id}/user-groups/{userGroupId}")
+    public ResponseEntity<ResponseDTO<UserGroupModificationResultDTO>> deleteUserGroup(
+            @PathVariable final String id,
+            @PathVariable final String userGroupId) {
+
+        return this.responseBuilder.build(
+                () -> Optional.of(this.backendSiteService.deleteUserGroup(id, userGroupId)),
+                deletedUserGroupId -> new UserGroupModificationResultDTO().setId(deletedUserGroupId));
     }
 
     @GetMapping("/{id}/export")

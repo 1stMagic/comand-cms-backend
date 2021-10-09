@@ -81,6 +81,26 @@ public class UserRepository extends JcrRepository {
         return getUserNodeByEmail(session, siteId, userEmail).isPresent();
     }
 
+    public Optional<UserGroup> getUserGroup(final String siteId, final String userGroupId) {
+
+        try (final var session = getSession()) {
+            final Map<String, String> bindValues = new HashMap<>();
+            bindValues.put("$$site", siteId);
+            bindValues.put("userGroupId", userGroupId);
+            final QueryResult result = JcrQueryManager.executeQuery(
+                    session,
+                    "select * from [cms:userGroup] as g where isdescendantnode(g, '/cms/sites/$$site/userGroups') and [jcr:id] = $userGroupId",
+                    bindValues);
+            final NodeIterator nodes = result.getNodes();
+            if (nodes.hasNext()) {
+                return Optional.of(this.userGroupMapper.toEntity(nodes.nextNode()));
+            }
+            return Optional.empty();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
     public List<UserGroup> getUserGroups(final String siteId) {
 
         try (final var session = getSession()) {
@@ -106,6 +126,34 @@ public class UserRepository extends JcrRepository {
             this.userGroupMapper.toNode(userGroup, userGroupNode);
             session.save();
             return userGroup;
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
+    public String updateUserGroup(final String siteId, final UserGroup userGroup) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> userGroupNode = getUserGroupNodeById(session, siteId, userGroup.getId());
+            if (userGroupNode.isEmpty()) {
+                throw new NodeNotFoundException("UserGroup " + userGroup.getId());
+            }
+            this.userGroupMapper.toNode(userGroup, userGroupNode.get());
+            session.save();
+            return userGroup.getId();
+        }
+    }
+
+    public String deleteUserGroup(final String siteId, final String userGroupId) {
+
+        try (final var session = getSession()) {
+            final Optional<Node> userGroupNode = getUserGroupNodeById(session, siteId, userGroupId);
+            if (userGroupNode.isEmpty()) {
+                throw new NodeNotFoundException("UserGroup " + userGroupId);
+            }
+            userGroupNode.get().remove();
+            session.save();
+            return userGroupId;
         } catch (final RepositoryException e) {
             throw new RuntimeRepositoryException(e);
         }

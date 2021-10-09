@@ -3,8 +3,10 @@ package com.biock.cms.backend.site;
 import com.biock.cms.backend.site.dto.CreateUserDTO;
 import com.biock.cms.backend.site.dto.CreateUserGroupDTO;
 import com.biock.cms.backend.site.dto.UpdateUserDTO;
+import com.biock.cms.backend.site.dto.UpdateUserGroupDTO;
 import com.biock.cms.exception.NodeNotFoundException;
 import com.biock.cms.i18n.Translation;
+import com.biock.cms.i18n.builder.TranslationBuilder;
 import com.biock.cms.shared.ContactData;
 import com.biock.cms.shared.builder.ContactDataBuilder;
 import com.biock.cms.site.SiteRepository;
@@ -12,6 +14,7 @@ import com.biock.cms.user.User;
 import com.biock.cms.user.UserGroup;
 import com.biock.cms.user.UserRepository;
 import com.biock.cms.user.builder.UserBuilder;
+import com.biock.cms.user.builder.UserGroupBuilder;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +77,32 @@ public class BackendSiteService {
                 UserGroup.builder()
                         .name(new Translation(dto.getName()))
                         .active(true));
+    }
+
+    public String updateUserGroup(final String siteId, final String userGroupId, final UpdateUserGroupDTO dto) {
+
+        final Optional<UserGroup> userGroup = this.userRepository.getUserGroup(siteId, userGroupId);
+        if (userGroup.isEmpty()) {
+            throw new NodeNotFoundException("UserGroup " + userGroupId);
+        }
+        if (!dto.isEmpty()) {
+            final UserGroupBuilder userGroupBuilder = UserGroup.builder().apply(userGroup.get());
+            if (dto.getName() != null && !dto.getName().isEmpty()) {
+                final TranslationBuilder translationBuilder = Translation.builder().apply(userGroup.get().getName());
+                dto.getName().forEach(translationBuilder::translation);
+                userGroupBuilder.name(translationBuilder.build());
+            }
+            if (dto.getActive() != null) {
+                userGroupBuilder.active(dto.getActive());
+            }
+            return this.userRepository.updateUserGroup(siteId, userGroupBuilder.build());
+        }
+        return userGroup.get().getId();
+    }
+
+    public String deleteUserGroup(final String siteId, final String userGroupId) {
+
+        return this.userRepository.deleteUserGroup(siteId, userGroupId);
     }
 
     public Optional<User> createUser(final String siteId, final CreateUserDTO dto) {

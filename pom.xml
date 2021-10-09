@@ -20,8 +20,8 @@
         <spring-boot-plugin.version>2.5.2</spring-boot-plugin.version>
 
         <!-- Dependencies -->
-        <spring-boot.version>2.5.2</spring-boot.version>
-        <jackrabbit-oak.version>1.38.0</jackrabbit-oak.version>
+        <spring-boot.version>2.5.5</spring-boot.version>
+        <jackrabbit-oak.version>1.40.0</jackrabbit-oak.version>
         <codahale-metrics.version>3.0.2</codahale-metrics.version>
     </properties>
 

@@ -2,6 +2,8 @@ package com.biock.cms.web.api;
 
 import com.biock.cms.i18n.Messages;
 import com.biock.cms.web.api.dto.ResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,10 +12,13 @@ import org.springframework.validation.BindingResult;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ResponseBuilder {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ResponseBuilder.class);
 
     private final Messages messages;
 
@@ -43,6 +48,19 @@ public class ResponseBuilder {
                 .orElseGet(statusNotFound(dto, notFoundMessageSupplier.get()));
     }
 
+//    public <T, D> ResponseEntity<ResponseDTO<D>> build(
+//            final Supplier<T> payloadSupplier,
+//            final Function<T, D> payloadMapper,
+//            final Function<Exception, List<String>> exceptionMapper) {
+//
+//        try {
+//            return statusOk(new ResponseDTO<>(), payloadMapper).apply(payloadSupplier.get());
+//        } catch (final Exception e) {
+//            LOG.error("API error: {}", e.getMessage(), e);
+//
+//        }
+//    }
+
     public <T> ResponseEntity<ResponseDTO<T>> build(final BindingResult bindingResult) {
 
         return ResponseEntity.badRequest()
@@ -50,7 +68,7 @@ public class ResponseBuilder {
                         .setMessages(bindingResult.getAllErrors()
                                 .stream()
                                 .map(this.messages::getMessage)
-                                .collect(Collectors.toList())));
+                                .collect(toList())));
     }
 
     private <T, D> Function<T, ResponseEntity<ResponseDTO<D>>> statusOk(

@@ -27,6 +27,12 @@ public class ContactDataDTO {
     private String email;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String country;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String postOfficeBox;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String website;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String otherInformation;
 
     public static ContactDataDTO of(final ContactData entity) {
 
@@ -42,7 +48,10 @@ public class ContactDataDTO {
                 .setMobile(entity.getMobile())
                 .setFax(entity.getFax())
                 .setEmail(entity.getEmail())
-                .setCountry(entity.getCountry());
+                .setCountry(entity.getCountry())
+                .setPostOfficeBox(entity.getPostOfficeBox())
+                .setWebsite(entity.getWebsite())
+                .setOtherInformation(entity.getOtherInformation());
     }
 
     public String getCompany() {
@@ -141,6 +150,39 @@ public class ContactDataDTO {
     public ContactDataDTO setCountry(final String country) {
 
         this.country = country;
+        return this;
+    }
+
+    public String getPostOfficeBox() {
+
+        return this.postOfficeBox;
+    }
+
+    public ContactDataDTO setPostOfficeBox(final String postOfficeBox) {
+
+        this.postOfficeBox = postOfficeBox;
+        return this;
+    }
+
+    public String getWebsite() {
+
+        return this.website;
+    }
+
+    public ContactDataDTO setWebsite(final String website) {
+
+        this.website = website;
+        return this;
+    }
+
+    public String getOtherInformation() {
+
+        return this.otherInformation;
+    }
+
+    public ContactDataDTO setOtherInformation(final String otherInformation) {
+
+        this.otherInformation = otherInformation;
         return this;
     }
 }

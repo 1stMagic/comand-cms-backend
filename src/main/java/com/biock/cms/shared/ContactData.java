@@ -13,6 +13,9 @@ public class ContactData implements ValueObject<ContactData> {
     private final String fax;
     private final String email;
     private final String country;
+    private final String postOfficeBox;
+    private final String website;
+    private final String otherInformation;
 
     public ContactData(
             final String company,
@@ -23,7 +26,10 @@ public class ContactData implements ValueObject<ContactData> {
             final String mobile,
             final String fax,
             final String email,
-            final String country) {
+            final String country,
+            final String postOfficeBox,
+            final String website,
+            final String otherInformation) {
 
         this.company = company;
         this.street = street;
@@ -34,6 +40,9 @@ public class ContactData implements ValueObject<ContactData> {
         this.fax = fax;
         this.email = email;
         this.country = country;
+        this.postOfficeBox = postOfficeBox;
+        this.website = website;
+        this.otherInformation = otherInformation;
     }
 
     public static ContactDataBuilder builder() {
@@ -91,6 +100,21 @@ public class ContactData implements ValueObject<ContactData> {
         return this.country;
     }
 
+    public String getPostOfficeBox() {
+
+        return this.postOfficeBox;
+    }
+
+    public String getWebsite() {
+
+        return this.website;
+    }
+
+    public String getOtherInformation() {
+
+        return this.otherInformation;
+    }
+
     @Override
     public int compareTo(final ContactData other) {
 
@@ -126,6 +150,18 @@ public class ContactData implements ValueObject<ContactData> {
         if (c != 0) {
             return c;
         }
-        return this.country.compareTo(other.country);
+        c = this.country.compareTo(other.country);
+        if (c != 0) {
+            return c;
+        }
+        c = this.postOfficeBox.compareTo(other.postOfficeBox);
+        if (c != 0) {
+            return c;
+        }
+        c = this.website.compareTo(other.website);
+        if (c != 0) {
+            return c;
+        }
+        return this.otherInformation.compareTo(other.otherInformation);
     }
 }

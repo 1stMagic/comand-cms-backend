@@ -20,8 +20,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.toList;
 
@@ -46,39 +44,22 @@ public class BackendSiteController {
     @GetMapping("/{id}/navigation")
     public ResponseEntity<ResponseDTO<List<NavigationDTO>>> getNavigation(@PathVariable final String id) {
 
-        return getNavigation(
+        return this.responseBuilder.buildOptional(
                 () -> this.backendSiteService.getNavigation(id),
-                navigation -> translator(id).apply(navigation.getMainNavigationTitle(), navigation.getMetaDataTitle()));
-    }
-
-    @GetMapping("/{id}/top-navigation")
-    public ResponseEntity<ResponseDTO<List<NavigationDTO>>> getTopNavigation(@PathVariable final String id) {
-
-        return getNavigation(
-                () -> this.backendSiteService.getTopNavigation(id),
-                navigation -> translator(id).apply(navigation.getTopNavigationTitle(), navigation.getMetaDataTitle()));
-    }
-
-    @GetMapping("/{id}/main-navigation")
-    public ResponseEntity<ResponseDTO<List<NavigationDTO>>> getMainNavigation(@PathVariable final String id) {
-
-        return getNavigation(
-                () -> this.backendSiteService.getMainNavigation(id),
-                navigation -> translator(id).apply(navigation.getMainNavigationTitle(), navigation.getMetaDataTitle()));
-    }
-
-    @GetMapping("/{id}/footer-navigation")
-    public ResponseEntity<ResponseDTO<List<NavigationDTO>>> getFooterNavigation(@PathVariable final String id) {
-
-        return getNavigation(
-                () -> this.backendSiteService.getFooterNavigation(id),
-                navigation -> translator(id).apply(navigation.getFooterNavigationTitle(), navigation.getMetaDataTitle()));
+                navEntries -> navEntries.stream()
+                        .map(navEntry -> NavigationDTO.of(
+                                navEntry,
+                                navigation -> translator(id).apply(
+                                        navigation.getMainNavigationTitle(),
+                                        navigation.getMetaDataTitle())))
+                        .collect(toList()),
+                this.messages.supplyMessage("backend.site.not_found"));
     }
 
     @GetMapping("/{id}/users")
     public ResponseEntity<ResponseDTO<List<UserDTO>>> getUsers(@PathVariable final String id) {
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.getUsers(id)),
                 users -> users.stream().map(UserDTO::of).collect(toList()));
     }
@@ -90,10 +71,10 @@ public class BackendSiteController {
             final BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return this.responseBuilder.build(bindingResult);
+            return this.responseBuilder.buildOptional(bindingResult);
         }
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> this.backendSiteService.createUser(id, user),
                 UserDTO::of);
     }
@@ -106,10 +87,10 @@ public class BackendSiteController {
             final BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return this.responseBuilder.build(bindingResult);
+            return this.responseBuilder.buildOptional(bindingResult);
         }
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.updateUser(id, userId, user)),
                 updatedUserId -> new UserModificationResultDTO().setId(updatedUserId));
     }
@@ -119,7 +100,7 @@ public class BackendSiteController {
             @PathVariable final String id,
             @PathVariable final String userId) {
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.deleteUser(id, userId)),
                 deletedUserId -> new UserModificationResultDTO().setId(deletedUserId));
     }
@@ -129,7 +110,7 @@ public class BackendSiteController {
 
         final String language = LanguageUtils.getLanguage();
         final String fallbackLanguage = this.backendSiteService.getDefaultLanguageOfSite(id);
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.getUserGroups(id)),
                 userGroups -> userGroups.stream()
                         .map(userGroup -> UserGroupDTO.of(userGroup, language, fallbackLanguage))
@@ -143,12 +124,12 @@ public class BackendSiteController {
             final BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return this.responseBuilder.build(bindingResult);
+            return this.responseBuilder.buildOptional(bindingResult);
         }
 
         final String language = LanguageUtils.getLanguage();
         final String fallbackLanguage = this.backendSiteService.getDefaultLanguageOfSite(id);
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.createUserGroup(id, userGroup)),
                 group -> UserGroupDTO.of(group, language, fallbackLanguage));
     }
@@ -161,10 +142,10 @@ public class BackendSiteController {
             final BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return this.responseBuilder.build(bindingResult);
+            return this.responseBuilder.buildOptional(bindingResult);
         }
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.updateUserGroup(id, userGroupId, userGroup)),
                 updatedUserGroupId -> new UserGroupModificationResultDTO().setId(updatedUserGroupId));
     }
@@ -174,7 +155,7 @@ public class BackendSiteController {
             @PathVariable final String id,
             @PathVariable final String userGroupId) {
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.deleteUserGroup(id, userGroupId)),
                 deletedUserGroupId -> new UserGroupModificationResultDTO().setId(deletedUserGroupId));
     }
@@ -199,17 +180,5 @@ public class BackendSiteController {
         return (t1, t2) -> StringUtils.defaultIfBlank(
                 t1.getTranslation(language, fallbackLanguage),
                 t2.getTranslation(language, fallbackLanguage));
-    }
-
-    private ResponseEntity<ResponseDTO<List<NavigationDTO>>> getNavigation(
-            final Supplier<Optional<List<Navigation>>> supplier,
-            final Function<Navigation, String> titleSupplier) {
-
-        return this.responseBuilder.build(
-                supplier,
-                navEntries -> navEntries.stream()
-                        .map(navEntry -> NavigationDTO.of(navEntry, titleSupplier))
-                        .collect(toList()),
-                this.messages.supplyMessage("backend.site.not_found"));
     }
 }

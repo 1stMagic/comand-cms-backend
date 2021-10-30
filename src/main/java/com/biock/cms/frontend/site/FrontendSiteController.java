@@ -40,7 +40,7 @@ public class FrontendSiteController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<SiteDTO>> getSite(@PathVariable final String id) {
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> this.frontendSiteService.getSite(id),
                 this::buildSiteDTO,
                 this.messages.supplyMessage("frontend.site.not_found"));

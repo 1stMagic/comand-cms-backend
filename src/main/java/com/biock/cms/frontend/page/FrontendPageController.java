@@ -37,7 +37,7 @@ public class FrontendPageController {
             @PathVariable final String siteId,
             @RequestParam final String relativePagePath) {
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> this.frontendPageService.getPageOfSite(siteId, relativePagePath),
                 page -> PageDTO.of(page, LanguageUtils.getLanguage(), this.frontendSiteService.getDefaultLanguageOfSite(siteId)),
                 this.messages.supplyMessage("frontend.page.not_found"));

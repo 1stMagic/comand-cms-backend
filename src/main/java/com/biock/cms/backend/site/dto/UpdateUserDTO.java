@@ -17,8 +17,12 @@ public class UpdateUserDTO {
     private String mobile;
     private String fax;
     private String country;
+    private String postOfficeBox;
+    private String website;
+    private String otherInformation;
     private String[] groups;
     private Boolean active;
+    private String password;
 
     public String getEmail() {
 
@@ -163,6 +167,39 @@ public class UpdateUserDTO {
         return this;
     }
 
+    public String getPostOfficeBox() {
+
+        return this.postOfficeBox;
+    }
+
+    public UpdateUserDTO setPostOfficeBox(final String postOfficeBox) {
+
+        this.postOfficeBox = postOfficeBox;
+        return this;
+    }
+
+    public String getWebsite() {
+
+        return this.website;
+    }
+
+    public UpdateUserDTO setWebsite(final String website) {
+
+        this.website = website;
+        return this;
+    }
+
+    public String getOtherInformation() {
+
+        return this.otherInformation;
+    }
+
+    public UpdateUserDTO setOtherInformation(final String otherInformation) {
+
+        this.otherInformation = otherInformation;
+        return this;
+    }
+
     public String[] getGroups() {
 
         return this.groups;
@@ -182,6 +219,17 @@ public class UpdateUserDTO {
     public UpdateUserDTO setActive(final Boolean active) {
 
         this.active = active;
+        return this;
+    }
+
+    public String getPassword() {
+
+        return this.password;
+    }
+
+    public UpdateUserDTO setPassword(final String password) {
+
+        this.password = password;
         return this;
     }
 
@@ -208,6 +256,9 @@ public class UpdateUserDTO {
                 || this.phone != null
                 || this.mobile != null
                 || this.fax != null
-                || this.country != null;
+                || this.country != null
+                || this.postOfficeBox != null
+                || this.website != null
+                || this.otherInformation != null;
     }
 }

@@ -18,7 +18,12 @@ public class CreateUserDTO {
     private String mobile;
     private String fax;
     private String country;
+    private String postOfficeBox;
+    private String website;
+    private String otherInformation;
     private String[] groups;
+    private Boolean active;
+    private String password;
 
     public String getEmail() {
 
@@ -163,6 +168,39 @@ public class CreateUserDTO {
         return this;
     }
 
+    public String getPostOfficeBox() {
+
+        return this.postOfficeBox;
+    }
+
+    public CreateUserDTO setPostOfficeBox(final String postOfficeBox) {
+
+        this.postOfficeBox = postOfficeBox;
+        return this;
+    }
+
+    public String getWebsite() {
+
+        return this.website;
+    }
+
+    public CreateUserDTO setWebsite(final String website) {
+
+        this.website = website;
+        return this;
+    }
+
+    public String getOtherInformation() {
+
+        return this.otherInformation;
+    }
+
+    public CreateUserDTO setOtherInformation(final String otherInformation) {
+
+        this.otherInformation = otherInformation;
+        return this;
+    }
+
     public String[] getGroups() {
 
         return this.groups;
@@ -171,6 +209,28 @@ public class CreateUserDTO {
     public CreateUserDTO setGroups(final String[] groups) {
 
         this.groups = groups;
+        return this;
+    }
+
+    public Boolean getActive() {
+
+        return this.active;
+    }
+
+    public CreateUserDTO setActive(final Boolean active) {
+
+        this.active = active;
+        return this;
+    }
+
+    public String getPassword() {
+
+        return this.password;
+    }
+
+    public CreateUserDTO setPassword(final String password) {
+
+        this.password = password;
         return this;
     }
 }

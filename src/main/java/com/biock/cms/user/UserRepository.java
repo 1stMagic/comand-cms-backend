@@ -1,6 +1,7 @@
 package com.biock.cms.user;
 
 import com.biock.cms.CmsNode;
+import com.biock.cms.CmsProperty;
 import com.biock.cms.CmsType;
 import com.biock.cms.exception.NodeNotFoundException;
 import com.biock.cms.jcr.JcrPaths;
@@ -15,6 +16,7 @@ import com.biock.cms.user.mapper.UsersMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.jcr.*;
@@ -30,19 +32,22 @@ public class UserRepository extends JcrRepository {
     private final UsersMapper usersMapper;
     private final UserGroupMapper userGroupMapper;
     private final UserGroupsMapper userGroupsMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserRepository(
             final Repository repository,
             final UserMapper userMapper,
             final UsersMapper usersMapper,
             final UserGroupMapper userGroupMapper,
-            final UserGroupsMapper userGroupsMapper) {
+            final UserGroupsMapper userGroupsMapper,
+            final PasswordEncoder passwordEncoder) {
 
         super(repository);
         this.userMapper = userMapper;
         this.usersMapper = usersMapper;
         this.userGroupMapper = userGroupMapper;
         this.userGroupsMapper = userGroupsMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<User> getUser(final String siteId, final String userId) {
@@ -159,7 +164,7 @@ public class UserRepository extends JcrRepository {
         }
     }
 
-    public Optional<User> createUser(final String siteId, final User user) {
+    public Optional<User> createUser(final String siteId, final User user, final String password) {
 
         try (final var session = getSession()) {
             if (hasUserWithEmail(session, siteId, user.getEmail())) {
@@ -170,6 +175,9 @@ public class UserRepository extends JcrRepository {
             final Node userNode = session.getNode(JcrPaths.sites(siteId, CmsNode.USERS))
                     .addNode(newUser.getId(), CmsType.USER.getName());
             this.userMapper.toNode(newUser, userNode);
+            userNode.setProperty(
+                    CmsProperty.USER_PASSWORD,
+                    this.passwordEncoder.encode(StringUtils.defaultIfBlank(password, UUID.randomUUID().toString())));
             session.save();
             return Optional.of(newUser);
         } catch (final RepositoryException e) {
@@ -177,7 +185,7 @@ public class UserRepository extends JcrRepository {
         }
     }
 
-    public String updateUser(final String siteId, final User user) {
+    public String updateUser(final String siteId, final User user, final String password) {
 
         try (final var session = getSession()) {
             final Optional<Node> userNode = getUserNodeById(session, siteId, user.getId());
@@ -185,8 +193,15 @@ public class UserRepository extends JcrRepository {
                 throw new NodeNotFoundException("User " + user.getId());
             }
             this.userMapper.toNode(user, userNode.get());
+            if (StringUtils.isNotBlank(password)) {
+                userNode.get().setProperty(
+                        CmsProperty.USER_PASSWORD,
+                        this.passwordEncoder.encode(password));
+            }
             session.save();
             return user.getId();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
         }
     }
 

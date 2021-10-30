@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -27,41 +29,48 @@ public class ResponseBuilder {
         this.messages = messages;
     }
 
-    public <T, D> ResponseEntity<ResponseDTO<D>> build(
+    public <T, D> ResponseEntity<ResponseDTO<D>> buildOptional(
             final Supplier<Optional<T>> payloadSupplier,
             final Function<T, D> payloadMapper) {
 
-        return build(
+        return buildOptional(
                 payloadSupplier,
                 payloadMapper,
                 this.messages.supplyMessage("general.entity.not_found"));
     }
 
-    public <T, D> ResponseEntity<ResponseDTO<D>> build(
+    public <T, D> ResponseEntity<ResponseDTO<D>> buildOptional(
             final Supplier<Optional<T>> payloadSupplier,
             final Function<T, D> payloadMapper,
             final Supplier<String> notFoundMessageSupplier) {
 
         final ResponseDTO<D> dto = new ResponseDTO<>();
-        final Optional<T> payload = payloadSupplier.get();
-        return payload.map(statusOk(dto, payloadMapper))
-                .orElseGet(statusNotFound(dto, notFoundMessageSupplier.get()));
+        try {
+            final Optional<T> payload = payloadSupplier.get();
+            return payload.map(statusOk(dto, payloadMapper))
+                    .orElseGet(statusNotFound(dto, notFoundMessageSupplier.get()));
+        } catch (final Exception e) {
+            LOG.error("API error: {}", e.getMessage(), e);
+            return null;
+        }
     }
 
 //    public <T, D> ResponseEntity<ResponseDTO<D>> build(
 //            final Supplier<T> payloadSupplier,
-//            final Function<T, D> payloadMapper,
-//            final Function<Exception, List<String>> exceptionMapper) {
+//            final Function<T, D> payloadMapper) {
 //
 //        try {
 //            return statusOk(new ResponseDTO<>(), payloadMapper).apply(payloadSupplier.get());
+//        } catch (final HttpClientErrorException e) {
+//            LOG.error("API error: {}", e.getMessage(), e);
+//            return ResponseEntity.status(e.getStatusCode()).body(new ResponseDTO<D>().addMessage(e.getMessage()));
 //        } catch (final Exception e) {
 //            LOG.error("API error: {}", e.getMessage(), e);
-//
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO<D>().addMessage(e.getMessage()));
 //        }
 //    }
 
-    public <T> ResponseEntity<ResponseDTO<T>> build(final BindingResult bindingResult) {
+    public <T> ResponseEntity<ResponseDTO<T>> buildOptional(final BindingResult bindingResult) {
 
         return ResponseEntity.badRequest()
                 .body(new ResponseDTO<T>()

@@ -124,10 +124,14 @@ public class BackendSiteService {
                                 .mobile(dto.getMobile())
                                 .fax(dto.getFax())
                                 .country(dto.getCountry())
+                                .postOfficeBox(dto.getPostOfficeBox())
+                                .website(dto.getWebsite())
+                                .otherInformation(dto.getOtherInformation())
                                 .build())
                         .groups(dto.getGroups())
-                        .active(true)
-                        .build());
+                        .active(Boolean.TRUE.equals(dto.getActive()))
+                        .build(),
+                dto.getPassword());
     }
 
     public String updateUser(final String siteId, final String userId, final UpdateUserDTO dto) {
@@ -164,9 +168,12 @@ public class BackendSiteService {
                 setIf.accept(dto.getMobile(), contactDataBuilder::mobile);
                 setIf.accept(dto.getFax(), contactDataBuilder::fax);
                 setIf.accept(dto.getCountry(), contactDataBuilder::country);
+                setIf.accept(dto.getPostOfficeBox(), contactDataBuilder::postOfficeBox);
+                setIf.accept(dto.getWebsite(), contactDataBuilder::website);
+                setIf.accept(dto.getOtherInformation(), contactDataBuilder::otherInformation);
                 userBuilder.contactData(contactDataBuilder.build());
             }
-            return this.userRepository.updateUser(siteId, userBuilder.build());
+            return this.userRepository.updateUser(siteId, userBuilder.build(), dto.getPassword());
         }
         return user.get().getId();
     }

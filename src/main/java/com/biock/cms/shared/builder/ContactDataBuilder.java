@@ -13,6 +13,9 @@ public class ContactDataBuilder implements Builder<ContactData> {
     private String fax;
     private String email;
     private String country;
+    private String postOfficeBox;
+    private String website;
+    private String otherInformation;
 
     public ContactDataBuilder company(final String company) {
 
@@ -67,7 +70,25 @@ public class ContactDataBuilder implements Builder<ContactData> {
         this.country = country;
         return this;
     }
-    
+
+    public ContactDataBuilder postOfficeBox(final String postOfficeBox) {
+
+        this.postOfficeBox = postOfficeBox;
+        return this;
+    }
+
+    public ContactDataBuilder website(final String website) {
+
+        this.website = website;
+        return this;
+    }
+
+    public ContactDataBuilder otherInformation(final String otherInformation) {
+
+        this.otherInformation = otherInformation;
+        return this;
+    }
+
     @Override
     public ContactDataBuilder apply(final ContactData other) {
 
@@ -80,7 +101,10 @@ public class ContactDataBuilder implements Builder<ContactData> {
                     .mobile(other.getMobile())
                     .fax(other.getFax())
                     .email(other.getEmail())
-                    .country(other.getCountry());
+                    .country(other.getCountry())
+                    .postOfficeBox(other.getPostOfficeBox())
+                    .website(other.getWebsite())
+                    .otherInformation(other.getOtherInformation());
         }
         return this;
     }
@@ -97,7 +121,10 @@ public class ContactDataBuilder implements Builder<ContactData> {
                 this.mobile,
                 this.fax,
                 this.email,
-                this.country
+                this.country,
+                this.postOfficeBox,
+                this.website,
+                this.otherInformation
         );
     }
 }

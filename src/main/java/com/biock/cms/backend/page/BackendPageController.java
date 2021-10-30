@@ -31,7 +31,7 @@ public class BackendPageController {
     @GetMapping("/{site}/{id}")
     public ResponseEntity<ResponseDTO<PageDTO>> getPage(@PathVariable final String site, @PathVariable final String id) {
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> this.backendPageService.getPage(site, id),
                 PageDTO::of);
     }
@@ -43,10 +43,10 @@ public class BackendPageController {
             final BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return this.responseBuilder.build(bindingResult);
+            return this.responseBuilder.buildOptional(bindingResult);
         }
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendPageService.createPage(site, page)),
                 createdPageId -> new PageModificationResultDTO().setId(createdPageId));
     }
@@ -59,10 +59,10 @@ public class BackendPageController {
             final BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return this.responseBuilder.build(bindingResult);
+            return this.responseBuilder.buildOptional(bindingResult);
         }
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendPageService.updatePage(site, id, page)),
                 updatedPageId -> new PageModificationResultDTO().setId(updatedPageId));
     }
@@ -75,10 +75,10 @@ public class BackendPageController {
             final BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return this.responseBuilder.build(bindingResult);
+            return this.responseBuilder.buildOptional(bindingResult);
         }
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendPageService.clonePage(site, id, page)),
                 clonedPageId -> new PageModificationResultDTO().setId(clonedPageId));
     }
@@ -90,7 +90,7 @@ public class BackendPageController {
 
         // TODO: nur das entsprechende "showIn...Navigation" Flag aktualisieren - nur wenn alle Flags auf false dann tatsächlich löschen
 
-        return this.responseBuilder.build(
+        return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendPageService.deletePage(site, id)),
                 deletedPageId -> new PageModificationResultDTO().setId(deletedPageId));
     }

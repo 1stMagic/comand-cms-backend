@@ -38,6 +38,9 @@ public final class CmsProperty {
     public static final String CONTACT_DATA_FAX = "fax";
     public static final String CONTACT_DATA_EMAIL = "email";
     public static final String CONTACT_DATA_COUNTRY = "country";
+    public static final String CONTACT_DATA_POST_OFFICE_BOX = "postOfficeBox";
+    public static final String CONTACT_DATA_WEBSITE = "website";
+    public static final String CONTACT_DATA_OTHER_INFORMATION = "otherInformation";
 
     public static final String USER_EMAIL = "email";
     public static final String USER_GROUPS = "groups";
@@ -45,6 +48,7 @@ public final class CmsProperty {
     public static final String USER_TITLE = "title";
     public static final String USER_FIRST_NAME = "firstName";
     public static final String USER_LAST_NAME = "lastName";
+    public static final String USER_PASSWORD = "password";
 
     private CmsProperty() {
 

@@ -70,6 +70,26 @@ public class UserRepository extends JcrRepository {
         }
     }
 
+    public Optional<User> getUserByEmail(final String siteId, final String userEmail) {
+
+        try (final var session = getSession()) {
+            final Map<String, String> bindValues = new HashMap<>();
+            bindValues.put("$$site", siteId);
+            bindValues.put("userEmail", userEmail);
+            final QueryResult result = JcrQueryManager.executeQuery(
+                    session,
+                    "select * from [cms:user] as u where isdescendantnode(u, '/cms/sites/$$site/users') and [email] = $userEmail",
+                    bindValues);
+            final NodeIterator nodes = result.getNodes();
+            if (nodes.hasNext()) {
+                return Optional.of(this.userMapper.toEntity(nodes.nextNode()));
+            }
+            return Optional.empty();
+        } catch (final RepositoryException e) {
+            throw new RuntimeRepositoryException(e);
+        }
+    }
+
     public List<User> getUsers(final String siteId) {
 
         try (final var session = getSession()) {

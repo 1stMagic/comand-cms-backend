@@ -9,12 +9,12 @@ import com.biock.cms.utils.LanguageUtils;
 import com.biock.cms.web.api.ResponseBuilder;
 import com.biock.cms.web.api.dto.ResponseDTO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = CmsApi.FRONTEND_SITES, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,6 +44,20 @@ public class FrontendSiteController {
                 () -> this.frontendSiteService.getSite(id),
                 this::buildSiteDTO,
                 this.messages.supplyMessage("frontend.site.not_found"));
+    }
+
+    @PostMapping("/{id}/login")
+    public ResponseEntity<ResponseDTO<String>> login(@PathVariable final String id, @RequestParam final String username, @RequestParam final String password) {
+
+        final Optional<String> token = this.frontendSiteService.login(id, username, password);
+        return token.map(payload -> ResponseEntity.ok(new ResponseDTO<String>().setSuccess(true).setPayload(payload)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO<>()));
+    }
+
+    @GetMapping("/encode")
+    public String encode(final String password) {
+
+        return this.frontendSiteService.encode(password);
     }
 
     private SiteDTO buildSiteDTO(final Site site) {

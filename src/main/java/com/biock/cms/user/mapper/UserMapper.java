@@ -31,6 +31,7 @@ public class UserMapper implements Mapper<User> {
         return User.builder()
                 .id(getStringProperty(node, Property.JCR_ID))
                 .email(getStringProperty(node, CmsProperty.USER_EMAIL))
+                .password(getStringProperty(node, CmsProperty.USER_PASSWORD, ""))
                 .salutation(getStringProperty(node, CmsProperty.USER_SALUTATION, ""))
                 .title(getStringProperty(node, CmsProperty.USER_TITLE, ""))
                 .firstName(getStringProperty(node, CmsProperty.USER_FIRST_NAME, ""))
@@ -48,6 +49,7 @@ public class UserMapper implements Mapper<User> {
                 node.setProperty(Property.JCR_ID, entity.getId());
             }
             node.setProperty(CmsProperty.USER_EMAIL, entity.getEmail());
+            node.setProperty(CmsProperty.USER_PASSWORD, entity.getPassword());
             node.setProperty(CmsProperty.USER_SALUTATION, entity.getSalutation());
             node.setProperty(CmsProperty.USER_TITLE, entity.getTitle());
             node.setProperty(CmsProperty.USER_FIRST_NAME, entity.getFirstName());

@@ -36,6 +36,9 @@ public class CmsConfig {
     @NotBlank
     private final String timeFormat;
 
+    @NotBlank
+    private final String jwtSecret;
+
     private final List<String> apiAllowedMethods;
 
     private final List<String> apiAllowedClientOrigins;
@@ -48,6 +51,7 @@ public class CmsConfig {
             final String timeZone,
             final String dateFormat,
             final String timeFormat,
+            final String jwtSecret,
             final List<String> apiAllowedMethods,
             final List<String> apiAllowedClientOrigins,
             final List<String> apiAllowedClientOriginPatterns) {
@@ -57,6 +61,7 @@ public class CmsConfig {
         this.timeZone = timeZone;
         this.dateFormat = dateFormat;
         this.timeFormat = timeFormat;
+        this.jwtSecret = jwtSecret;
         this.apiAllowedMethods = Optional.ofNullable(apiAllowedMethods).orElse(Arrays.asList("GET", "PUT", "POST", "DELETE"));
         this.apiAllowedClientOrigins = Optional.ofNullable(apiAllowedClientOrigins).orElse(emptyList());
         this.apiAllowedClientOriginPatterns = Optional.ofNullable(apiAllowedClientOriginPatterns).orElse(emptyList());
@@ -95,6 +100,11 @@ public class CmsConfig {
     public String getTimeFormat() {
 
         return this.timeFormat;
+    }
+
+    public String getJwtSecret() {
+
+        return this.jwtSecret;
     }
 
     public List<String> getApiAllowedMethods() {

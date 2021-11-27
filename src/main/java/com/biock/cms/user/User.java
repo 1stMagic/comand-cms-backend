@@ -7,6 +7,7 @@ import com.biock.cms.user.builder.UserBuilder;
 public class User extends AbstractEntity<User> {
 
     private final String email;
+    private final String password;
     private final String salutation;
     private final String title;
     private final String firstName;
@@ -18,6 +19,7 @@ public class User extends AbstractEntity<User> {
     public User(
             final String id,
             final String email,
+            final String password,
             final String salutation,
             final String title,
             final String firstName,
@@ -28,6 +30,7 @@ public class User extends AbstractEntity<User> {
 
         super(id);
         this.email = email;
+        this.password = password;
         this.salutation = salutation;
         this.title = title;
         this.firstName = firstName;
@@ -45,6 +48,11 @@ public class User extends AbstractEntity<User> {
     public String getEmail() {
 
         return this.email;
+    }
+
+    public String getPassword() {
+
+        return this.password;
     }
 
     public String getSalutation() {

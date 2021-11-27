@@ -8,6 +8,7 @@ public class UserBuilder implements Builder<User> {
 
     private String id;
     private String email;
+    private String password;
     private String salutation;
     private String title;
     private String firstName;
@@ -25,6 +26,12 @@ public class UserBuilder implements Builder<User> {
     public UserBuilder email(final String email) {
 
         this.email = email;
+        return this;
+    }
+
+    public UserBuilder password(final String password) {
+
+        this.password = password;
         return this;
     }
 
@@ -76,6 +83,7 @@ public class UserBuilder implements Builder<User> {
         if (other != null) {
             return id(other.getId())
                     .email(other.getEmail())
+                    .password(other.getPassword())
                     .salutation(other.getSalutation())
                     .title(other.getTitle())
                     .firstName(other.getFirstName())
@@ -93,6 +101,7 @@ public class UserBuilder implements Builder<User> {
         return new User(
                 this.id,
                 this.email,
+                this.password,
                 this.salutation,
                 this.title,
                 this.firstName,

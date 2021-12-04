@@ -2,6 +2,7 @@ package com.biock.cms.frontend.site;
 
 import com.biock.cms.CmsApi;
 import com.biock.cms.config.CmsConfig;
+import com.biock.cms.frontend.site.dto.LoginDTO;
 import com.biock.cms.frontend.site.dto.SiteDTO;
 import com.biock.cms.i18n.Messages;
 import com.biock.cms.site.Site;
@@ -47,10 +48,10 @@ public class FrontendSiteController {
     }
 
     @PostMapping("/{id}/login")
-    public ResponseEntity<ResponseDTO<String>> login(@PathVariable final String id, @RequestParam final String username, @RequestParam final String password) {
+    public ResponseEntity<ResponseDTO<LoginDTO>> login(@PathVariable final String id, @RequestParam final String username, @RequestParam final String password) {
 
-        final Optional<String> token = this.frontendSiteService.login(id, username, password);
-        return token.map(payload -> ResponseEntity.ok(new ResponseDTO<String>().setSuccess(true).setPayload(payload)))
+        final Optional<LoginDTO> result = this.frontendSiteService.login(id, username, password);
+        return result.map(payload -> ResponseEntity.ok(new ResponseDTO<LoginDTO>().setSuccess(true).setPayload(payload)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO<>()));
     }
 

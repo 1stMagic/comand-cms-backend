@@ -62,7 +62,7 @@ public class CmsConfig {
         this.dateFormat = dateFormat;
         this.timeFormat = timeFormat;
         this.jwtSecret = jwtSecret;
-        this.apiAllowedMethods = Optional.ofNullable(apiAllowedMethods).orElse(Arrays.asList("GET", "PUT", "POST", "DELETE"));
+        this.apiAllowedMethods = Optional.ofNullable(apiAllowedMethods).orElse(Arrays.asList("GET", "PUT", "POST", "DELETE", "OPTIONS"));
         this.apiAllowedClientOrigins = Optional.ofNullable(apiAllowedClientOrigins).orElse(emptyList());
         this.apiAllowedClientOriginPatterns = Optional.ofNullable(apiAllowedClientOriginPatterns).orElse(emptyList());
     }

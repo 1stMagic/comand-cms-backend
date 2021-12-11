@@ -18,8 +18,7 @@ import com.biock.cms.user.builder.UserGroupBuilder;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -67,7 +66,18 @@ public class BackendSiteService {
 
     public List<UserGroup> getUserGroups(final String siteId) {
 
-        return this.userRepository.getUserGroups(siteId);
+        final Map<String, Integer> usersPerGroup = new HashMap<>();
+        getUsers(siteId).stream()
+                .flatMap(user -> Arrays.stream(user.getGroups()))
+                .forEach(group -> usersPerGroup.compute(group, (g, n) -> n == null ? 1 : n + 1));
+        return this.userRepository.getUserGroups(siteId)
+                .stream()
+                .map(userGroup -> {
+                    final UserGroupBuilder builder = UserGroup.builder().apply(userGroup);
+                    builder.numUsers(usersPerGroup.getOrDefault(userGroup.getId(), 0));
+                    return builder.build();
+                })
+                .toList();
     }
 
     public UserGroup createUserGroup(final String siteId, final CreateUserGroupDTO dto) {

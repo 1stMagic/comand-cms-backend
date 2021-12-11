@@ -264,7 +264,7 @@
             </sv:property>
             <sv:property sv:name="groups" sv:type="String" sv:multiple="true">
                 <sv:value>USER</sv:value>
-                <sv:value>VIP</sv:value>
+                <sv:value>EMPLOYEE</sv:value>
             </sv:property>
             <sv:property sv:name="active" sv:type="Boolean">
                 <sv:value>true</sv:value>
@@ -360,7 +360,7 @@
             </sv:property>
 
             <sv:property sv:name="jcr:id" sv:type="String">
-                <sv:value>VIP</sv:value>
+                <sv:value>EMPLOYEE</sv:value>
             </sv:property>
             <sv:property sv:name="active" sv:type="Boolean">
                 <sv:value>true</sv:value>
@@ -372,10 +372,36 @@
                 </sv:property>
 
                 <sv:property sv:name="de" sv:type="String">
-                    <sv:value>SWP</sv:value>
+                    <sv:value>Angestellter</sv:value>
                 </sv:property>
                 <sv:property sv:name="en" sv:type="String">
-                    <sv:value>VIP</sv:value>
+                    <sv:value>Employee</sv:value>
+                </sv:property>
+            </sv:node>
+        </sv:node>
+
+        <sv:node sv:name="userGroup4">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>cms:userGroup</sv:value>
+            </sv:property>
+
+            <sv:property sv:name="jcr:id" sv:type="String">
+                <sv:value>MANAGER</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+
+            <sv:node sv:name="name">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>cms:translation</sv:value>
+                </sv:property>
+
+                <sv:property sv:name="de" sv:type="String">
+                    <sv:value>Manager</sv:value>
+                </sv:property>
+                <sv:property sv:name="en" sv:type="String">
+                    <sv:value>Manager</sv:value>
                 </sv:property>
             </sv:node>
         </sv:node>

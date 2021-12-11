@@ -7,6 +7,7 @@ public class UserGroupDTO {
     private String id;
     private String name;
     private boolean active;
+    private int numUsers;
 
     public static UserGroupDTO of(final UserGroup entity, final String language, final String fallbackLanguage) {
 
@@ -16,7 +17,8 @@ public class UserGroupDTO {
         return new UserGroupDTO()
                 .setId(entity.getId())
                 .setName(entity.getName().getTranslation(language, fallbackLanguage))
-                .setActive(entity.isActive());
+                .setActive(entity.isActive())
+                .setNumUsers(entity.getNumUsers());
     }
 
     public String getId() {
@@ -49,6 +51,17 @@ public class UserGroupDTO {
     public UserGroupDTO setActive(final boolean active) {
 
         this.active = active;
+        return this;
+    }
+
+    public int getNumUsers() {
+
+        return this.numUsers;
+    }
+
+    public UserGroupDTO setNumUsers(final int numUsers) {
+
+        this.numUsers = numUsers;
         return this;
     }
 }

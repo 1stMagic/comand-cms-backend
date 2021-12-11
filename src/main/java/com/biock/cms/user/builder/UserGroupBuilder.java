@@ -9,6 +9,7 @@ public class UserGroupBuilder implements Builder<UserGroup> {
     private String id;
     private Translation name;
     private boolean active;
+    private int numUsers;
 
     public UserGroupBuilder id(final String id) {
 
@@ -28,13 +29,20 @@ public class UserGroupBuilder implements Builder<UserGroup> {
         return this;
     }
 
+    public UserGroupBuilder numUsers(final int numUsers) {
+
+        this.numUsers = numUsers;
+        return this;
+    }
+
     @Override
     public UserGroupBuilder apply(final UserGroup other) {
 
         if (other != null) {
             return id(other.getId())
                     .name(other.getName())
-                    .active(other.isActive());
+                    .active(other.isActive())
+                    .numUsers(other.getNumUsers());
         }
         return this;
     }
@@ -42,6 +50,6 @@ public class UserGroupBuilder implements Builder<UserGroup> {
     @Override
     public UserGroup build() {
 
-        return new UserGroup(this.id, this.name, this.active);
+        return new UserGroup(this.id, this.name, this.active, this.numUsers);
     }
 }

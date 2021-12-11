@@ -8,12 +8,14 @@ public class UserGroup extends AbstractEntity<UserGroup> {
 
     private final Translation name;
     private final boolean active;
+    private final int numUsers;
 
-    public UserGroup(final String id, final Translation name, final boolean active) {
+    public UserGroup(final String id, final Translation name, final boolean active, final int numUsers) {
 
         super(id);
         this.name = name;
         this.active = active;
+        this.numUsers = numUsers;
     }
 
     public static UserGroupBuilder builder() {
@@ -31,4 +33,8 @@ public class UserGroup extends AbstractEntity<UserGroup> {
         return this.active;
     }
 
+    public int getNumUsers() {
+
+        return this.numUsers;
+    }
 }

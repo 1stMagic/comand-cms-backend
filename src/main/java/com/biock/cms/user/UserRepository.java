@@ -232,6 +232,10 @@ public class UserRepository extends JcrRepository {
             if (userNode.isEmpty()) {
                 throw new NodeNotFoundException("User " + userId);
             }
+            final User user = this.userMapper.toEntity(userNode.get());
+            if (user.isSuperAdmin()) {
+                throw new NodeNotFoundException("User " + userId + " is the super admin and cannot be deleted");
+            }
             userNode.get().remove();
             session.save();
             return userId;

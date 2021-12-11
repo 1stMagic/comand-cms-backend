@@ -19,6 +19,7 @@ public class UserDTO {
     private String lastName;
     private boolean active;
     private String[] groups;
+    private boolean superAdmin;
     @JsonUnwrapped
     private ContactDataDTO contactData;
 
@@ -36,6 +37,7 @@ public class UserDTO {
                 .setLastName(entity.getLastName())
                 .setActive(entity.isActive())
                 .setGroups(entity.getGroups())
+                .setSuperAdmin(entity.isSuperAdmin())
                 .setContactData(ContactDataDTO.of(entity.getContactData()));
     }
 
@@ -124,6 +126,17 @@ public class UserDTO {
     public UserDTO setGroups(final String[] groups) {
 
         this.groups = groups;
+        return this;
+    }
+
+    public boolean isSuperAdmin() {
+
+        return this.superAdmin;
+    }
+
+    public UserDTO setSuperAdmin(final boolean superAdmin) {
+
+        this.superAdmin = superAdmin;
         return this;
     }
 

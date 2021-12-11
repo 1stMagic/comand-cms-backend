@@ -90,4 +90,8 @@ public class User extends AbstractEntity<User> {
         return this.groups;
     }
 
+    public boolean isSuperAdmin() {
+
+        return "admin".equals(this.email);
+    }
 }

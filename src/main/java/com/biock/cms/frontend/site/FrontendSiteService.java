@@ -52,7 +52,7 @@ public class FrontendSiteService {
     public Optional<LoginDTO> login(final String siteId, final String username, final String password) {
 
         final Optional<User> user = this.userRepository.getUserByEmail(siteId, username);
-        if (user.isPresent() && this.passwordEncoder.matches(password, user.get().getPassword())) {
+        if (user.isPresent() && user.get().isActive() && this.passwordEncoder.matches(password, user.get().getPassword())) {
             return Optional.of(LoginDTO.of(this.jwtService.generateToken(user.get()), user.get()));
         }
         return Optional.empty();

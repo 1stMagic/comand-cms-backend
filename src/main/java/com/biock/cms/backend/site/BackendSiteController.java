@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import static java.util.stream.Collectors.toList;
-
 @RestController
 @RequestMapping(path = CmsApi.BACKEND_SITES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class BackendSiteController {
@@ -52,7 +50,7 @@ public class BackendSiteController {
                                 navigation -> translator(id).apply(
                                         navigation.getMainNavigationTitle(),
                                         navigation.getMetaDataTitle())))
-                        .collect(toList()),
+                        .toList(),
                 this.messages.supplyMessage("backend.site.not_found"));
     }
 
@@ -61,7 +59,7 @@ public class BackendSiteController {
 
         return this.responseBuilder.buildOptional(
                 () -> Optional.of(this.backendSiteService.getUsers(id)),
-                users -> users.stream().map(UserDTO::of).collect(toList()));
+                users -> users.stream().map(UserDTO::of).toList());
     }
 
     @PostMapping("/{id}/users")
@@ -114,7 +112,7 @@ public class BackendSiteController {
                 () -> Optional.of(this.backendSiteService.getUserGroups(id)),
                 userGroups -> userGroups.stream()
                         .map(userGroup -> UserGroupDTO.of(userGroup, language, fallbackLanguage))
-                        .collect(toList()));
+                        .toList());
     }
 
     @PostMapping("/{id}/user-groups")

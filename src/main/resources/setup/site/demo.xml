@@ -231,8 +231,14 @@
             <sv:property sv:name="password" sv:type="String">
                 <sv:value>$2a$10$AEEQBb0RU7S/3IESWUVcveoLw7QYX.oW3eEOOOiAsvh.6Q78/YMES</sv:value>
             </sv:property>
+            <sv:property sv:name="lastName" sv:type="String">
+                <sv:value>Admin</sv:value>
+            </sv:property>
             <sv:property sv:name="groups" sv:type="String" sv:multiple="true">
                 <sv:value>ADMIN</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
             </sv:property>
         </sv:node>
 
@@ -259,6 +265,9 @@
             <sv:property sv:name="groups" sv:type="String" sv:multiple="true">
                 <sv:value>USER</sv:value>
                 <sv:value>VIP</sv:value>
+            </sv:property>
+            <sv:property sv:name="active" sv:type="Boolean">
+                <sv:value>true</sv:value>
             </sv:property>
 
             <sv:node sv:name="contactData">

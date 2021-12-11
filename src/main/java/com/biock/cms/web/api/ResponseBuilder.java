@@ -1,5 +1,6 @@
 package com.biock.cms.web.api;
 
+import com.biock.cms.exception.NodeNotFoundException;
 import com.biock.cms.i18n.Messages;
 import com.biock.cms.web.api.dto.ResponseDTO;
 import org.slf4j.Logger;
@@ -8,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -49,6 +48,8 @@ public class ResponseBuilder {
             final Optional<T> payload = payloadSupplier.get();
             return payload.map(statusOk(dto, payloadMapper))
                     .orElseGet(statusNotFound(dto, notFoundMessageSupplier.get()));
+        } catch (final NodeNotFoundException e) {
+            return statusNotFound(dto, notFoundMessageSupplier.get()).get();
         } catch (final Exception e) {
             LOG.error("API error: {}", e.getMessage(), e);
             return null;

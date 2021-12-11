@@ -208,7 +208,7 @@
             <sv:value>info@comand-cms.com</sv:value>
         </sv:property>
         <sv:property sv:name="country" sv:type="String">
-            <sv:value>Deutschland</sv:value>
+            <sv:value>de</sv:value>
         </sv:property>
     </sv:node>
 
@@ -294,7 +294,7 @@
                     <sv:value>33 44 55</sv:value>
                 </sv:property>
                 <sv:property sv:name="country" sv:type="String">
-                    <sv:value>Deutschland</sv:value>
+                    <sv:value>de</sv:value>
                 </sv:property>
             </sv:node>
         </sv:node>
